@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Chat, MessageInput, UserJoined } from "../Components";
 import { useSelector } from "react-redux";
-import { getSocket, disconnectSocket } from "../Features/SocketConnection";
+import { getSocket } from "../utils/SocketConnection";
 
 function ChatPage() {
   const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const socket = getSocket();
-  const [userMessage, setUserMessage] = useState("");
+  const [userMessage, setUserMessage] = useState([]);
+  const [userJoined, setUserJoined] = useState([]);
+  const socket = getSocket()
+
+  useEffect(()=>{
+    socket.on('user-joined',email=>{
+      console.log(email)
+    })
+
+  },[])
+
+
 
 
 
 
   const message = (value) => {
     setUserMessage(value);
-    socket.emit('new-message',value)
   };
 
-  // useEffect(()=>{
-  //   socket.on('user-message',message=>{
-  //    console.log(message)
-  //   })
-  // },[socket])
+
 
   return (
     <div className="h-[calc(100vh-10vh)] flex   ">
@@ -38,16 +43,30 @@ function ChatPage() {
             isDarkMode ? "bg-black" : "bg-white"
           } `}
         >
-          <div className={`text-white border flex items-center justify-start`}>
-            <p
-              style={{
-                background: colorTheme,
-              }}
-              className={`  min-w-[10%] max-w-fit p-2 rounded-tl-none rounded-tr-2xl rounded-bl-2xl rounded-br-2xl `}
-            >
-              Lorem ipsum dolor{" "}
-            </p>
-          </div>
+{     userMessage &&    <div
+          className={`text-white  flex items-center ${
+            userMessage ? "justify-end":"justify-start"
+          }`}
+        >
+          <p
+            style={{
+              background: colorTheme,
+            }}
+            className={`  min-w-[10%] max-w-fit p-2 ${userMessage?"rounded-tl-2xl rounded-tr-none rounded-bl-2xl rounded-br-2xl":"rounded-tl-none rounded-tr-2xl rounded-bl-2xl rounded-br-2xl"} `}
+          >
+            {userMessage}
+          </p>
+        </div>}
+          {userJoined.length > 0
+            ? userJoined.map((users, index) => (
+                <div
+                  key={index}
+                  className={"userJoinedMessage bg-green-200 mt-2 mb-2 text-sm p-1"}
+                >
+                  <p>{users} has joined the chat.</p>
+                </div>
+              ))
+            : null}
         </div>
         <div
           className={`messageInputContainer text-white h-[10vh]   ${

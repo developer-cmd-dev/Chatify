@@ -16,6 +16,7 @@ const io = new Server(server,{
 
 
 io.on("connection",(socket)=>{
+    console.log("Socket is connected.")
     try {
         socket.on('new-user-joined',email=>{
             console.log(`New User Joined - ${email} and id - ${socket.id}`)

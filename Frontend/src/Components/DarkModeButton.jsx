@@ -7,26 +7,7 @@ function DarkModeButton() {
   const [darkMode,setDarkMode]=useState(false)
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    const userData =JSON.parse(localStorage.getItem('user'));
-    if(userData){
-      setDarkMode(userData.isDarkMode)
-    }else{
-      setDarkMode(false)
-    }
-   
-  },[])
-
-
-  useEffect(()=>{
-    const userData = JSON.parse(localStorage.getItem('user'))
-    if(userData){
-      userData.isDarkMode = darkMode
-      localStorage.setItem('user',JSON.stringify(userData))
-    }else{
-      console.log("User Data is not found.")
-    }
-    
+  useEffect(()=>{   
     dispatch(handleDarkMode(darkMode))
   },[darkMode])
   

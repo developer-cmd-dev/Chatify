@@ -3,35 +3,33 @@ import { Input } from "./index";
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import {login} from '../Features/LoginSlice'
+import { useNavigate } from "react-router-dom";
+import { getSocket } from "../utils/SocketConnection";
+
 
 
 function LoginForm() {
   const [userName, setUserName] = useState("");
   const isDarkMode = useSelector((state)=>state.DarkMode.isDarkMode)
   const dispatch = useDispatch()
-  let userSchema = {
-    email:'',
-    colorTheme:'',
-    isDarkMode:false,
-  }
+  const navigate = useNavigate()
+  const socket = getSocket()
+
+
 
 
   const handleUserName = (e) => {
     setUserName(e);
   };
 
-  useEffect(()=>{
-  const fetchEmail = localStorage.getItem('userEmail')
-  dispatch(login(fetchEmail))
 
-  },[userName])
+
 
   const handleSubmit = (event)=>{
     event.preventDefault()
-    userSchema.email=userName
-    console.log(userSchema)
-    localStorage.setItem('user',JSON.stringify(userSchema));
-    dispatch(login(userName))
+    dispatch(login(userName));
+    socket.emit('new-user-joined',userName)
+    navigate('global-chat')
     setUserName("")
   }
 
@@ -59,7 +57,7 @@ function LoginForm() {
           />
           <button
             type="submit"
-            className={`cursor-pointer z-20 w-32 h-[6vh] rounded-xl border-none  ${isDarkMode?'bg-[#FF0082]':'bg-[#FF4F5C]'} text-white hover:bg-green-500 transition-all
+            className={`cursor-pointer  w-32 h-[6vh] rounded-xl border-none  ${isDarkMode?'bg-[#FF0082]':'bg-[#FF4F5C]'} text-white hover:bg-green-500 transition-all
           sm:h-[6vh] sm:text-xl sm:w-44
           lg:h-[10vh] `}
           >

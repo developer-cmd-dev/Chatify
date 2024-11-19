@@ -5,7 +5,7 @@ function Logo({
 }) {
   return (
     <div className=' h-[10vh]  flex items-center'>
-      <img src="./Logo/logo.png" className={`${classname}`}  alt="" />
+      <img src="./Logo/logo.png" className={`${classname} `}  alt="" />
     </div>
   )
 }

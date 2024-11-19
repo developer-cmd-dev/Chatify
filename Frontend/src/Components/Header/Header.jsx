@@ -30,7 +30,7 @@ function Header({
     <div className={`${classname} relative flex items-center justify-center`}>
       {/* Logo */}
       <div className="logo w-52 flex items-center justify-center  ">
-        {logo && <Logo classname={`w-24   rounded-lg sm:w-44 lg:w-32`} />}
+        {logo && <Logo classname={`w-24 rounded-lg sm:w-44 lg:w-32`} />}
       </div>
       {/* <div className=" w-fit h-5 " >
         <p  className={isDarkMode?'text-white ':'text-black  '}>{email}</p>

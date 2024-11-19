@@ -8,23 +8,12 @@ import {
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import { useNavigate, useParams } from 'react-router-dom';
-import {connectSocket,getSocket} from '../Features/SocketConnection'
+
+
 
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const email = useSelector((state)=>state.Login.email)
-  const navigate = useNavigate()
-
-  
-  useEffect(()=>{
-    if(email){
-      connectSocket("http://localhost:3001")
-      const socket = getSocket()     
-      socket.emit('new-user-joined',email)
-      navigate(`/global-chat/${email}`)
-    }
-  },[email])
 
   return (
     <div

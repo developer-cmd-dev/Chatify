@@ -18,7 +18,7 @@ const router = createBrowserRouter([{
             element:<LoginPage/>
         },
         {
-            path:'global-chat/:email',
+            path:'global-chat',
             element:<ChatPage/>
         }
     ]
@@ -28,6 +28,5 @@ const router = createBrowserRouter([{
 createRoot(document.getElementById('root')).render(
     <Provider store={store}>
     <RouterProvider router={router}/>
-
     </Provider>
 )
