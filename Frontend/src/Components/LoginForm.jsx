@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Input } from "./index";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import {login} from '../Features/LoginSlice'
-import { useNavigate } from "react-router-dom";
-import { getSocket } from "../utils/SocketConnection";
+import { useLocation, useNavigate } from "react-router-dom";
+import { connectSocket, getSocket } from "../utils/SocketConnection";
+
 
 
 
@@ -13,7 +14,9 @@ function LoginForm() {
   const isDarkMode = useSelector((state)=>state.DarkMode.isDarkMode)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const socket = getSocket()
+  const socket = useRef(null)
+  const location = useLocation()
+
 
 
 
@@ -25,13 +28,32 @@ function LoginForm() {
 
 
 
-  const handleSubmit = (event)=>{
+  const handleSubmit = async(event)=>{
     event.preventDefault()
     dispatch(login(userName));
-    socket.emit('new-user-joined',userName)
-    navigate('global-chat')
-    setUserName("")
+     socket.current = await connectSocket()
+    if(socket){
+      socket.current.emit('new-user-joined',userName)
+      navigate('global-chat')
+      setUserName("")
+    }else{
+      console.log('Socket connection failed.')
+      navigate('error')
+    }
+
+   
   }
+
+  // useEffect(()=>{
+  //   window.addEventListener('pop',(event)=>{
+  //     console.log(event)
+  //     history.back()
+  //   })
+  //   // if(location.pathname == '/'){
+  //   //   console.log('true')
+  //   // }
+  // },[])
+ 
 
   return (
     <div

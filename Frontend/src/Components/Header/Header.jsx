@@ -52,7 +52,7 @@ function Header({
   
         {/* Hamburger  menu  */}
         <div
-          className={`navMenu absolute h-screen w-64 bg-gray-800 top-0  ${
+          className={`navMenu absolute h-screen w-64 bg-gray-800 top-0   ${
             hamBurger ? "right-0" : "right-[-100%]"
           }
         sm:w-[50vw]
@@ -74,7 +74,7 @@ function Header({
           </div>
 
           {/* Hamburger Menu NavList  */}
-          <div className="NavMenuList  text-white h-screen w-full relative flex flex-col justify-start items-center">
+          <div className="NavMenuList  text-white h-screen w-full relative flex flex-col justify-start items-center  lg:hidden">
             <ColorTheme />
             <UserJoined classname={` h-[70vh] lg:hidden    ${isDarkMode?'border-gray-900':'border-gray-300'} rounded-2xl p-4 flex items-start justify-center w-[90%]`}/>
           </div>

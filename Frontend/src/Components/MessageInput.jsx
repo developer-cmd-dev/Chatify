@@ -31,10 +31,11 @@ function MessageInput({ classname, colorThemeCode,messageFunc }) {
         />
       </div>
       <button
-        className=" w-10 h-10 rounded-full flex items-center justify-center z-20"
+        className=" w-10 h-10 rounded-full flex items-center justify-center "
         style={{ background: colorThemeCode }}
         onClick={()=>{
           messageFunc(message)
+          setMessage('')
         }}
         
       >
