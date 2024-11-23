@@ -30,7 +30,7 @@ function Input({
      onChange={(e)=>{
       onchange(e.target.value)
      }}
-     className={`${classname}`}
+     className={classname}
      required={required}
      {...rest}
      style={{background:bgcolor}}

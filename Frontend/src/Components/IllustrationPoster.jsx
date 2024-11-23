@@ -10,9 +10,9 @@ function IllustrationPoster({
     //                   sm:border sm:rounded-none sm:w-full`}>
     // </div>\
     <img src={isDarkMode?`./Illustration/Dark/Dark.jpg`:`./Illustration/Light/LightIllustration.jpg`} alt="" className={`${classname}  w-[90vw] rounded-xl
-     sm:rounded-none sm:w-[100vw]
-    md:w-[90vw]
-    lg:w-[30vw] lg:rounded-2xl `}/>
+     sm:rounded-none sm:w-[100vw] sm:hidden
+    md:hidden
+    lg:w-[50vw] lg:rounded-2xl `}/>
   )
 }
 

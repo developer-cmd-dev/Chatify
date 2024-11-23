@@ -9,8 +9,14 @@ export default {
       'lightButton':'url(./LightModeButtonBackground/light.jpg)',
       'lightIllustration':'url(./Illustration/Light/LightIllustration.jpg)',
       'DarkIllustration':'url(./Illustration/Dark/DarkIllustration.jpg)',
+      'loginFormBg':'url(./Illustration/Bg.jpg)',
+      'darkLoginFormBg':'url(./Illustration/darkbg.jpg)'
     },
-    extend: {},
+    extend: {
+      fontFamily:{
+        gugi:['Gugi', 'sans-serif']
+      }
+    },
 
   },
   plugins: [],

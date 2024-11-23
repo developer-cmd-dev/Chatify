@@ -30,7 +30,7 @@ function Header({
     <div className={`${classname} relative flex items-center justify-center`}>
       {/* Logo */}
       <div className="logo w-52 flex items-center justify-center  ">
-        {logo && <Logo classname={`w-24 rounded-lg sm:w-44 lg:w-32`} />}
+        {logo && <Logo classname={`w-24 rounded-lg sm:w-32 lg:w-32`} />}
       </div>
       {/* <div className=" w-fit h-5 " >
         <p  className={isDarkMode?'text-white ':'text-black  '}>{email}</p>
@@ -44,7 +44,7 @@ function Header({
             hamBurger ? "text-white " : "text-black"
           } ${isDarkMode ? 'text-white':'text-black'}  
            text-xl mr-4 z-20 absolute right-4 top-[3.5vh]
-                sm:text-4xl
+                sm:text-2xl
                 lg:hidden`}
         />
       )}
@@ -68,7 +68,7 @@ function Header({
               className="colorThemeButton cursor-pointer  "
               onClick={handleColorTheme}
             >
-              <img src="./color-wheel.png" className="w-8 sm:w-14 lg:w-8" alt="" />
+              <img src="./color-wheel.png" className="w-6 sm:w-14 lg:w-8" alt="" />
             </button>
             <DarkModeButton />
           </div>
