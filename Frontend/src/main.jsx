@@ -9,6 +9,8 @@ import Error from './Pages/Error.jsx'
 import { Provider } from 'react-redux'
 import { store } from './App/store.js'
 import { useSelector } from 'react-redux'
+import PrivateRoute from './Pages/PrivateRoute.jsx'
+
 
 const router = createBrowserRouter([{
     path:'/',
@@ -20,7 +22,7 @@ const router = createBrowserRouter([{
         },
         {
             path:'global-chat',
-            element:<ChatPage/>
+            element:<PrivateRoute ><ChatPage/></PrivateRoute>
         },
         {
             path:'error',

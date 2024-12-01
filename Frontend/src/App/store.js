@@ -2,12 +2,12 @@ import {configureStore} from '@reduxjs/toolkit'
 import hamburgerReducer from '../Features/HamburgerSlice'
 import colorThemeReducer from '../Features/ColorThemeSlice'
 import DarkModeReducer from '../Features/DarkModeSlice'
-import LoginReducer from '../Features/LoginSlice'
+import AuthenticateReducer from '../Features/AuthenticateSlice'
 export const store = configureStore({
     reducer:{
         hamBurger:hamburgerReducer,
         colorThemeChange:colorThemeReducer,
         DarkMode:DarkModeReducer,
-        Login:LoginReducer,
+        Authenticate:AuthenticateReducer
     }
 })

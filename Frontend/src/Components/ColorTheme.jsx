@@ -22,8 +22,8 @@ function ColorTheme() {
 
   return (
     isColortheme && (
-      <div className=" transition-all w-[90%] h-10  bg-gray-700 rounded-xl flex items-center justify-around
-                        sm:h-20 lg:absolute lg:z-20 lg:h-12 lg:w-[40%] lg:top-[-15px] lg:right-[140px] lg:rounded-tl-2xl lg:rounded-bl-2xl lg:rounded-br-2xl lg:rounded-tr-none">
+      <div className="  transition-all w-[90%] h-10  bg-gray-700 rounded-xl flex items-center justify-around
+                        sm:h-20 lg:absolute lg:z-20 lg:h-12 lg:w-[40%] lg:top-[-15px] lg:right-[140px] lg:rounded-tl-2xl lg:rounded-bl-2xl lg:rounded-br-2xl lg:rounded-tr-none ">
         {colorsArr.map((colors,index) => (
           <button
             key={colors}

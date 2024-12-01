@@ -8,7 +8,7 @@ const connectSocket = async () => {
       await new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
           reject(new Error('Connection timeout: Backend is not reachable.'));
-        }, 2000); 
+        }, 1000); 
 
         socket.on('connect', () => {
           clearTimeout(timeout);
@@ -28,15 +28,12 @@ const connectSocket = async () => {
   }
 };
 
-const getSocket = () => {
+const getSocket = async () => {
   if (!socket) {
     throw new Error('Socket is not initialized. Call connectSocket first.');
   }
   return socket;
 };
 
-const disConnectSocket = async ()=>{
- socket.disconnect(true)
-}
 
-export { connectSocket, getSocket,disConnectSocket }
+export { connectSocket, getSocket }

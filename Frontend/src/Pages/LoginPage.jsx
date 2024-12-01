@@ -5,12 +5,17 @@ import {
   LoginForm,
   IllustrationPoster,
 } from "../Components/index";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import io from "socket.io-client";
 import {useTypewriter} from 'react-simple-typewriter'
+import { connectSocket } from "../utils/SocketConnection";
+import { useNavigate } from "react-router-dom";
+import { isAuthenticated } from "../Features/AuthenticateSlice";
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [text] = useTypewriter({
     words:['CHATIFY','Stay Connected!','With People.'],
     loop:{},
@@ -20,6 +25,21 @@ function LoginPage() {
     }
  
   })
+
+
+  
+  const handleSubmit = async(userName)=>{
+     const socket = await connectSocket()
+    if(socket){
+      dispatch(isAuthenticated({authenticate:true,email:userName,id:''}))
+      socket.emit('new-user-joined',userName)
+      navigate('global-chat')
+    }else{
+      console.log('Socket connection failed.')
+      navigate('error')
+    }
+
+  }
 
 
   return (
@@ -68,7 +88,7 @@ function LoginPage() {
       </div>
       <span className={` w-[90%] h-0 border-2 ${isDarkMode?'border-gray-800':'border-gray-300'} rounded-full
                         md:w-0 md:h-[50%] `}></span>
-      <LoginForm />
+      <LoginForm handleSubmit={handleSubmit} />
       </div>
      
    

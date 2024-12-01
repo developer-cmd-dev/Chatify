@@ -1,8 +1,19 @@
 import React from 'react'
 
-function Button() {
+function Button({
+  classname,
+  handleButton,
+  logo=false,
+  logoLink='',
+  name
+
+}) {
   return (
-    <div>Button</div>
+    <div>
+   <button onClick={()=>handleButton()} className={`${classname}` } >{logo && <img src={logoLink}/>}{name}</button>
+   
+
+    </div>
   )
 }
 

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../Logo";
 import Hamburger from "../Hamburger";
-import { useDispatch, useSelector } from "react-redux";
-import { DarkModeButton, ColorTheme, UserJoined } from "../index";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { DarkModeButton,  } from "../index";
 import { activeColorTheme } from "../../Features/ColorThemeSlice";
-
+import { useLocation } from "react-router-dom";
+import { CiLogout } from "react-icons/ci";
+import { isAuthenticated } from "../../Features/AuthenticateSlice";
+import { connectSocket, getSocket } from "../../utils/SocketConnection";
 function Header({
   logo = true,
   colorPallete = true,
@@ -13,74 +16,72 @@ function Header({
   hamburger = "",
 }) {
   const [hamBurger, setHamBurger] = useState();
+  const [showHamburger, setShowHamburger] = useState(false);
   const isHamburger = useSelector((state) => state.hamBurger.value);
-  const isDarkMode = useSelector((state)=>state.DarkMode.isDarkMode);
-  const email = useSelector((state)=>state.Login.email)
+  const isAuthenticate = useSelector((state)=>state.Authenticate)
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     setHamBurger(isHamburger);
   }, [isHamburger]);
 
+  useEffect(() => {
+    location.pathname == "/global-chat"
+      ? setShowHamburger(true)
+      : setShowHamburger(false);
+  }, [location]);
+ 
+  const auth = async ()=>{
+    dispatch(isAuthenticated({authenticate:false,email:""}))
+    const socket = await getSocket()
+    if(socket){
+      socket.emit('logout',isAuthenticate.email)
+    }
+  }
+
   const handleColorTheme = () => {
     dispatch(activeColorTheme());
   };
 
+
+
   return (
-    <div className={`${classname} relative flex items-center justify-center`}>
-      {/* Logo */}
-      <div className="logo w-52 flex items-center justify-center  ">
+    <div className={`${classname} relative flex items-center justify-center `}>
+      <div className="leftNav  logo w-[50%] flex items-center justify-start  pl-5  ">
         {logo && <Logo classname={`w-24 rounded-lg sm:w-32 lg:w-32`} />}
       </div>
-      {/* <div className=" w-fit h-5 " >
-        <p  className={isDarkMode?'text-white ':'text-black  '}>{email}</p>
-      </div> */}
 
-      {/* Hamburger Button */}
-
-      {hamburger && (
-        <Hamburger
-          classname={`${
-            hamBurger ? "text-white " : "text-black"
-          } ${isDarkMode ? 'text-white':'text-black'}  
-           text-xl mr-4 z-20 absolute right-4 top-[3.5vh]
-                sm:text-2xl
-                lg:hidden`}
-        />
-      )}
-
-  
-        {/* Hamburger  menu  */}
-        <div
-          className={`navMenu absolute h-screen w-64 bg-gray-800 top-0   ${
-            hamBurger ? "right-0" : "right-[-100%]"
-          }
-        sm:w-[50vw]
-     
-      ${isDarkMode ? 'lg:bg-black': 'lg:bg-white '} lg:h-[10vh]
-      lg:right-0
-         `}
-        >
-          {/* Hamburger Heder Menu - Dark mode button and Color Pallette Button. */}
-          <div className="NavMenuHeader  h-[10%] flex items-center justify-around w-[75%] 
-                         lg:h-full lg:w-full lg:justify-end ">
-            <button
-              className="colorThemeButton cursor-pointer  "
-              onClick={handleColorTheme}
-            >
-              <img src="./color-wheel.png" className="w-6 sm:w-14 lg:w-8" alt="" />
-            </button>
-            <DarkModeButton />
-          </div>
-
-          {/* Hamburger Menu NavList  */}
-          <div className="NavMenuList  text-white h-screen w-full relative flex flex-col justify-start items-center  lg:hidden">
-            <ColorTheme />
-            <UserJoined classname={` h-[70vh] lg:hidden    ${isDarkMode?'border-gray-900':'border-gray-300'} rounded-2xl p-4 flex items-start justify-center w-[90%]`}/>
-          </div>
-        </div>
+      <div className="rightNav w-[50%] relative  h-full flex items-center justify-end ">
+        {!showHamburger ? (
+          <DarkModeButton />
+        ) : (
+          showHamburger && (
+            <div className="broder w-full sm:w-[20vw] lg:w-[20vw] h-full   flex items-center justify-around">
+              <button
+                title="Logout"
+                className="w-6 h-6 flex items-center justify-center  rounded-full  transition-all hover:bg-gray-300"
+                onClick={()=>auth()}
+              >
+                <CiLogout className={`text-black text-lg`} />
+              </button>
+              <button
+                className="colorThemeButton cursor-pointer  "
+                onClick={handleColorTheme}
+                title="Color Pallete"
+              >
+                <img
+                  src="./color-wheel.png"
+                  className="w-6 sm:w-8 lg:w-8"
+                  alt=""
+                />
+              </button>
+              <DarkModeButton />
+            </div>
+          )
+        )}
       </div>
-
+    </div>
   );
 }
 
