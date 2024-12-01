@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 function UserJoined({ classname, colortheme, activeUsers }) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
 
   return (
-    <div className={`${classname} flex items-center justify-center`}>
+    <div className={`${classname} hidden lg:flex  items-center justify-center ${isDarkMode?'bg-black':'bg-white'}`}>
       <div
-        className={`h-[90%] w-[60%] p-4 text-white text-3xl bg-gray-300 rounded-xl shadow-lg flex items-start justify-center`}
+        className={`h-[90%] w-[60%] p-4 text-white text-3xl ${isDarkMode?'bg-gray-900':'bg-gray-300'} rounded-xl shadow-lg flex items-start justify-center`}
       >
         <div className="flex flex-col items-center justify-around h-fit w-full ">
           {activeUsers.map((users) => (

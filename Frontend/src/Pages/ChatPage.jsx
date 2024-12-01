@@ -1,23 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { Chat, MessageInput, UserJoined } from "../Components";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { MessageInput, UserJoined } from "../Components";
+import { useSelector,useDispatch } from "react-redux";
 import { connectSocket, getSocket } from "../utils/SocketConnection";
-import { Navigate, useNavigate } from "react-router-dom";
+import { isAuthenticated } from "../Features/AuthenticateSlice";
 
 function ChatPage() {
   const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+  const isAuthenticate = useSelector((state)=>state.Authenticate);
+  const dispatch = useDispatch()
+
   const [data, setData] = useState([]);
-  const [yourData, setYourdata] = useState({});
   const [activeUsers, setActiveusers] = useState([]);
-  const [newUser, setNewUser] = useState("");
+  const [yourData, setYourData] = useState({});
+
+useEffect(()=>{
+window.addEventListener('beforeunload',async()=>{
+  dispatch(isAuthenticated({authenticate:false,email:""}))
+  const socket = await getSocket()
+  if(socket){
+    socket.emit('logout',isAuthenticate.email)
+  }
+})
+console.log(isAuthenticate.email)
+},[])
+
 
   useEffect(() => {
     const initializeSocket = async () => {
-      const socket = await connectSocket();
+      const socket = await getSocket();
       if (socket) {
         socket.on("joined-users", (usersArr) => {
           setActiveusers(usersArr);
+          console.log(usersArr)
         });
 
         socket.on("new-user-joined", (userObj) => {
@@ -36,6 +51,10 @@ function ChatPage() {
         socket.on("user-message", (msgObj) => {
           setData((prev) => [...prev, msgObj]);
         });
+
+        socket.on("your-data", (data) => {
+          setYourData(data);
+        });
       }
       return socket;
     };
@@ -48,6 +67,8 @@ function ChatPage() {
       type: "my-message",
       id: yourData.id,
       msg: value,
+      username: yourData.username,
+      iconColor : yourData.iconColor
     };
     if (socket) {
       socket.emit("send-message", msgObj);
@@ -75,24 +96,28 @@ function ChatPage() {
                     return (
                       <div
                         key={index}
-                        className={`w-full flex item-center ${
+                        className={`w-full flex item-center  ${
                           dataValue.type == "my-message"
                             ? "justify-end"
                             : "justify-start"
                         }`}
                       >
-                        <p
-                          style={{
-                            background: colorTheme,
-                          }}
-                          className={`  min-w-[10%] max-w-fit p-2 mb-1 ${
-                            dataValue.type == "my-message"
-                              ? "rounded-tl-2xl rounded-tr-none rounded-bl-2xl rounded-br-2xl"
-                              : "rounded-tl-none rounded-tr-2xl rounded-bl-2xl rounded-br-2xl"
-                          } `}
-                        >
-                          {dataValue.msg}
-                        </p>
+                        <div className="flex items-center justify-center">
+                          <span className={`h-10 w-10 rounded-full flex items-center justify-center `} style={{backgroundColor:dataValue.iconColor}} >
+                            {dataValue.username.slice(0,1)}
+                          </span>
+                          <div
+                            className={`min-w-[10%] max-w-fit p-2 mb-1   rounded-md`}
+                            style={{
+                              backgroundColor: dataValue.iconColor,
+                            }}
+                          >
+                            <p className="text-[0.8rem] italic">
+                              {dataValue.username}
+                            </p>
+                            <p className={`   `}>{dataValue.msg} </p>
+                          </div>
+                        </div>
                       </div>
                     );
                   }
@@ -101,11 +126,9 @@ function ChatPage() {
                       <div
                         key={dataValue.id}
                         className={
-                          "userJoinedMessage  text-black w-full mt-2 mb-2 text-sm p-1 rounded-md"
+                          "userJoinedMessage  text-black w-[50%] h-9 flex items-center mt-2 mb-2 text-sm p-1 rounded-md bg-green-200 "
                         }
-                        style={{
-                          backgroundColor:dataValue.iconColor
-                        }}
+                      
                       >
                         <p>{dataValue.username} has joined the chat.</p>
                       </div>

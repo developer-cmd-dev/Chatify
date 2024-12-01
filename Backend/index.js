@@ -15,14 +15,8 @@ const io = new Server(server, {
 
 
 let usersArr = []
-let yourData = {
-    id: null,
-    username: null,
-}
-let errorMsg = {
-    error: false,
-    message: ''
-}
+
+
 io.on("connection", (socket) => {
     console.log("Socket is connected.")
 
@@ -37,8 +31,10 @@ io.on("connection", (socket) => {
             usersArr.push(newUserObj)
             socket.emit('joined-users', usersArr)
             socket.broadcast.emit('new-user-joined', newUserObj)
+            socket.emit("your-data",newUserObj)
 
         })
+
 
         socket.on('new-message', message => {
             socket.broadcast.emit('user-message', message);
@@ -48,6 +44,7 @@ io.on("connection", (socket) => {
             msgObj = {
                 ...msgObj,
                 type: 'user-message',
+              
             }
             socket.broadcast.emit('user-message', msgObj)
         })
@@ -60,7 +57,7 @@ io.on("connection", (socket) => {
                     console.log(usersArr)
                 } 
             })
-            console.log("Socket is Disconnected.");
+            console.log("Socket is Disconnected.",usersArr);
 
 
         })
