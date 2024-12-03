@@ -1,10 +1,28 @@
-const express = require('express');
-const http = require('http');
+import express from 'express'
+import http from 'http'
+import {Server} from 'socket.io'
+import cors from 'cors'
+import dotevn from 'dotenv';
+import connectDB from './db/index.js';
+
+
+
 const app = express();
-const { Server } = require('socket.io')
-const cors = require("cors");
 app.use(cors())
 const server = http.createServer(app);
+
+dotevn.config({path:'./env'});
+connectDB()
+
+
+
+
+
+
+
+
+
+
 
 const io = new Server(server, {
     cors: {
