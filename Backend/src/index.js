@@ -10,11 +10,11 @@ const server = http.createServer(app)
 dotevn.config({path:'./env'});
 connectDB()
 .then(()=>{
-    server.listen( PORT || 8000,()=>{
+    app.listen( PORT || 8000,()=>{
         console.log(`Server is running on Port || ${PORT}`)
-        initializeSocket(server)
+        // initializeSocket(server)
     })
-    server.on('error',()=>console.log(`Server connection failed.`))
+    app.on('error',()=>console.log(`Server connection failed.`))
 
 
 }).catch((error)=>console.log('MongoDb Connection Failed.',error))

@@ -103,7 +103,7 @@ function RegisterForm() {
           className=" bg-green-400 w-[30%] h-9 rounded-xl cursor-pointer text-white"
         />
         <div className="flex">
-        <p>Already have an account-</p><Link className="text-blue-600" to={'./Login'}> Login</Link>
+        <p>Already have an account-</p><Link className="text-blue-600" to={'/'}> Login</Link>
 
         </div>
         </div>

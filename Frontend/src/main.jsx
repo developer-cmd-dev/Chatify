@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import { store } from './App/store.js'
 import { useSelector } from 'react-redux'
 import PrivateRoute from './Pages/PrivateRoute.jsx'
+import {RegisterForm} from './Components/index.js'
 
 
 const router = createBrowserRouter([{
@@ -21,9 +22,14 @@ const router = createBrowserRouter([{
             element:<LoginPage/>
         },
         {
+            path:'/login/register',
+            element:<LoginPage/>
+        },
+        {
             path:'global-chat',
             element:<PrivateRoute ><ChatPage/></PrivateRoute>
         },
+        
         {
             path:'error',
             element:<Error/>

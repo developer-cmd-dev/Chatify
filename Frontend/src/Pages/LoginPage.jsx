@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
 import { useTypewriter } from "react-simple-typewriter";
 import { connectSocket } from "../utils/SocketConnection";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation()
   const [text] = useTypewriter({
     words: ["CHATIFY", "Stay Connected!", "With People."],
     loop: {},
@@ -85,8 +86,11 @@ function LoginPage() {
           } rounded-full
                         md:w-0 md:h-[50%] `}
         ></span>
-        {/* <LoginForm handleSubmit={handleSubmit} /> */}
-        <RegisterForm/>
+        {
+          location.pathname === '/' ? (<LoginForm handleSubmit={handleSubmit} />) :location.pathname === '/login/register' ?(<RegisterForm/>) :null
+        }
+        
+       
 
       </div>
     </div>

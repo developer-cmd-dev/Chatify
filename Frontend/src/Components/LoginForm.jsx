@@ -3,6 +3,7 @@ import { Input } from "./index";
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function LoginForm({ handleSubmit }) {
   const [userName, setUserName] = useState("");
@@ -15,14 +16,14 @@ function LoginForm({ handleSubmit }) {
 
   return (
     <div
-      className={`flex  items-center justify-center w-full ${
-        isDarkMode ? "bg-darkLoginFormBg" : "bg-loginFormBg"
-      } bg-center bg-no-repeat bg-cover  h-[30vh]   rounded-xl p-6
+      className={`flex  items-center justify-center w-full  h-[30vh]   rounded-xl p-6
                     sm:w-[60vw]
                     md:w-[40vw]
-                    lg:h-[50vh]
+                    lg:h-[40vh] lg:w-[30vw]
                      `}
     >
+
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -32,29 +33,22 @@ function LoginForm({ handleSubmit }) {
         className="flex flex-col items-center justify-around w-full h-full 
                         sm:flex-col sm:items-center sm:justify-around 
                         md:flex-col md:h-64
-                        lg:flex-col lg:justify-around lg:items-center  lg:h-full lg:w-[40vw]    "
+                        lg:flex-col lg:justify-around lg:items-center  lg:h-full lg:w-[40vw] text-white   "
       >
-        <Input
-          placeholder={"Enter Your Email@"}
-          classname={` w-full h-[6vh] rounded-xl p-3
-                        sm:h-[8vh] sm:w-[90%]
-                        lg:w-full lg:h-[10vh]`}
-          type="email"
-          name="username"
-          value={userName}
-          onchange={handleUserName}
-          required
-        />
-        <button
-          type="submit"
-          className={`cursor-pointer  w-32 h-[6vh] rounded-xl border-none ${
-            isDarkMode ? "bg-[#2C4C9F]" : "bg-[#b15232]"
-          } text-white hover:bg-green-500 transition-all
-          sm:h-[6vh] sm:text-xl sm:w-44
-          lg:h-[10vh] `}
-        >
-          Join Chat.
-        </button>
+      <div className="  h-[30vh] w-full flex items-start justify-around flex-col">
+        <label htmlFor="username" className="bg-[#C98860] p-1  px-2 rounded-xl">Username*</label>
+        <input className={`w-[80%] border-2 h-10 pl-2 rounded-xl`} type="text" name="username" id="username" placeholder="Enter username"/>
+        <label htmlFor="password" className="bg-[#C98860] p-1 px-2 rounded-xl">Password</label>
+        <input className={`w-[80%] border-2 h-10 pl-2 rounded-xl`} type="password" name="password" id="password" placeholder="Password" />
+        <div className=" w-full flex items-center justify-between">
+        <input className={`bg-gray-400 text-white w-28 h-8 rounded-xl cursor-pointer hover:bg-blue-400 hover:text-white transition-all`} type="submit" value='Login' />
+        <div className="flex text-black">
+          <p >Don't have an account-</p><Link className="text-blue-400" to='/login/register'>Sign up</Link>
+        </div>
+        </div>
+       
+      </div>
+      
       </form>
     </div>
   );
