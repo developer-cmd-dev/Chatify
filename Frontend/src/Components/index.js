@@ -8,6 +8,7 @@ import ColorTheme from "./ColorTheme";
 import Header from './Header/Header'
 import LoginForm from "./LoginForm";
 import MessageInput from "./MessageInput";
+import RegisterForm from "./RegisterForm";
 
 
 export {
@@ -20,5 +21,6 @@ export {
     ColorTheme,
     Header,
     LoginForm,
-    MessageInput
+    MessageInput,
+    RegisterForm
 }

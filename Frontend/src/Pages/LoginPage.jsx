@@ -1,4 +1,4 @@
-import { LoginForm } from "../Components/index";
+import { LoginForm,RegisterForm } from "../Components/index";
 import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
 import { useTypewriter } from "react-simple-typewriter";
@@ -85,7 +85,9 @@ function LoginPage() {
           } rounded-full
                         md:w-0 md:h-[50%] `}
         ></span>
-        <LoginForm handleSubmit={handleSubmit} />
+        {/* <LoginForm handleSubmit={handleSubmit} /> */}
+        <RegisterForm/>
+
       </div>
     </div>
   );

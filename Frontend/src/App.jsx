@@ -29,7 +29,7 @@ function App() {
       
      <main className="h-[calc(100vh-10vh)] w-full">
       <Outlet />
-    </main>
+      </main>
     </div>
 
    

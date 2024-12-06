@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily:{
-        gugi:['Gugi', 'sans-serif']
+        gugi:['Gugi', 'sans-serif'],
+        playWrite:['Playwrite HR Lijeva','cursive']
       }
     },
 
