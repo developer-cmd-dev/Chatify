@@ -5,6 +5,7 @@ import { useTypewriter } from "react-simple-typewriter";
 import { connectSocket } from "../utils/SocketConnection";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
+import axios from 'axios'
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
@@ -21,19 +22,19 @@ function LoginPage() {
     },
   });
 
-  const handleSubmit = async (userName) => {
-    const socket = await connectSocket();
-    if (socket) {
-      dispatch(
-        isAuthenticated({ authenticate: true, email: userName, id: "" })
-      );
-      socket.emit("new-user-joined", userName);
-      navigate("global-chat");
-    } else {
-      console.log("Socket connection failed.");
-      navigate("error");
+  const handleLoginForm = async (data) => {
+    if(data){
+      axios.get('api/v1/getUser',data).then((res)=>console.log(res)).catch((error)=>console.log(error))
     }
   };
+
+  const handleRegisterForm = async(data)=>{
+    if(data){
+      axios.post('/api/v1/register',data).then((res)=>{
+        console.log(res)
+      }).catch((error)=>console.log(error))
+    }
+  }
 
   return (
     <div
@@ -87,7 +88,7 @@ function LoginPage() {
                         md:w-0 md:h-[50%] `}
         ></span>
         {
-          location.pathname === '/' ? (<LoginForm handleSubmit={handleSubmit} />) :location.pathname === '/login/register' ?(<RegisterForm/>) :null
+          location.pathname === '/' ? (<LoginForm handleLoginForm={handleLoginForm} />) :location.pathname === '/login/register' ?(<RegisterForm handleRegisterForm={handleRegisterForm}/>) :null
         }
         
        

@@ -4,13 +4,41 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { IoEye } from "react-icons/io5";
+import { IoMdEyeOff } from "react-icons/io";
+import { current } from "@reduxjs/toolkit";
 
-function RegisterForm() {
-  const [userName, setUserName] = useState("");
+function RegisterForm({handleRegisterForm}) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+  const [confirmPassword, setConfirmPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword,setShowConfirmPassword] = useState(false);
+  const inputRef = useRef()
+  const [userObj, setUserObj] = useState({
+    username: "",
+    email: "",
+    password: "",
+    fullname: "",
+    gender: "Male",
+  });
 
-  const handleUserName = (e) => {
-    setUserName(e);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserObj({ ...userObj, [name]: value });
+  };
+  const handleShowPassword = (value) => {
+    if(value == 'password'){
+      setShowPassword((prev) => !prev);
+    }else{
+      setShowConfirmPassword((prev)=>!prev)
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+ 
+     confirmPassword ? handleRegisterForm(userObj):inputRef.current.focus()
+   
   };
   return (
     <div
@@ -26,8 +54,8 @@ function RegisterForm() {
         <h1>Create your Account</h1>
       </div>
 
-
       <form
+        onSubmit={(e) => handleSubmit(e)}
         className=" w-[90%] h-full   flex items-center justify-center
                       sm:flex-col sm:items-center sm:justify-around 
                       md:flex-col md:h-64
@@ -35,7 +63,10 @@ function RegisterForm() {
       >
         <label htmlFor="">Name*</label>
         <input
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2`}
+          required
+          value={userObj.fullname}
+          onChange={handleChange}
+          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
           type="text"
           name="fullname"
           id="fullname"
@@ -44,7 +75,10 @@ function RegisterForm() {
         <label htmlFor="">Email*</label>
 
         <input
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2`}
+          required
+          value={userObj.email}
+          onChange={handleChange}
+          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
           type="email"
           name="email"
           id="email"
@@ -53,61 +87,109 @@ function RegisterForm() {
         <label htmlFor="">User Name*</label>
 
         <input
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2`}
+          required
+          value={userObj.username}
+          onChange={handleChange}
+          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
           type="username"
           name="username"
           id="username"
           placeholder="User Name"
         />
         <label htmlFor="">Password*</label>
-        <input
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2`}
-          type="password"
-          name="newpassword"
-          id="newpassword"
-          placeholder="New Password"
-        />
-      
-        <div className="  w-full  flex items-center justify-between h-fit rounded-md">
-          <div>
-          <label htmlFor="">Confirm Password*</label>
-        <input
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2`}
-          type="password"
-          name="confirmpassword"
-          id="confirmpassword"
-          placeholder="Confirm Password" 
-        />
-          </div>
-        
-        <div className=" h-full flex items-center justify-around w-[40%]">
-        <label htmlFor="" className="bg-gray-400 w-20 flex items-center justify-center rounded-full ">Gender</label>
-          <select
-            name="gender"
-            id="gender"
-            className=" bg-white rounded-md text-black border"
+        <div className="w-[60%] relative  flex items-center">
+          <input
+            required
+            value={userObj.password}
+            minLength={8}
+            maxLength={8}
+            onChange={handleChange}
+            className={`w-full h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
+            type={showPassword ? "text" : "password"}
+            name="password"
+            id="password"
+            placeholder="New Password"
+          />
+          <button
+            className="absolute right-4 text-lg "
+            onClick={()=>handleShowPassword('password')}
           >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Others">Others</option>
-          </select>
+            {!showPassword ? <IoEye /> : <IoMdEyeOff />}
+          </button>
         </div>
-        
+
+        <div className="  w-full  flex items-center justify-between h-fit rounded-md">
+         
+            <div className=" w-[50%]">
+            <label htmlFor="">Confirm Password*</label>
+            <div className="relative flex items-center">
+            <input
+              required
+              onChange={(e) =>
+                  setConfirmPassword(userObj.password.includes(e.target.value))
+              }
+              minLength={8}
+              maxLength={8}
+              className={`w-full h-10 rounded-xl pl-3  border-2 focus outline-none`}
+              type={!showConfirmPassword?'password':'text'}
+              name="confirmpassword"
+              id="confirmpassword"
+              placeholder="Confirm Password"
+              ref={inputRef}
+              style={{
+                border: !confirmPassword ? "1px solid red" : "1px solid gray",
+              }}
+            />
+
+            <button
+              className="absolute right-4 text-lg "
+              onClick={()=>handleShowPassword('confirmpassword')}
+            >
+              {!showConfirmPassword ? <IoEye /> : <IoMdEyeOff />}
+            </button>
+            </div>
+         
+            </div>
+     
+    
+
+          <div className=" h-full flex items-center justify-around w-[40%]">
+            <label
+              htmlFor=""
+              className="bg-gray-400 w-20 flex items-center justify-center rounded-full "
+            >
+              Gender
+            </label>
+            <select
+              onChange={handleChange}
+              name="gender"
+              id="gender"
+              value={userObj.gender}
+
+              className=" bg-white rounded-md text-black border"
+            >
+              <option  value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
         </div>
         <div className=" w-full flex items-center justify-between">
-        <input
-          type="submit"
-          name="submit"
-          id="submit"
-          value="Create Account"
-          className=" bg-green-400 w-[30%] h-9 rounded-xl cursor-pointer text-white"
-        />
-        <div className="flex">
-        <p>Already have an account-</p><Link className="text-blue-600" to={'/'}> Login</Link>
-
+          <input
+            type="submit"
+            name="submit"
+            id="submit"
+            value="Create Account"
+            className=" bg-green-400 w-[30%] h-9 rounded-xl cursor-pointer text-white"
+          />
+          <div className="flex">
+            <p>Already have an account-</p>
+            <Link className="text-blue-600" to={"/"}>
+              {" "}
+              Login
+            </Link>
+          </div>
         </div>
-        </div>
-       
       </form>
     </div>
   );
