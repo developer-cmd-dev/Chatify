@@ -19,6 +19,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const existedUser = await User.findOne({
         $or:[{username},{email}]
     })
+    
 
     if(existedUser){
         throw new ApiError(500,"User already existed.")
@@ -55,5 +56,22 @@ const registerUser = asyncHandler(async (req, res) => {
       )
 
     })
+
+
+    const loginUser = asyncHandler(async (req,res)=>{
+      const {username,password}=req.body
+      if([username,password].some((fields)=>fields.trim() == "")) throw new ApiError(404,"All fields are required.");
+      const existedUser =await User.findOne({username})
+      if(!existedUser) throw new ApiError(404,"User is not exist.")
+      
+      const isPassWordValid = await existedUser.isPasswordCorrect(existedUser.password)
+      if(!isPassWordValid) throw new ApiError('404',"Password did not mathched.")
+ 
+      
+      
+      res.status(200).json({msg:'password matched'})
+      
+
+    })
     
-    export {registerUser}
+    export {registerUser,loginUser}

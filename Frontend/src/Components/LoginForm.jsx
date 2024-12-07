@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 function LoginForm({ handleLoginForm }) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const [userObj,setUserObj]=useState({
-    email:'',
+    username:'',
     password:''
   })
   const handleChange = (e)=>{
@@ -41,16 +41,16 @@ function LoginForm({ handleLoginForm }) {
             htmlFor="username"
             className="bg-[#C98860] p-1  px-2 rounded-xl"
           >
-            Email*
+            Username*
           </label>
           <input
           onChange={handleChange}
-          value={userObj.email}
+          value={userObj.username}
             className={`w-[80%] border-2 h-10 pl-2 rounded-xl outline-none`}
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Enter Email"
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter username"
             required
           />
           <label

@@ -24,7 +24,7 @@ function LoginPage() {
 
   const handleLoginForm = async (data) => {
     if(data){
-      axios.get('api/v1/getUser',data).then((res)=>console.log(res)).catch((error)=>console.log(error))
+      axios.get('/api/v1/login',data).then((res)=>console.log(res)).catch((error)=>console.log(error))
     }
   };
 
