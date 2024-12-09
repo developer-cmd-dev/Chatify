@@ -16,7 +16,10 @@ app.use(express.urlencoded({extended:true,limit:'50kb'}));
 app.use(express.static('public'));
 
 
+
 // routes import
 import useRouter from './routes/user.routes.js';
+import { errorHandler } from './middleware/error.middleware.js';
 app.use('/api/v1',useRouter)
+app.use(errorHandler)
 export {app}

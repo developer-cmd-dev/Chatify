@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async (req, res) => {
     
 
     if(existedUser){
-        throw new ApiError(500,"User already existed.")
+        throw new ApiError(404,"User already existed.")
     }
 
     // check for image- avatar
@@ -58,18 +58,27 @@ const registerUser = asyncHandler(async (req, res) => {
     })
 
 
-    const loginUser = asyncHandler(async (req,res)=>{
+    const loginUser = asyncHandler(async (req,res,next)=>{
       const {username,password}=req.body
-      if([username,password].some((fields)=>fields.trim() == "")) throw new ApiError(404,"All fields are required.");
+      if([username,password].some((fields)=>fields.trim() === "")) throw new ApiError(404,"All fields are required.");
       const existedUser =await User.findOne({username})
       if(!existedUser) throw new ApiError(404,"User is not exist.")
+     
+        
+        try {
+          const isPassWordValid = await existedUser.isPasswordCorrect(password)
+          if(!isPassWordValid) {
+            throw new ApiError(400,"Password did not match.",["Ensure your password is correct."])
+          }
+            res.status(200).json(new ApiResponse('200',"","Password Matched"))
+        } catch (error) {
+          next(error)
+        }
       
-      const isPassWordValid = await existedUser.isPasswordCorrect(existedUser.password)
-      if(!isPassWordValid) throw new ApiError('404',"Password did not mathched.")
+   
  
       
-      
-      res.status(200).json({msg:'password matched'})
+  
       
 
     })

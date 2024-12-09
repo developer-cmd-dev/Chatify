@@ -11,7 +11,6 @@ class  ApiError extends Error {
         this.message = message
         this.success = false
         this.errors = errors
-        
         stack ? this.stack = stack :Error.captureStackTrace(this,this.constructor)
     }
 }

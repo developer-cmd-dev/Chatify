@@ -9,6 +9,7 @@ import Header from './Header/Header'
 import LoginForm from "./LoginForm";
 import MessageInput from "./MessageInput";
 import RegisterForm from "./RegisterForm";
+import ShowPassword from "./ShowPassword";
 
 
 export {
@@ -22,5 +23,6 @@ export {
     Header,
     LoginForm,
     MessageInput,
-    RegisterForm
+    RegisterForm,
+    ShowPassword
 }

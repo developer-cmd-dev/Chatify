@@ -1,17 +1,18 @@
-import { LoginForm,RegisterForm } from "../Components/index";
+import { LoginForm, RegisterForm } from "../Components/index";
 import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
 import { useTypewriter } from "react-simple-typewriter";
 import { connectSocket } from "../utils/SocketConnection";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
-import axios from 'axios'
+import axios from "axios";
+import { useState } from "react";
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation()
+  const[loading,setLoading] = useState(false)
+  const [error,setError]=useState('')
+
   const [text] = useTypewriter({
     words: ["CHATIFY", "Stay Connected!", "With People."],
     loop: {},
@@ -23,18 +24,33 @@ function LoginPage() {
   });
 
   const handleLoginForm = async (data) => {
-    if(data){
-      axios.get('/api/v1/login',data).then((res)=>console.log(res)).catch((error)=>console.log(error))
-    }
+
+      if (data) {
+        axios.post("/api/v1/", data)
+        .then((res)=>console.log(res))
+        .catch((error)=>{
+          if(error.code === "ERR_NETWORK" || error.message === 'Netword Error'){
+            console.log('Server Error')
+          }else if(error.response){
+            console.log(error.response)
+          }else{
+            console.log(error)
+          }
+        })
+      }
+    
   };
 
-  const handleRegisterForm = async(data)=>{
-    if(data){
-      axios.post('/api/v1/register',data).then((res)=>{
-        console.log(res)
-      }).catch((error)=>console.log(error))
+  const handleRegisterForm = async (data) => {
+    if (data) {
+      axios
+        .post("/api/v1/register", data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => console.log(error));
     }
-  }
+  };
 
   return (
     <div
@@ -87,12 +103,11 @@ function LoginPage() {
           } rounded-full
                         md:w-0 md:h-[50%] `}
         ></span>
-        {
-          location.pathname === '/' ? (<LoginForm handleLoginForm={handleLoginForm} />) :location.pathname === '/login/register' ?(<RegisterForm handleRegisterForm={handleRegisterForm}/>) :null
-        }
-        
-       
-
+        {location.pathname === "/" ? (
+          <LoginForm handleLoginForm={handleLoginForm} />
+        ) : location.pathname === "/register" ? (
+          <RegisterForm handleRegisterForm={handleRegisterForm} />
+        ) : null}
       </div>
     </div>
   );

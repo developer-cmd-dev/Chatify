@@ -1,19 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Input } from "./index";
+import { ShowPassword } from "./index";
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
-import { current } from "@reduxjs/toolkit";
 
 function RegisterForm({handleRegisterForm}) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const [confirmPassword, setConfirmPassword] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
-  const inputRef = useRef()
+  const inputPassword = useRef()
+  const inputConfirmPassword= useRef()
   const [userObj, setUserObj] = useState({
     username: "",
     email: "",
@@ -27,6 +27,7 @@ function RegisterForm({handleRegisterForm}) {
     setUserObj({ ...userObj, [name]: value });
   };
   const handleShowPassword = (value) => {
+    
     if(value == 'password'){
       setShowPassword((prev) => !prev);
     }else{
@@ -109,13 +110,10 @@ function RegisterForm({handleRegisterForm}) {
             name="password"
             id="password"
             placeholder="New Password"
+            ref={inputPassword}
           />
-          <button
-            className="absolute right-4 text-lg "
-            onClick={()=>handleShowPassword('password')}
-          >
-            {!showPassword ? <IoEye /> : <IoMdEyeOff />}
-          </button>
+          <ShowPassword handleShowPassword = {handleShowPassword} inputref={inputPassword}/>
+
         </div>
 
         <div className="  w-full  flex items-center justify-between h-fit rounded-md">
@@ -135,18 +133,12 @@ function RegisterForm({handleRegisterForm}) {
               name="confirmpassword"
               id="confirmpassword"
               placeholder="Confirm Password"
-              ref={inputRef}
+              ref={inputConfirmPassword}
               style={{
                 border: !confirmPassword ? "1px solid red" : "1px solid gray",
               }}
             />
-
-            <button
-              className="absolute right-4 text-lg "
-              onClick={()=>handleShowPassword('confirmpassword')}
-            >
-              {!showConfirmPassword ? <IoEye /> : <IoMdEyeOff />}
-            </button>
+            <ShowPassword handleShowPassword = {handleShowPassword} inputref={inputConfirmPassword}/>
             </div>
          
             </div>
