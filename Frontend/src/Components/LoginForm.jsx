@@ -66,7 +66,7 @@ function LoginForm({ handleLoginForm }) {
           >
             Password
           </label>
-          <div className="border w-[80%] flex items-center relative">
+          <div className=" w-[80%] flex items-center relative">
           <input
           onChange={handleChange}
           value={userObj.password}

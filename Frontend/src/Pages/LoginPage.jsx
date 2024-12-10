@@ -6,12 +6,14 @@ import { connectSocket } from "../utils/SocketConnection";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {setProgress,resetProgress} from '../Features/TopLoaderSlice'
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const[loading,setLoading] = useState(false)
   const [error,setError]=useState('')
+  const dispatch = useDispatch()
 
   const [text] = useTypewriter({
     words: ["CHATIFY", "Stay Connected!", "With People."],
@@ -23,11 +25,26 @@ function LoginPage() {
     },
   });
 
-  const handleLoginForm = async (data) => {
 
+
+  const handleLoginForm = async (data) => {
+    dispatch(setProgress(10)); // Start at 10%
+    
       if (data) {
-        axios.post("/api/v1/", data)
-        .then((res)=>console.log(res))
+        axios.post("/api/v1/", data,{
+          onDownloadProgress:((progressEvent)=>{
+            const progress = Math.round((progressEvent.loaded * 100 )/progressEvent.total)
+            if (progress >= 90) {
+              dispatch(setProgress(progress));
+            }
+          })
+        })
+        .then((res)=>{
+          console.log(res)
+          clearInterval(timer)
+          dispatch(setProgress(100))
+
+        })
         .catch((error)=>{
           if(error.code === "ERR_NETWORK" || error.message === 'Netword Error'){
             console.log('Server Error')
@@ -36,7 +53,10 @@ function LoginPage() {
           }else{
             console.log(error)
           }
+          dispatch(resetProgress())
         })
+      }else{
+        alert("Data is not available")
       }
     
   };

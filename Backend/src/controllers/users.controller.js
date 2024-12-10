@@ -8,7 +8,6 @@ import { ApiResponse } from '../utils/ApiResponse.js'
 const registerUser = asyncHandler(async (req, res) => {
     // get user details from frontend.
     const { username, email, fullname, password, gender, avatar } = req.body;
-    console.log(gender)
     // validate-empty field
     if ([username, email, fullname, password, gender,avatar].some((fields) => fields?.trim() === "")
     ) {
@@ -70,7 +69,11 @@ const registerUser = asyncHandler(async (req, res) => {
           if(!isPassWordValid) {
             throw new ApiError(400,"Password did not match.",["Ensure your password is correct."])
           }
-            res.status(200).json(new ApiResponse('200',"","Password Matched"))
+          setTimeout(() => {
+            res.status(200).json(new ApiResponse('200',"","Password Matched"))    
+
+          }, 4000);
+          
         } catch (error) {
           next(error)
         }

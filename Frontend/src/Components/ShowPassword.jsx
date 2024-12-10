@@ -10,6 +10,7 @@ function ShowPassword({
   return (
     <button
     className="absolute right-4 text-lg "
+    type='button'
     onClick={()=>{
         handleShowPassword(inputref.current.name)
         setShowConfirmPassword((prev)=>!prev)
