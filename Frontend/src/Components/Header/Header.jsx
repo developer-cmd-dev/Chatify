@@ -88,9 +88,10 @@ function Header({
       </div>
 
       <LoadingBar
-        color="#f11946"
+        color="linear-gradient(90deg, rgba(83,19,19,1) 0%, rgba(200,18,95,1) 29%, rgba(0,212,255,1) 94%)"
         progress={progress}
         className=""
+        height={5}
         
       />
     </>

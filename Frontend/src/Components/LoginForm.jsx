@@ -6,14 +6,17 @@ import { useAsyncError, useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 
-function LoginForm({ handleLoginForm }) {
+function LoginForm({ handleLoginForm,loading}) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const [showPassword,setShowPassword] = useState(false)
+  const [errors,setErrors] = useState({isError:false})
   const inputRef = useRef()
   const [userObj,setUserObj]=useState({
     username:'',
     password:''
   })
+
+
   const handleChange = (e)=>{
     const {name,value} = e.target
     setUserObj({...userObj,[name]:value})
@@ -23,7 +26,7 @@ function LoginForm({ handleLoginForm }) {
     e.preventDefault();
     handleLoginForm(userObj)
   }
-  const handleShowPassword = (value)=>{
+  const handleShowPassword = ()=>{
     setShowPassword((prev)=>!prev)
   }
 
@@ -37,6 +40,7 @@ function LoginForm({ handleLoginForm }) {
     >
       <form
         onSubmit={handleSubmit}
+        aria-disabled={loading?true:false}
         className="flex flex-col items-center justify-around w-full h-full 
                         sm:flex-col sm:items-center sm:justify-around 
                         md:flex-col md:h-64
@@ -45,7 +49,7 @@ function LoginForm({ handleLoginForm }) {
         <div className="  h-[30vh] w-full flex items-start justify-around flex-col">
           <label
             htmlFor="username"
-            className="bg-[#C98860] p-1  px-2 rounded-xl"
+            className=" p-1  px-2 rounded-xl"
           >
             Username*
           </label>
@@ -62,7 +66,7 @@ function LoginForm({ handleLoginForm }) {
           />
           <label
             htmlFor="password"
-            className="bg-[#C98860] p-1 px-2 rounded-xl"
+            className=" text-black p-1 px-2 rounded-xl"
           >
             Password
           </label>
@@ -79,6 +83,7 @@ function LoginForm({ handleLoginForm }) {
             maxLength={8}
             required
             ref={inputRef}
+            
           />
           <ShowPassword handleShowPassword={handleShowPassword} inputref={inputRef}/>
           

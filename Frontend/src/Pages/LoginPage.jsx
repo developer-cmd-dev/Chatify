@@ -7,13 +7,17 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {setProgress,resetProgress} from '../Features/TopLoaderSlice'
+import { setProgress, resetProgress } from "../Features/TopLoaderSlice";
+import {setError} from '../Features/ErrorSlice'
+import { apiRequest } from "../utils/axiosHandler";
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const[loading,setLoading] = useState(false)
-  const [error,setError]=useState('')
-  const dispatch = useDispatch()
+  const isError = useSelector((state) => state.Error);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
 
   const [text] = useTypewriter({
     words: ["CHATIFY", "Stay Connected!", "With People."],
@@ -25,51 +29,46 @@ function LoginPage() {
     },
   });
 
-
-
   const handleLoginForm = async (data) => {
-    dispatch(setProgress(10)); // Start at 10%
-    
-      if (data) {
-        axios.post("/api/v1/", data,{
-          onDownloadProgress:((progressEvent)=>{
-            const progress = Math.round((progressEvent.loaded * 100 )/progressEvent.total)
-            if (progress >= 90) {
-              dispatch(setProgress(progress));
-            }
-          })
-        })
-        .then((res)=>{
-          console.log(res)
-          clearInterval(timer)
-          dispatch(setProgress(100))
+    try {
+      dispatch(setProgress(10)); // Start at 10%
+      const onProgress = (progressEvent) => {
+        const progress = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        if (progress >= 90) {
+          dispatch(setProgress(progress));
+        }
+      };
+  
+      const response = await apiRequest('/api/v1/','post',data,onProgress);
+      console.log(response)
+    } catch (error) {
+      console.log(error.response)
+    }
+    setLoading(true);
 
-        })
-        .catch((error)=>{
-          if(error.code === "ERR_NETWORK" || error.message === 'Netword Error'){
-            console.log('Server Error')
-          }else if(error.response){
-            console.log(error.response)
-          }else{
-            console.log(error)
-          }
-          dispatch(resetProgress())
-        })
-      }else{
-        alert("Data is not available")
-      }
     
   };
 
   const handleRegisterForm = async (data) => {
-    if (data) {
-      axios
-        .post("/api/v1/register", data)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => console.log(error));
+    try {
+      dispatch(setProgress(10))
+      setLoading(true)
+      const onProgress = (progressEvent)=>{
+        const progress = Math.round((progressEvent.loaded * 100)/progressEvent.total);
+        if(progress > 90){
+          dispatch(setProgress(progress))
+        }
+      }
+
+      const response = await apiRequest('/api/v1/register','post',data,onProgress)
+      console.log(response)
+      
+    } catch (error) {
+      console.log(error)
     }
+
   };
 
   return (
@@ -124,9 +123,17 @@ function LoginPage() {
                         md:w-0 md:h-[50%] `}
         ></span>
         {location.pathname === "/" ? (
-          <LoginForm handleLoginForm={handleLoginForm} />
+          <LoginForm
+            handleLoginForm={handleLoginForm}
+            loading={loading}
+            
+          />
         ) : location.pathname === "/register" ? (
-          <RegisterForm handleRegisterForm={handleRegisterForm} />
+          <RegisterForm
+            handleRegisterForm={handleRegisterForm}
+            loading={loading}
+           
+          />
         ) : null}
       </div>
     </div>

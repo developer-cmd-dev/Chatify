@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 
-function RegisterForm({handleRegisterForm}) {
+function RegisterForm({handleRegisterForm,loading}) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const [confirmPassword, setConfirmPassword] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -57,6 +57,7 @@ function RegisterForm({handleRegisterForm}) {
 
       <form
         onSubmit={(e) => handleSubmit(e)}
+        aria-disabled={loading?true:false}
         className=" w-[90%] h-full   flex items-center justify-center
                       sm:flex-col sm:items-center sm:justify-around 
                       md:flex-col md:h-64

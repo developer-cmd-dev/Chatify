@@ -69,21 +69,14 @@ const registerUser = asyncHandler(async (req, res) => {
           if(!isPassWordValid) {
             throw new ApiError(400,"Password did not match.",["Ensure your password is correct."])
           }
-          setTimeout(() => {
-            res.status(200).json(new ApiResponse('200',"","Password Matched"))    
+         
+            res.status(200).json(new ApiResponse(200,"","Password Matched"))    
 
-          }, 4000);
           
         } catch (error) {
           next(error)
         }
-      
-   
  
-      
-  
-      
-
     })
     
     export {registerUser,loginUser}
