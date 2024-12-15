@@ -16,6 +16,7 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  
 
 
   const [text] = useTypewriter({
@@ -29,8 +30,10 @@ function LoginPage() {
   });
 
   const handleLoginForm = async (data) => {
+    dispatch(setError({isError:false}))
     try {
-      dispatch(setProgress(10)); // Start at 10%
+      setLoading(true)
+      dispatch(setProgress(10)); 
       const onProgress = (progressEvent) => {
         const progress = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
@@ -46,7 +49,8 @@ function LoginPage() {
     } catch (error) {
       dispatch(setError({...error,isError:true}))
     }
-    setLoading(true);
+    setLoading(false)
+
 
     
   };

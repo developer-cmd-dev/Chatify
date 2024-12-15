@@ -10,6 +10,7 @@ import LoginForm from "./LoginForm";
 import MessageInput from "./MessageInput";
 import RegisterForm from "./RegisterForm";
 import ShowPassword from "./ShowPassword";
+import ErrorMsg from "./ErrorMsg";
 
 
 export {
@@ -24,5 +25,6 @@ export {
     LoginForm,
     MessageInput,
     RegisterForm,
-    ShowPassword
+    ShowPassword,
+    ErrorMsg
 }

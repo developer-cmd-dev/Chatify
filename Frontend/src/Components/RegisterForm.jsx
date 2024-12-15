@@ -43,14 +43,14 @@ function RegisterForm({handleRegisterForm,loading}) {
   };
   return (
     <div
-      className={`flex flex-col  border-gray-300  items-center justify-around w-full  h-[30vh]   rounded-xl p-6
+      className={`flex flex-col ${isDarkMode?'text-white':'text-black'}  border-gray-300  items-center justify-around w-full  h-[30vh]   rounded-xl p-6
                   sm:w-[60vw]
                   md:w-[40vw]
                   lg:h-[80vh] lg:w-[40vw] 
                    `}
     >
       <div
-        className={` w-[80%] h-16  flex items-start justify-center text-2xl font-playWrite font-bold border-b-2 border-gray-300`}
+        className={` w-[80%] h-16  flex items-start justify-center text-3xl font-gugi font-bold border-b-2 border-gray-800 text-gray-700`}
       >
         <h1>Create your Account</h1>
       </div>
@@ -68,7 +68,7 @@ function RegisterForm({handleRegisterForm,loading}) {
           required
           value={userObj.fullname}
           onChange={handleChange}
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
+          className={`w-[60%] h-10  ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'} rounded-xl pl-3  border-gray-300 border-2 outline-none`}
           type="text"
           name="fullname"
           id="fullname"
@@ -80,7 +80,7 @@ function RegisterForm({handleRegisterForm,loading}) {
           required
           value={userObj.email}
           onChange={handleChange}
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
+          className={`w-[60%]  ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'} h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
           type="email"
           name="email"
           id="email"
@@ -92,7 +92,7 @@ function RegisterForm({handleRegisterForm,loading}) {
           required
           value={userObj.username}
           onChange={handleChange}
-          className={`w-[60%] h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
+          className={`w-[60%]  ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'} h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
           type="username"
           name="username"
           id="username"
@@ -106,7 +106,7 @@ function RegisterForm({handleRegisterForm,loading}) {
             minLength={8}
             maxLength={8}
             onChange={handleChange}
-            className={`w-full h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
+            className={`w-full  ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'} h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
             type={showPassword ? "text" : "password"}
             name="password"
             id="password"
@@ -129,14 +129,14 @@ function RegisterForm({handleRegisterForm,loading}) {
               }
               minLength={8}
               maxLength={8}
-              className={`w-full h-10 rounded-xl pl-3  border-2 focus outline-none`}
+              className={`w-full  ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'} h-10 rounded-xl pl-3  border-2 focus outline-none`}
               type={!showConfirmPassword?'password':'text'}
               name="confirmpassword"
               id="confirmpassword"
               placeholder="Confirm Password"
               ref={inputConfirmPassword}
               style={{
-                border: !confirmPassword ? "1px solid red" : "1px solid gray",
+                border: !confirmPassword && "2px solid red" 
               }}
             />
             <ShowPassword handleShowPassword = {handleShowPassword} inputref={inputConfirmPassword}/>
@@ -149,7 +149,7 @@ function RegisterForm({handleRegisterForm,loading}) {
           <div className=" h-full flex items-center justify-around w-[40%]">
             <label
               htmlFor=""
-              className="bg-gray-400 w-20 flex items-center justify-center rounded-full "
+              className={`${isDarkMode?'bg-blue-500':'bg-gray-800'} text-white w-20 flex items-center justify-center rounded-full `}
             >
               Gender
             </label>
@@ -159,7 +159,7 @@ function RegisterForm({handleRegisterForm,loading}) {
               id="gender"
               value={userObj.gender}
 
-              className=" bg-white rounded-md text-black border"
+              className={`  rounded-md text-black border`}
             >
               <option  value="Male">Male</option>
               <option value="Female">Female</option>
