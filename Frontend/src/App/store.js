@@ -12,6 +12,6 @@ export const store = configureStore({
         DarkMode:DarkModeReducer,
         Authenticate:AuthenticateReducer,
         TopLoader:TopLoaderReducer,
-        Error:ErrorReducer
+        ErrorState:ErrorReducer
     }
 })

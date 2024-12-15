@@ -8,13 +8,17 @@ import { Link } from "react-router-dom";
 
 function LoginForm({ handleLoginForm,loading}) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+  const errorState = useSelector((state)=>state.ErrorState);
   const [showPassword,setShowPassword] = useState(false)
-  const [errors,setErrors] = useState({isError:false})
-  const inputRef = useRef()
+  const passwordRef = useRef()
+  const usernameRef = useRef()
+  const navigate = useNavigate()
   const [userObj,setUserObj]=useState({
     username:'',
     password:''
   })
+
+
 
 
   const handleChange = (e)=>{
@@ -38,9 +42,9 @@ function LoginForm({ handleLoginForm,loading}) {
                     lg:h-[40vh] lg:w-[30vw]
                      `}
     >
+      
       <form
         onSubmit={handleSubmit}
-        aria-disabled={loading?true:false}
         className="flex flex-col items-center justify-around w-full h-full 
                         sm:flex-col sm:items-center sm:justify-around 
                         md:flex-col md:h-64
@@ -51,18 +55,18 @@ function LoginForm({ handleLoginForm,loading}) {
             htmlFor="username"
             className=" p-1  px-2 rounded-xl"
           >
-            Username*
+            Username
           </label>
           <input
           onChange={handleChange}
           value={userObj.username}
-            className={`w-[80%] border-2 h-10 pl-2 rounded-xl outline-none`}
+            className={`w-[80%] border-2  ${errorState.isError && errorState.message.includes('Username') ? 'border-red-500':null}  h-10 pl-2 rounded-xl outline-none`}
             type="text"
             name="username"
             id="username"
             placeholder="Enter username"
             required
-           
+           ref={usernameRef}
           />
           <label
             htmlFor="password"
@@ -74,7 +78,7 @@ function LoginForm({ handleLoginForm,loading}) {
           <input
           onChange={handleChange}
           value={userObj.password}
-            className={`w-full border-2 h-10 pl-2 rounded-xl text-black outline-none`}
+            className={`w-full ${errorState.isError && errorState.message.includes('Password') ? 'border-red-500':null} border-2 h-10 pl-2  rounded-xl text-black outline-none`}
             type={showPassword?'text':'password'}
             name="password"
             id="password"
@@ -82,10 +86,10 @@ function LoginForm({ handleLoginForm,loading}) {
             minLength={8}
             maxLength={8}
             required
-            ref={inputRef}
+            ref={passwordRef}
             
           />
-          <ShowPassword handleShowPassword={handleShowPassword} inputref={inputRef}/>
+          <ShowPassword handleShowPassword={handleShowPassword} inputref={passwordRef}/>
           
           </div>
           

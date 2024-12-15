@@ -13,10 +13,9 @@ import { apiRequest } from "../utils/axiosHandler";
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const isError = useSelector((state) => state.Error);
   const [loading, setLoading] = useState(false);
-
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
 
   const [text] = useTypewriter({
@@ -43,8 +42,9 @@ function LoginPage() {
   
       const response = await apiRequest('/api/v1/','post',data,onProgress);
       console.log(response)
+       
     } catch (error) {
-      console.log(error.response)
+      dispatch(setError({...error,isError:true}))
     }
     setLoading(true);
 
@@ -66,7 +66,7 @@ function LoginPage() {
       console.log(response)
       
     } catch (error) {
-      console.log(error)
+      dispatch(setError({...error,isError:true}))
     }
 
   };
