@@ -45,6 +45,8 @@ function LoginPage() {
   
       const response = await apiRequest('/api/v1/','post',data,onProgress);
       console.log(response)
+      dispatch(setError({status:null,message:'',isError:false}))
+
        
     } catch (error) {
       dispatch(setError({...error,isError:true}))
@@ -68,6 +70,8 @@ function LoginPage() {
 
       const response = await apiRequest('/api/v1/register','post',data,onProgress)
       console.log(response)
+      dispatch(setError({status:null,message:'',isError:false}))
+
       
     } catch (error) {
       dispatch(setError({...error,isError:true}))

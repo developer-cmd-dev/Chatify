@@ -4,13 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useAsyncError, useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import {setError} from '../Features/ErrorSlice.js'
 
 
 function LoginForm({ handleLoginForm,loading}) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const errorState = useSelector((state)=>state.ErrorState);
+  const {isError,status,message} = useSelector((state)=>state.ErrorState);
   const [showPassword,setShowPassword] = useState(false)
-  const [error,setError]=useState(false)
+  const dispatch = useDispatch()
   const passwordRef = useRef()
   const usernameRef = useRef()
   const navigate = useNavigate()
@@ -20,8 +21,8 @@ function LoginForm({ handleLoginForm,loading}) {
   })
 
 useEffect(()=>{
-  errorState.isError ? setError(true):setError(false)
-},[errorState])
+ dispatch(setError({status:null,message:'',isError:false}))
+},[])
 
 
   const handleChange = (e)=>{
@@ -49,7 +50,7 @@ useEffect(()=>{
         <h1>Login</h1>
       </div>
       {
-        error && <ErrorMsg className={`error  rounded-lg w-full bg-red-600 flex items-center justify-center text-white`} message={errorState.message} statusCode ={errorState.status}/>
+        isError &&  <ErrorMsg className={`error  rounded-lg w-full bg-red-600 flex items-center justify-center text-white`} message={message} statusCode ={status}/>
       }
   
       <form
@@ -69,7 +70,7 @@ useEffect(()=>{
           <input
           onChange={handleChange}
           value={userObj.username}
-            className={`w-[80%] ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'}  ${errorState.isError && errorState.message.includes('Username') ? 'border-red-500':null}  h-10 pl-2 rounded-xl outline-none`}
+            className={`w-[80%] ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'}  ${isError && message.includes('Username') ? 'border-red-500':null}  h-10 pl-2 rounded-xl outline-none`}
             type="text"
             name="username"
             id="username"
@@ -87,7 +88,7 @@ useEffect(()=>{
           <input
           onChange={handleChange}
           value={userObj.password}
-            className={`w-full ${errorState.isError && errorState.message.includes('Password') ? 'border-red-500':null} ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'} h-10 pl-2  rounded-xl text-black outline-none`}
+            className={`w-full ${isError && message.includes('Password') ? 'border-red-500':null} ${isDarkMode?'bg-black border-gray-800 border-4':'border-2'} h-10 pl-2  rounded-xl text-black outline-none`}
             type={showPassword?'text':'password'}
             name="password"
             id="password"

@@ -1,19 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { ShowPassword } from "./index";
+import { ShowPassword,ErrorMsg } from "./index";
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
+import { setError } from "../Features/ErrorSlice";
 
 function RegisterForm({handleRegisterForm,loading}) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+  const {isError,status,message} = useSelector((state)=>state.ErrorState)
   const [confirmPassword, setConfirmPassword] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword,setShowConfirmPassword] = useState(false);
+  const location = useLocation()
   const inputPassword = useRef()
   const inputConfirmPassword= useRef()
+  const dispatch = useDispatch()
   const [userObj, setUserObj] = useState({
     username: "",
     email: "",
@@ -21,6 +25,11 @@ function RegisterForm({handleRegisterForm,loading}) {
     fullname: "",
     gender: "Male",
   });
+
+  useEffect(()=>{
+    dispatch(setError({status:null,message:'',isError:false}))
+  },[])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +46,6 @@ function RegisterForm({handleRegisterForm,loading}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
- 
      confirmPassword ? handleRegisterForm(userObj):inputRef.current.focus()
    
   };
@@ -54,7 +62,8 @@ function RegisterForm({handleRegisterForm,loading}) {
       >
         <h1>Create your Account</h1>
       </div>
-
+     { isError &&  <ErrorMsg className={` rounded-lg w-[90%] mt-5 h-10  bg-red-600 flex items-center justify-center text-white`} message={message} statusCode={status}/>}
+      
       <form
         onSubmit={(e) => handleSubmit(e)}
         aria-disabled={loading?true:false}

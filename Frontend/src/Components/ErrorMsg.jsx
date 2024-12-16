@@ -1,8 +1,8 @@
 import React from 'react'
 
-function ErrorMsg({message,statusCode}) {
+function ErrorMsg({message,statusCode,className}) {
   return (
-    <div className="">
+    <div className={className}>
           <h1>{message} : {statusCode}</h1>
       </div>
   )
