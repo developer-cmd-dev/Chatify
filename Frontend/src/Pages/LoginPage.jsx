@@ -94,10 +94,10 @@ function LoginPage() {
                         md:w-full md:flex md:flex-row md:justify-around"
       >
         <div
-          className={` h-fit  w-full flex flex-col items-start justify-center ${
+          className={` h-fit hidden lg:flex  w-full  flex-col items-start justify-center ${
             isDarkMode ? "text-gray-200" : "text-black"
           }
-                         sm:h-fit
+                         
                          md:w-[40vw]  `}
         >
           <div className=" h-14 sm:h-20 lg:h-28 ">
@@ -125,7 +125,7 @@ function LoginPage() {
           </p>
         </div>
         <span
-          className={` w-[90%] h-0 border-2 ${
+          className={` w-[90%] h-0 border-2 hidden lg:block ${
             isDarkMode ? "border-gray-800" : "border-gray-300"
           } rounded-full
                         md:w-0 md:h-[50%] `}
