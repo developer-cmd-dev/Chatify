@@ -42,10 +42,10 @@ function LoginForm({ handleLoginForm, loading }) {
         isDarkMode
           ? "text-white border-gray-800 border-4"
           : "text-black border-4"
-      } items-center justify-around w-full  h-[38vh]  rounded-xl p-6 flex-col
+      } items-center justify-around w-full  h-fit  rounded-xl p-6 flex-col
                     sm:w-[60vw] sm:h-[45vh] 
                     md:w-[50vw] 
-                    lg:h-[50vh] lg:justify-center lg:w-[30vw] 
+                    lg:h-[40vh] lg:justify-center lg:w-[30vw] 
                      `}
     >
       <div className=" w-full  font-gugi flex items-center justify-center text-2xl text-gray-700 sm:text-3xl">
@@ -61,12 +61,12 @@ function LoginForm({ handleLoginForm, loading }) {
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center  justify-around w-full h-[25vh] 
+        className="flex flex-col  items-center   justify-around w-full h-full
                         sm:flex-col sm:items-center sm:justify-around 
                         md:flex-col md:h-64
                         lg:flex-col lg:justify-around  lg:items-center  lg:h-full lg:w-full   "
       >
-        <div className=" h-[40vh] w-full flex items-start justify-around flex-col  ">
+        <div className=" h-[40vh]  w-full flex items-start justify-around flex-col  ">
           <div className=" h-[20vh]  flex flex-col justify-around items-center sm:w-full">
             <div className="sm:w-full ">
               <label htmlFor="username" className=" p-1  px-2 rounded-xl">
@@ -84,7 +84,7 @@ function LoginForm({ handleLoginForm, loading }) {
                 }  h-10 pl-2 rounded-xl outline-none`}
                 type="text"
                 name="username"
-                id="username"
+                id="username1"
                 placeholder="Enter username"
                 required
                 ref={usernameRef}

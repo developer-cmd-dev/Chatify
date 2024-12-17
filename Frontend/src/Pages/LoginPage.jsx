@@ -45,6 +45,8 @@ function LoginPage() {
   
       const response = await apiRequest('/api/v1/','post',data,onProgress);
       console.log(response)
+      dispatch(isAuthenticated({email:'',authenticate:true}))
+      navigate('/home')
       dispatch(setError({status:null,message:'',isError:false}))
 
        
@@ -70,6 +72,7 @@ function LoginPage() {
 
       const response = await apiRequest('/api/v1/register','post',data,onProgress)
       console.log(response)
+      dispatch(isAuthenticated({email:'',authenticated:true}))
       dispatch(setError({status:null,message:'',isError:false}))
 
       

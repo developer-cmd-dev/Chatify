@@ -5,6 +5,7 @@ import './index.css'
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import LoginPage from './Pages/LoginPage.jsx'
 import ChatPage from './Pages/ChatPage.jsx'
+import HomePage from './Pages/HomePage.jsx'
 import Error from './Pages/Error.jsx'
 import { Provider } from 'react-redux'
 import { store } from './App/store.js'
@@ -26,8 +27,8 @@ const router = createBrowserRouter([{
             element:<LoginPage/>
         },
         {
-            path:'global-chat',
-            element:<PrivateRoute ><ChatPage/></PrivateRoute>
+            path:'/home',
+            element:<PrivateRoute ><HomePage/></PrivateRoute>
         },
         
         {

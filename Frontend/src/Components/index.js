@@ -11,6 +11,7 @@ import MessageInput from "./MessageInput";
 import RegisterForm from "./RegisterForm";
 import ShowPassword from "./ShowPassword";
 import ErrorMsg from "./ErrorMsg";
+import Home from "./Home";
 
 
 export {
@@ -26,5 +27,6 @@ export {
     MessageInput,
     RegisterForm,
     ShowPassword,
-    ErrorMsg
+    ErrorMsg,
+    Home
 }
