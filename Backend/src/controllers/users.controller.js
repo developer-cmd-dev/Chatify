@@ -114,7 +114,6 @@ const updatepassword = asyncHandler(async (req, res, next) => {
     if(!response){
       throw new ApiError(500,'Password not reset.')
     }
-
     res.status(200).json(new ApiResponse(200,"Password Updated successfully."));
   } catch (error) {
     next(error)

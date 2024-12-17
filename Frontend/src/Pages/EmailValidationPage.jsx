@@ -2,26 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { apiRequest } from "../utils/axiosHandler";
 import { setError } from "../Features/ErrorSlice";
-import {Outlet, useNavigate} from 'react-router-dom'
+import {Outlet, useLoaderData, useLocation, useNavigate} from 'react-router-dom'
 function EamilValidationPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const [email,setEmail] = useState('')
-  const [isEmailCorrect,setIsEmailCorrect] = useState(false)
+  const [isEmailCorrect,setIsEmailCorrect] = useState(false);
+  const [password,setPassword] = useState('')
 
   useEffect(()=>{
     navigate('/email-validation')
     setIsEmailCorrect(false)
   },[])
   
-  const handleOnchange = ()=>{
-
+  const handleOnchange = (value)=>{
+    setPassword(value)
   }
 
 
   const handleSubmit = async (e)=>{
     e.preventDefault()
+  
     try {
         const onProgress = (progressevent)=>{
             const progress = Math.round((progressevent.loaded*100)/progressevent.total);
@@ -29,11 +32,18 @@ function EamilValidationPage() {
                 
             }
         }
-        const response = await apiRequest('/api/v1/email-validation','post',{email:email},onProgress)
-        console.log(response)
-        setIsEmailCorrect(true)
-        navigate('/email-validation/reset-password')
-        dispatch({status:null,message:'',isError:false});
+        if(e.nativeEvent.submitter.value === 'Verify Email'){
+          const response = await apiRequest('/api/v1/email-validation','post',{email:email},onProgress)
+          console.log(response)
+          setIsEmailCorrect(true)
+          navigate('/email-validation/reset-password')
+          dispatch(setError({status:null,message:'',isError:false}));
+        }else{
+          const response = await apiRequest(`/api/v1/${location.pathname}`,'patch',{email:email,password:password},onProgress)
+          console.log(response)
+          navigate('/')
+        }
+      
     } catch (error) {
         dispatch(setError({...error,isError:true}))
     }
@@ -74,7 +84,7 @@ function EamilValidationPage() {
             />
           </div>
           <div className="w-full">
-          <Outlet/>
+          <Outlet context={{handleOnchange:handleOnchange}}/>
           </div>
           <div>
             <input
