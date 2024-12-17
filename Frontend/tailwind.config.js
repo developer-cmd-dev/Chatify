@@ -15,7 +15,11 @@ export default {
     extend: {
       fontFamily:{
         gugi:['Gugi', 'sans-serif'],
-        playWrite:['Playwrite HR Lijeva','cursive']
+        playWrite:['Playwrite HR Lijeva','cursive'],
+        montserrat:["Montserrat", 'sans-serif']
+      },
+      height:{
+        pagesHeight:'[90vh]'
       }
     },
 

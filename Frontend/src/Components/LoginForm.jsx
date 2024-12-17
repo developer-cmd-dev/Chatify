@@ -125,7 +125,7 @@ function LoginForm({ handleLoginForm, loading }) {
               </div>
             </div>
             <div className="forgotIds  w-full text-[0.7em] lg:text-[0.9em] mt-2 text-blue-600 hover:text-red-500">
-                <Link to='/userupdate'>Forgot your Password.</Link>
+                <Link to='/email-validation'>Forgot your Password.</Link>
             </div>
           </div>
           <div className=" w-full flex items-center  justify-between ">

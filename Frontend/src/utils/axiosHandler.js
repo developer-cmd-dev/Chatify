@@ -4,7 +4,7 @@ import axios from "axios";
 export const  apiRequest = async(url,method,data,onProgress)=>{
     try {
         const response = await axios({url,method,data,onUploadProgress:onProgress,onDownloadProgress:onProgress});
-        return  response
+        return response
     } catch (error) {
         if(error.code === "ERR_NETWORK" || error.message === 'Network Error'){
             throw new Error('Server is unreachable. Please try again later.')

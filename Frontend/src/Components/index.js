@@ -12,7 +12,7 @@ import RegisterForm from "./RegisterForm";
 import ShowPassword from "./ShowPassword";
 import ErrorMsg from "./ErrorMsg";
 import Home from "./Home";
-
+import ResetPassword from "./ResetPassword";
 
 export {
     Children,
@@ -28,5 +28,6 @@ export {
     RegisterForm,
     ShowPassword,
     ErrorMsg,
-    Home
+    Home,
+    ResetPassword
 }

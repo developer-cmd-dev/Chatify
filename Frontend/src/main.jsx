@@ -12,6 +12,9 @@ import { store } from './App/store.js'
 import { useSelector } from 'react-redux'
 import PrivateRoute from './Pages/PrivateRoute.jsx'
 import {RegisterForm} from './Components/index.js'
+import { ReducerType } from '@reduxjs/toolkit'
+import {ResetPassword} from './Components/index.js'
+import EamilValidationPage from './Pages/EmailValidationPage.jsx'
 
 
 const router = createBrowserRouter([{
@@ -30,12 +33,23 @@ const router = createBrowserRouter([{
             path:'/home',
             element:<PrivateRoute ><HomePage/></PrivateRoute>
         },
-        
+        {
+            path:'/email-validation',
+            element:<EamilValidationPage/>,
+            children:[
+                {path:'reset-password',
+                    element:<ResetPassword/>
+                }
+            ]
+        },
+    
         {
             path:'error',
             element:<Error/>
         }
-    ]
+    ],
+    
+    
 }])
 
 

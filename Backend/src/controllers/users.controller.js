@@ -79,7 +79,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 })
 
 const emailValidation = asyncHandler(async (req, res, next) => {
-  const { email } = req.body;
+  const  {email}  = req.body;
 
   if (!email || email.trim() === "") {
     throw new ApiError(404, "Email fields are required.")
@@ -119,10 +119,6 @@ const updatepassword = asyncHandler(async (req, res, next) => {
   } catch (error) {
     next(error)
   }
-
-
-
-
 
 
 

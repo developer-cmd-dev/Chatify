@@ -14,8 +14,8 @@ router.route('/register').post(upload.fields([
 
 router.route('/').post(loginUser)
 
-router.route('/email-validation').get(emailValidation);
-router.route('/reset-password').patch(updatepassword);
+router.route('/email-validation').post(emailValidation);
+router.route('/email-validation/reset-password').patch(updatepassword);
 
 
 
