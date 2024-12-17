@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { apiRequest } from "../utils/axiosHandler";
 import { setError } from "../Features/ErrorSlice";
 import {Outlet, useLoaderData, useLocation, useNavigate} from 'react-router-dom'
+import { ErrorMsg } from "../Components";
 function EamilValidationPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const dispatch = useDispatch()
@@ -11,10 +12,12 @@ function EamilValidationPage() {
   const [email,setEmail] = useState('')
   const [isEmailCorrect,setIsEmailCorrect] = useState(false);
   const [password,setPassword] = useState('')
+  const {message,status,isError} = useSelector((state)=>state.ErrorState)
 
   useEffect(()=>{
     navigate('/email-validation')
     setIsEmailCorrect(false)
+    dispatch(setError({status:null,message:'',isError:false}))
   },[])
   
   const handleOnchange = (value)=>{
@@ -64,6 +67,9 @@ function EamilValidationPage() {
          {isEmailCorrect?'Reset Password':'Email Validation.'}
         </h1>
       </div>
+      
+        { isError && <ErrorMsg className={`h-10 mb-4 rounded-md  w-[30%] flex items-center justify-center bg-red-500`} message={message} statusCode={status}/>}
+   
       <div className="update-container w-[70%] sm:w-[70%] md:w-[50%] lg:w-[30%] min-h-[25vh] p-4 border-4 border-gray-400 rounded-2xl flex items-center justify-center">
         <form
         onSubmit={handleSubmit}
