@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from "../middleware/multer.middlerware.js";
-import { registerUser,loginUser } from "../controllers/users.controller.js";
+import { registerUser,loginUser,emailValidation,updatepassword } from "../controllers/users.controller.js";
 import {errorHandler} from '../middleware/error.middleware.js'
 const router = Router();
 
@@ -13,6 +13,9 @@ router.route('/register').post(upload.fields([
 ]),registerUser)
 
 router.route('/').post(loginUser)
+
+router.route('/email-validation').get(emailValidation);
+router.route('/reset-password').patch(updatepassword);
 
 
 

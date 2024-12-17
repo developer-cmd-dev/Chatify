@@ -12,10 +12,10 @@ function LoginForm({ handleLoginForm, loading }) {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const passwordRef = useRef();
-  const usernameRef = useRef();
+  const emailRef = useRef();
   const navigate = useNavigate();
   const [userObj, setUserObj] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -26,6 +26,7 @@ function LoginForm({ handleLoginForm, loading }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserObj({ ...userObj, [name]: value });
+    dispatch(setError({ status: null, message: "", isError: false }))
   };
 
   const handleSubmit = (e) => {
@@ -70,24 +71,24 @@ function LoginForm({ handleLoginForm, loading }) {
           <div className=" h-[20vh]  flex flex-col justify-around items-center sm:w-full">
             <div className="sm:w-full ">
               <label htmlFor="username" className=" p-1  px-2 rounded-xl">
-                Username
+                Email
               </label>
               <input
                 onChange={handleChange}
-                value={userObj.username}
+                value={userObj.email}
                 className={`w-full ${
-                  isDarkMode ? "bg-black border-gray-800 border-4" : "border-2"
+                  isDarkMode ? "bg-black border-gray-800 border-4 text-white" : "border-2"
                 }  ${
-                  isError && message.includes("Username")
+                  isError && message.includes("Email")
                     ? "border-red-500"
                     : null
                 }  h-10 pl-2 rounded-xl outline-none`}
-                type="text"
-                name="username"
-                id="username1"
-                placeholder="Enter username"
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email"
                 required
-                ref={usernameRef}
+                ref={emailRef}
               />
             </div>
 
@@ -105,7 +106,7 @@ function LoginForm({ handleLoginForm, loading }) {
                       : null
                   } ${
                     isDarkMode
-                      ? "bg-black border-gray-800 border-4"
+                      ? "bg-black border-gray-800 border-4 text-white"
                       : "border-2"
                   } h-10 pl-2  rounded-xl text-black outline-none`}
                   type={showPassword ? "text" : "password"}
@@ -123,8 +124,10 @@ function LoginForm({ handleLoginForm, loading }) {
                 />
               </div>
             </div>
+            <div className="forgotIds  w-full text-[0.7em] lg:text-[0.9em] mt-2 text-blue-600 hover:text-red-500">
+                <Link to='/userupdate'>Forgot your Password.</Link>
+            </div>
           </div>
-
           <div className=" w-full flex items-center  justify-between ">
             <input
               className={`${
