@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 
 function UserJoined({ classname, colortheme, activeUsers }) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+  
 
   return (
     <div className={`${classname} hidden lg:flex  items-center justify-center ${isDarkMode?'bg-black':'bg-white'}`}>
@@ -10,7 +11,7 @@ function UserJoined({ classname, colortheme, activeUsers }) {
       >
         <div className="flex flex-col items-center justify-around h-fit w-full ">
           {activeUsers.map((users) => (
-            <div key={users.id}
+            <div key={users._id}
               className={` relative h-16 w-16 rounded-full flex items-center justify-center m-2`}
               style={{
                 backgroundColor: users.iconColor,

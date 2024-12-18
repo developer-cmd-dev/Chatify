@@ -3,16 +3,41 @@ import { MessageInput, UserJoined } from "../Components";
 import { useSelector,useDispatch } from "react-redux";
 import { connectSocket, getSocket } from "../utils/SocketConnection";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
+import {apiRequest} from '../utils/axiosHandler'
+import { setProgress } from "../Features/TopLoaderSlice";
+import { useLocation } from "react-router-dom";
 
 function ChatPage() {
   const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const isAuthenticate = useSelector((state)=>state.Authenticate);
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const [data, setData] = useState([]);
   const [activeUsers, setActiveusers] = useState([]);
   const [yourData, setYourData] = useState({});
+  const {_id} = useSelector((state)=>state.UserData)
+
+  ;(async()=>{
+    try {
+      const onProgress = (progressevent)=>{
+        const response = Math.round((progressevent.process * 100)/progressevent.total)
+        if(response >=90){
+          dispatch(setProgress(response))
+        }
+      }
+
+      const response = await apiRequest(`/api/v1${location.pathname}`,'patch',{_id},onProgress);
+      setActiveusers(response.data.data)
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  })()
+
+
 
 // useEffect(()=>{
 // window.addEventListener('beforeunload',async()=>{
