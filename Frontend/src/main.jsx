@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux'
 import PrivateRoute from './Pages/PrivateRoute.jsx'
 import {RegisterForm} from './Components/index.js'
 import { ReducerType } from '@reduxjs/toolkit'
-import {ResetPassword} from './Components/index.js'
+import {ResetPassword,GlobalChatRoom,PrivateChatRoom,ChatMode} from './Components/index.js'
 import EamilValidationPage from './Pages/EmailValidationPage.jsx'
 
 
@@ -31,7 +31,23 @@ const router = createBrowserRouter([{
         },
         {
             path:'/home',
-            element:<PrivateRoute ><HomePage/></PrivateRoute>
+            element:<PrivateRoute><HomePage/></PrivateRoute>,
+            children:[
+                {
+                    path:'',
+                    element:<ChatMode/>
+                },
+              
+                {
+                    path:'private-chat-room',
+                    element:<PrivateChatRoom/>
+                }
+            ]
+            
+        },
+        {
+            path:'global-chat-room',
+            element:<PrivateRoute><ChatPage/></PrivateRoute>
         },
         {
             path:'/email-validation',

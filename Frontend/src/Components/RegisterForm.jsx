@@ -63,7 +63,7 @@ function RegisterForm({ handleRegisterForm, loading }) {
       </div>
       {isError && (
         <ErrorMsg
-          className={` rounded-lg w-[90%] mt-5 h-10  bg-red-600 flex items-center justify-center text-white`}
+          className={`error  rounded-lg w-full  flex items-center justify-start text-red-500 text-sm italic`}
           message={message}
           statusCode={status}
         />

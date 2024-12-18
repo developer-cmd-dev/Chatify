@@ -7,7 +7,7 @@ const connectSocket = async () => {
       socket = io.connect('http://localhost:5000', { autoConnect: true });
       await new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
-          reject(new Error('Connection timeout: Backend is not reachable.'));
+          reject( new Error('Connection timeout: Backend is not reachable.'));
         }, 1000); 
 
         socket.on('connect', () => {

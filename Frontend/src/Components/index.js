@@ -13,7 +13,10 @@ import ShowPassword from "./ShowPassword";
 import ErrorMsg from "./ErrorMsg";
 import Home from "./Home";
 import ResetPassword from "./ResetPassword";
-
+import HeroSection from "./HeroSection";
+import GlobalChatRoom from "./GlobalChatRoom";
+import PrivateChatRoom from "./PrivateChatRoom";
+import ChatMode from "./ChatMode";
 export {
     Children,
     Input,
@@ -29,5 +32,9 @@ export {
     ShowPassword,
     ErrorMsg,
     Home,
-    ResetPassword
+    ResetPassword,
+    HeroSection,
+    GlobalChatRoom,
+    PrivateChatRoom,
+    ChatMode
 }

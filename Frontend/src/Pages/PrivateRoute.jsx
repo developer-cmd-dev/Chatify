@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom'
 function PrivateRoute({children}) {
   const isAuthenticate = useSelector((state)=>state.Authenticate.authenticate)
   
+  
   return (
   isAuthenticate?children:<Navigate to={'/'}/>
   )

@@ -3,7 +3,6 @@ import { ApiError } from '../utils/ApiError.js'
 import { User } from '../models/user.models.js'
 import { uploadOnCloudinary } from '../services/cloudinary.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
-import { ObjectId } from 'mongodb'
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -62,15 +61,17 @@ const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body
   if ([email, password].some((fields) => fields.trim() === "")) throw new ApiError(404, "All fields are required.");
   const existedUser = await User.findOne({ email })
+
   if (!existedUser) throw new ApiError(401, "Email not found!")
   try {
     const isPassWordValid = await existedUser.isPasswordCorrect(password)
     if (!isPassWordValid) {
       throw new ApiError(400, "Password did not match.", ["Ensure your password is correct."])
     }
-
-    res.status(200).json(new ApiResponse(200, "Password Matched"))
-
+    const userData = await User.findById(existedUser._id).select('-password -refreshToken -createdAt -updatedAt')
+    if(!userData) throw new ApiError(404,"user data not found")
+    res.status(200).json(new ApiResponse(200,userData, "Password Matched"))
+    
 
   } catch (error) {
     next(error)
@@ -79,7 +80,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 })
 
 const emailValidation = asyncHandler(async (req, res, next) => {
-  const  {email}  = req.body;
+  const { email } = req.body;
 
   if (!email || email.trim() === "") {
     throw new ApiError(404, "Email fields are required.")
@@ -106,15 +107,18 @@ const updatepassword = asyncHandler(async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-    if(!user){
-      throw new ApiError(404,"Email is not found")
+    if (!user) {
+      throw new ApiError(404, "Email is not found")
     }
+    const isOldPassword = await user.isPasswordCorrect(password);
+    if (isOldPassword) throw new ApiError(409, "That's Your Old Password.")
+
     user.password = password
     const response = await user.save()
-    if(!response){
-      throw new ApiError(500,'Password not reset.')
+    if (!response) {
+      throw new ApiError(500, 'Password not reset.')
     }
-    res.status(200).json(new ApiResponse(200,"Password Updated successfully."));
+    res.status(200).json(new ApiResponse(200, "Password Updated successfully."));
   } catch (error) {
     next(error)
   }
@@ -123,4 +127,4 @@ const updatepassword = asyncHandler(async (req, res, next) => {
 
 })
 
-export { registerUser, loginUser, emailValidation,updatepassword }
+export { registerUser, loginUser, emailValidation, updatepassword }

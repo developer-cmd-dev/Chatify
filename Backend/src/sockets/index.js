@@ -5,18 +5,19 @@ export const initializeSocket = (server)=>{
     
     const io = new Server(server,{
         cors:{
-            origin:process.env.CORS,
+            origin:process.env.CORS_ORIGIN,
             methods:['GET','POST']
         }
     })
     
 
     io.on('connection',(socket)=>{
-        console.log('Socket is connected')
+        socket.on('user-joined',userData=>{
+            console.log(`${userData.username} is joined`)
+        })
         chatHandler(socket)
         socket.on('disconnect',()=>{
             console.log("Socket is disconnected.");
-            
         })
     })
 

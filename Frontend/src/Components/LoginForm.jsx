@@ -46,7 +46,7 @@ function LoginForm({ handleLoginForm, loading }) {
       } items-center justify-around w-full  h-fit  rounded-xl p-6 flex-col
                     sm:w-[60vw] sm:h-[45vh] 
                     md:w-[50vw] 
-                    lg:h-[40vh] lg:justify-center lg:w-[30vw] 
+                    lg:h-[50vh] lg:justify-center lg:w-[30vw] 
                      `}
     >
       <div className=" w-full  font-gugi flex items-center justify-center text-2xl text-gray-700 sm:text-3xl">
@@ -54,7 +54,7 @@ function LoginForm({ handleLoginForm, loading }) {
       </div>
       {isError && (
         <ErrorMsg
-          className={`error  rounded-lg w-full bg-red-600 flex items-center justify-center text-white`}
+          className={`error  rounded-lg w-full  flex items-center justify-start text-red-500 text-sm italic `}
           message={message}
           statusCode={status}
         />
@@ -68,7 +68,7 @@ function LoginForm({ handleLoginForm, loading }) {
                         lg:flex-col lg:justify-around  lg:items-center  lg:h-full lg:w-full   "
       >
         <div className=" h-[40vh]  w-full flex items-start justify-around flex-col  ">
-          <div className=" h-[20vh]  flex flex-col justify-around items-center sm:w-full">
+          <div className=" h-[30vh]  flex flex-col justify-around items-center sm:w-full">
             <div className="sm:w-full ">
               <label htmlFor="username" className=" p-1  px-2 rounded-xl">
                 Email

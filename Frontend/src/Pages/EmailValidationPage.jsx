@@ -4,6 +4,7 @@ import { apiRequest } from "../utils/axiosHandler";
 import { setError } from "../Features/ErrorSlice";
 import {Outlet, useLoaderData, useLocation, useNavigate} from 'react-router-dom'
 import { ErrorMsg } from "../Components";
+import { setProgress } from "../Features/TopLoaderSlice";
 function EamilValidationPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const dispatch = useDispatch()
@@ -32,7 +33,7 @@ function EamilValidationPage() {
         const onProgress = (progressevent)=>{
             const progress = Math.round((progressevent.loaded*100)/progressevent.total);
             if(progress >=90){
-                
+                dispatch(setProgress(progress))
             }
         }
         if(e.nativeEvent.submitter.value === 'Verify Email'){
@@ -63,14 +64,14 @@ function EamilValidationPage() {
       } `}
     >
       <div className="h-[25vh] w-full flex items-center justify-center  ">
-        <h1 className="font-montserrat text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-gray-900">
+        <h1 className={`font-montserrat text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-bold ${isDarkMode?'text-gray-600':'text-gray-900'}`}>
          {isEmailCorrect?'Reset Password':'Email Validation.'}
         </h1>
       </div>
       
-        { isError && <ErrorMsg className={`h-10 mb-4 rounded-md  w-[30%] flex items-center justify-center bg-red-500`} message={message} statusCode={status}/>}
+        { isError && <ErrorMsg className={`h-10 mb-4 rounded-md  w-[30%] flex items-center justify-start text-red-500 italic`} message={message} statusCode={status}/>}
    
-      <div className="update-container w-[70%] sm:w-[70%] md:w-[50%] lg:w-[30%] min-h-[25vh] p-4 border-4 border-gray-400 rounded-2xl flex items-center justify-center">
+      <div className={`update-container w-[70%] sm:w-[70%] md:w-[50%] lg:w-[30%] min-h-[25vh] p-4 border-4 ${isDarkMode?'border-gray-800':'border-gray-400'} rounded-2xl flex items-center justify-center`}>
         <form
         onSubmit={handleSubmit}
           action=""
@@ -79,7 +80,7 @@ function EamilValidationPage() {
           <div className={`${isEmailCorrect && 'opacity-50 cursor-not-allowed'} w-full flex flex-col`}>
             <label htmlFor="email">Email</label>
             <input
-              className={`h-[6vh] border-2 rounded-xl outline-none bg-white `}
+              className={`h-[6vh] border-2 pl-2 rounded-xl outline-none ${isDarkMode?'bg-black border-gray-800 border-4':'bg-white'} `}
               type="email"
               id="email"
               name="email"
@@ -98,7 +99,7 @@ function EamilValidationPage() {
               id="reset-password"
               name="reset-Password"
               value={isEmailCorrect?'Reset Password':'Verify Email'}
-              className={`bg-green-400 text-white p-1 rounded-md cursor-pointer `}
+              className={`bg-green-400 text-white p-1 rounded-md cursor-pointer pl-2 pr-2 hover:bg-blue-600 `}
             />
           </div>
         </form>

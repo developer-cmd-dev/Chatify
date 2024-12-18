@@ -5,6 +5,7 @@ import DarkModeReducer from '../Features/DarkModeSlice'
 import AuthenticateReducer from '../Features/AuthenticateSlice'
 import TopLoaderReducer from '../Features/TopLoaderSlice'
 import ErrorReducer from '../Features/ErrorSlice'
+import UserReducer from '../Features/UserSlice'
 export const store = configureStore({
     reducer:{
         hamBurger:hamburgerReducer,
@@ -12,6 +13,7 @@ export const store = configureStore({
         DarkMode:DarkModeReducer,
         Authenticate:AuthenticateReducer,
         TopLoader:TopLoaderReducer,
-        ErrorState:ErrorReducer
+        ErrorState:ErrorReducer,
+        UserData:UserReducer
     }
 })

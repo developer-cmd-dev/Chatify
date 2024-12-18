@@ -1,33 +1,18 @@
-import { LoginForm, RegisterForm } from "../Components/index";
+import { LoginForm, RegisterForm ,HeroSection} from "../Components/index";
 import { useSelector, useDispatch } from "react-redux";
-import io from "socket.io-client";
-import { useTypewriter } from "react-simple-typewriter";
-import { connectSocket } from "../utils/SocketConnection";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { setProgress, resetProgress } from "../Features/TopLoaderSlice";
+import {  useEffect, useState } from "react";
+import { setProgress } from "../Features/TopLoaderSlice";
 import {setError} from '../Features/ErrorSlice'
 import { apiRequest } from "../utils/axiosHandler";
+import {handleUserData} from '../Features/UserSlice'
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  
-
-
-  const [text] = useTypewriter({
-    words: ["CHATIFY", "Stay Connected!", "With People."],
-    loop: {},
-    typeSpeed: 100,
-    deleteSpeed: 30,
-    onLoopDone: () => {
-      console.log("Loop is completed");
-    },
-  });
 
   const handleLoginForm = async (data) => {
     dispatch(setError({isError:false}))
@@ -44,7 +29,7 @@ function LoginPage() {
       };
   
       const response = await apiRequest('/api/v1/','post',data,onProgress);
-      console.log(response)
+      dispatch(handleUserData({...response.data.data}))
       dispatch(isAuthenticated({email:'',authenticate:true}))
       navigate('/home')
       dispatch(setError({status:null,message:'',isError:false}))
@@ -71,7 +56,7 @@ function LoginPage() {
       }
 
       const response = await apiRequest('/api/v1/register','post',data,onProgress)
-      console.log(response)
+      console.log(response.data)
       dispatch(isAuthenticated({email:'',authenticated:true}))
       navigate('/home');
       dispatch(setError({status:null,message:'',isError:false}))
@@ -97,37 +82,8 @@ function LoginPage() {
                         sm:flex-col
                         md:w-full md:flex md:flex-row md:justify-around"
       >
-        <div
-          className={` h-fit hidden lg:flex  w-full  flex-col items-start justify-center ${
-            isDarkMode ? "text-gray-200" : "text-black"
-          }
-                         
-                         md:w-[40vw]  `}
-        >
-          <div className=" h-14 sm:h-20 lg:h-28 ">
-            <h1
-              className="font-gugi text-[2rem]  transition-all
-                        sm:text-[3rem]
-                        md:text-[4.5vw]
-                        lg:text-[4.5vw] "
-            >
-              {text}
-            </h1>
-          </div>
-
-          <p
-            className="text-[0.9rem]
-                      md:text-[0.9rem]
-                      lg:text-[1rem]"
-          >
-            Welcome to Chatify! Stay connected with your friends, family, and
-            teams effortlessly with our real-time chat app. Enjoy seamless
-            conversations with instant messaging, group chats, and a
-            user-friendly interface. Built for speed and reliability, Chatify
-            keeps you in sync, no matter where you are. Dive into meaningful
-            interactions today!
-          </p>
-        </div>
+        <HeroSection/>
+       
         <span
           className={` w-[90%] h-0 border-2 hidden lg:block ${
             isDarkMode ? "border-gray-800" : "border-gray-300"

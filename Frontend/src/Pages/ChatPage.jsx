@@ -14,16 +14,16 @@ function ChatPage() {
   const [activeUsers, setActiveusers] = useState([]);
   const [yourData, setYourData] = useState({});
 
-useEffect(()=>{
-window.addEventListener('beforeunload',async()=>{
-  dispatch(isAuthenticated({authenticate:false,email:""}))
-  const socket = await getSocket()
-  if(socket){
-    socket.emit('logout',isAuthenticate.email)
-  }
-})
-console.log(isAuthenticate.email)
-},[])
+// useEffect(()=>{
+// window.addEventListener('beforeunload',async()=>{
+//   dispatch(isAuthenticated({authenticate:false,email:""}))
+//   const socket = await getSocket()
+//   if(socket){
+//     socket.emit('logout',isAuthenticate.email)
+//   }
+// })
+// console.log(isAuthenticate.email)
+// },[])
 
 
   useEffect(() => {
