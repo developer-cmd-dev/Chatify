@@ -6,6 +6,7 @@ import {
   connectSocket,
   getSocket,
   disconnectSocket,
+  useDisconnectSocket,
 } from "../utils/SocketConnection";
 import { apiRequest } from "../utils/axiosHandler";
 
@@ -16,18 +17,14 @@ function HomePage() {
 
   (async () => {
     try {
-      const res = await disconnectSocket();
-      if(res){
-        const response = await apiRequest(`/api/v1${location.pathname}`, "patch", {
-          _id: userData._id,
-        });
-        console.log(response);
-      }
-     
+      const res = await disconnectSocket(userData._id,location.pathname,'patch');
+      console.log(res)
     } catch (error) {
       console.log(error);
     }
   })();
+
+  
 
   const handleConnectSocket = async () => {
     try {
@@ -49,7 +46,7 @@ function HomePage() {
         <HeroSection />
       </div>
 
-      <span className="h-[50%] bg-gray-300 w-1 rounded-full"></span>
+      <span className="h-[50%] hidden lg:block bg-gray-300 w-1 rounded-full"></span>
 
       <div className="w-[98%] sm:w-[50%] md:[30%] lg:[30%] h-full  flex flex-col items-center justify-center">
         <Outlet context={{ makeSocketConnection: handleConnectSocket }} />

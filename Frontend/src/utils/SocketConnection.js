@@ -1,4 +1,5 @@
 import { io, Socket } from 'socket.io-client'
+import { apiRequest } from './axiosHandler';
 
 let socket=null
 const connectSocket = async () => {
@@ -13,7 +14,6 @@ const connectSocket = async () => {
         socket.on('connect', () => {
           clearTimeout(timeout);
           resolve();
-          console.log(socket)
         });
 
         socket.on('connect_error', (err) => {
@@ -36,15 +36,31 @@ const getSocket = async () => {
   return socket;
 };
 
-const disconnectSocket = async()=>{
-  if(!socket){
-    return false;
+const disconnectSocket = async(_id,path,method)=>{
+ 
+  try {
+    if(!socket){
+      return 
+    }else{
+      socket.on('disconnect',()=>console.log('Socket disconnected.'));
+      socket.disconnect()
+      const res = await apiRequest(`/api/v1${path}`,method,{_id});
+      socket = null;
+      return res
+    }
+  } catch (error) {
+    console.log(error);
   }
-  socket.on('disconnect',()=>console.log('Socket disconnected.'));
-  socket.disconnect()
-  socket = null;
-  return true;
+  
   
 } 
 
-export { connectSocket, getSocket,disconnectSocket }
+const useDisconnectSocket = (id,path)=>{
+  console.log(id,path)
+}
+
+
+
+
+
+export { connectSocket, getSocket,disconnectSocket,useDisconnectSocket }

@@ -5,12 +5,12 @@ import { Outlet, useLoaderData, useLocation } from "react-router-dom";
 import { Header } from "./Components";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
 function App() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const location = useLocation()
   const hideHeaderPath = []
   const shouldshowHeader = !hideHeaderPath.includes(location.pathname)
+
 
   return (
     <div

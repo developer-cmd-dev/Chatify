@@ -20,22 +20,31 @@ function ChatPage() {
   const {_id} = useSelector((state)=>state.UserData)
 
   ;(async()=>{
-    try {
-      const onProgress = (progressevent)=>{
-        const response = Math.round((progressevent.process * 100)/progressevent.total)
-        if(response >=90){
-          dispatch(setProgress(response))
-        }
-      }
-
-      const response = await apiRequest(`/api/v1${location.pathname}`,'patch',{_id},onProgress);
-      setActiveusers(response.data.data)
-
-
-    } catch (error) {
-      console.log(error)
-    }
+ 
   })()
+
+
+  useEffect(()=>{
+    ;(async()=>{
+      try {
+        const onProgress = (progressevent)=>{
+          const response = Math.round((progressevent.process * 100)/progressevent.total)
+          if(response >=90){
+            dispatch(setProgress(response))
+          }
+        }
+  
+        const response = await apiRequest(`/api/v1${location.pathname}`,'patch',{_id});
+        setActiveusers(response.data.data)
+  
+  
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+   
+  },[])
+
 
 
 
@@ -51,55 +60,55 @@ function ChatPage() {
 // },[])
 
 
-  useEffect(() => {
-    const initializeSocket = async () => {
-      const socket = await getSocket();
-      if (socket) {
-        socket.on("joined-users", (usersArr) => {
-          setActiveusers(usersArr);
-          console.log(usersArr)
-        });
+  // useEffect(() => {
+  //   const initializeSocket = async () => {
+  //     const socket = await getSocket();
+  //     if (socket) {
+  //       socket.on("joined-users", (usersArr) => {
+  //         setActiveusers(usersArr);
+  //         console.log(usersArr)
+  //       });
 
-        socket.on("new-user-joined", (userObj) => {
-          setData((prev) => [
-            ...prev,
-            {
-              type: "new-user-joined",
-              id: userObj.id,
-              username: userObj.username,
-              iconColor: userObj.iconColor,
-            },
-          ]);
-          setActiveusers((prev) => [...prev, userObj]);
-        });
+  //       socket.on("new-user-joined", (userObj) => {
+  //         setData((prev) => [
+  //           ...prev,
+  //           {
+  //             type: "new-user-joined",
+  //             id: userObj.id,
+  //             username: userObj.username,
+  //             iconColor: userObj.iconColor,
+  //           },
+  //         ]);
+  //         setActiveusers((prev) => [...prev, userObj]);
+  //       });
 
-        socket.on("user-message", (msgObj) => {
-          setData((prev) => [...prev, msgObj]);
-        });
+  //       socket.on("user-message", (msgObj) => {
+  //         setData((prev) => [...prev, msgObj]);
+  //       });
 
-        socket.on("your-data", (data) => {
-          setYourData(data);
-        });
-      }
-      return socket;
-    };
-    initializeSocket();
-  }, []);
+  //       socket.on("your-data", (data) => {
+  //         setYourData(data);
+  //       });
+  //     }
+  //     return socket;
+  //   };
+  //   initializeSocket();
+  // }, []);
 
-  const message = async (value) => {
-    const socket = await connectSocket();
-    const msgObj = {
-      type: "my-message",
-      id: yourData.id,
-      msg: value,
-      username: yourData.username,
-      iconColor : yourData.iconColor
-    };
-    if (socket) {
-      socket.emit("send-message", msgObj);
-    }
-    setData((prevMessage) => [...prevMessage, msgObj]);
-  };
+  // const message = async (value) => {
+  //   const socket = await connectSocket();
+  //   const msgObj = {
+  //     type: "my-message",
+  //     id: yourData.id,
+  //     msg: value,
+  //     username: yourData.username,
+  //     iconColor : yourData.iconColor
+  //   };
+  //   if (socket) {
+  //     socket.emit("send-message", msgObj);
+  //   }
+  //   setData((prevMessage) => [...prevMessage, msgObj]);
+  // };
 
   return (
     <div className="h-[calc(100vh-10vh)] flex   ">
@@ -168,7 +177,7 @@ function ChatPage() {
             isDarkMode ? "bg-black" : "bg-white"
           }`}
         >
-          <MessageInput colorThemeCode={colorTheme} messageFunc={message} />
+          <MessageInput colorThemeCode={colorTheme} messageFunc={''} />
         </div>
       </div>
     </div>
