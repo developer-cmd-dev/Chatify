@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { HeroSection } from "../Components/index";
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
-import { connectSocket, getSocket,disconnectSocket } from "../utils/SocketConnection";
+import { Outlet, useLocation } from "react-router-dom";
+import {
+  connectSocket,
+  getSocket,
+  disconnectSocket,
+} from "../utils/SocketConnection";
 import { apiRequest } from "../utils/axiosHandler";
 
 function HomePage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const userData = useSelector((state)=>state.UserData)
+  const userData = useSelector((state) => state.UserData);
+  const location = useLocation();
 
-;( async()=>{ try {
-  const res = await disconnectSocket()
-  console.log(res)
-  const response = await apiRequest()
-
- } catch (error) {
-   console.log(error)
- }}
-)()
-
-
-
-  const handleConnectSocket = async ()=>{
+  (async () => {
     try {
-      const socket = await connectSocket()
-      console.log('socket is connected')
-      socket.emit('user-joined',userData)
+      const res = await disconnectSocket();
+      if(res){
+        const response = await apiRequest(`/api/v1${location.pathname}`, "patch", {
+          _id: userData._id,
+        });
+        console.log(response);
+      }
+     
     } catch (error) {
-      console.log(error.response)
+      console.log(error);
     }
-  }
+  })();
 
+  const handleConnectSocket = async () => {
+    try {
+      const socket = await connectSocket();
+      console.log("socket is connected");
+      socket.emit("user-joined", userData);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   return (
     <div
@@ -41,14 +48,11 @@ function HomePage() {
       <div className=" hidden lg:block">
         <HeroSection />
       </div>
-  
+
       <span className="h-[50%] bg-gray-300 w-1 rounded-full"></span>
-    
 
       <div className="w-[98%] sm:w-[50%] md:[30%] lg:[30%] h-full  flex flex-col items-center justify-center">
-       
-        <Outlet context={{makeSocketConnection:handleConnectSocket}} />
-       
+        <Outlet context={{ makeSocketConnection: handleConnectSocket }} />
       </div>
     </div>
   );

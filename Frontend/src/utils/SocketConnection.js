@@ -4,7 +4,7 @@ let socket=null
 const connectSocket = async () => {
   try {
     if (!socket) {
-      socket = io.connect('http://localhost:8001', { autoConnect: true });
+      socket = io.connect('http://localhost:3002', { autoConnect: true });
       await new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
           reject( new Error('Connection timeout: Backend is not reachable.'));
@@ -38,12 +38,12 @@ const getSocket = async () => {
 
 const disconnectSocket = async()=>{
   if(!socket){
-    throw new error('Socket is not initialized. Call connectSocket first.')
+    return false;
   }
   socket.on('disconnect',()=>console.log('Socket disconnected.'));
   socket.disconnect()
   socket = null;
-  return socket;
+  return true;
   
 } 
 
