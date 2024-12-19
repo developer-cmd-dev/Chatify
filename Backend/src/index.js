@@ -14,7 +14,7 @@ connectDB()
         console.log(`Server is running on Port || ${PORT}`)
         initializeSocket(server)
     })
-    server.on('error',()=>console.log(`Server connection failed.`))
+    server.on('error',(error)=>console.log(error))
 
 
 }).catch((error)=>console.log('MongoDb Connection Failed.',error))

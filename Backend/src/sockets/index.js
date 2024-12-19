@@ -16,9 +16,7 @@ export const initializeSocket = (server)=>{
             console.log(`${userData.username} is joined`)
         })
         chatHandler(socket)
-        socket.on('disconnect',()=>{
-            console.log("Socket is disconnected.");
-        })
+    
     })
 
 return io

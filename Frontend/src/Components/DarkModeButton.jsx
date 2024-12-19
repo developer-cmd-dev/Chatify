@@ -4,7 +4,7 @@ import {handleDarkMode} from '../Features/DarkModeSlice'
 function DarkModeButton() {
   // const [isDarkMode, setIsDarkMode] = useState(false);
   const isDarkMode = useSelector((state)=>state.DarkMode.isDarkMode)
-  const [darkMode,setDarkMode]=useState(false)
+  const [darkMode,setDarkMode]=useState(true)
   const dispatch = useDispatch()
 
   useEffect(()=>{   

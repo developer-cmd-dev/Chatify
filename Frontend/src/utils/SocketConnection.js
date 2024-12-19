@@ -1,10 +1,10 @@
 import { io, Socket } from 'socket.io-client'
 
-let socket;
+let socket=null
 const connectSocket = async () => {
   try {
     if (!socket) {
-      socket = io.connect('http://localhost:5000', { autoConnect: true });
+      socket = io.connect('http://localhost:8001', { autoConnect: true });
       await new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
           reject( new Error('Connection timeout: Backend is not reachable.'));
@@ -13,6 +13,7 @@ const connectSocket = async () => {
         socket.on('connect', () => {
           clearTimeout(timeout);
           resolve();
+          console.log(socket)
         });
 
         socket.on('connect_error', (err) => {
@@ -35,5 +36,15 @@ const getSocket = async () => {
   return socket;
 };
 
+const disconnectSocket = async()=>{
+  if(!socket){
+    throw new error('Socket is not initialized. Call connectSocket first.')
+  }
+  socket.on('disconnect',()=>console.log('Socket disconnected.'));
+  socket.disconnect()
+  socket = null;
+  return socket;
+  
+} 
 
-export { connectSocket, getSocket }
+export { connectSocket, getSocket,disconnectSocket }
