@@ -6,7 +6,7 @@ import {
   connectSocket,
   getSocket,
   disconnectSocket,
-  useDisconnectSocket,
+  
 } from "../utils/SocketConnection";
 import { apiRequest } from "../utils/axiosHandler";
 
@@ -17,7 +17,7 @@ function HomePage() {
 
   (async () => {
     try {
-      const res = await disconnectSocket(userData._id,location.pathname,'patch');
+      const res = await disconnectSocket(location.pathname,'patch',userData._id);
       console.log(res)
     } catch (error) {
       console.log(error);

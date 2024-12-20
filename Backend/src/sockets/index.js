@@ -14,8 +14,11 @@ export const initializeSocket = (server)=>{
     io.on('connection',(socket)=>{
         socket.on('user-joined',userData=>{
             console.log(`${userData.username} is joined`)
+            socket.broadcast.emit('new-user-joined',userData)
         })
         chatHandler(socket)
+
+        socket.on('disconnect',()=>console.log('socket is disconnected.'))
     
     })
 

@@ -6,16 +6,14 @@ import { useDispatch } from 'react-redux';
 
 
 function Hamburger({
-  classname=''
+  classname='',
+  handleHamburger
 }) {
-  const dispatch = useDispatch()
-  const handleHamburger = ()=>{
-    dispatch(isHamBurger())
-  }
+ 
 
   return (
-    <div className={` w-full flex items-end justify-end`}>
-      <button className='border-none' onClick={handleHamburger}>
+    <div className={` w-full z-20 cursor-pointer flex items-end justify-end`}>
+      <button className='border-none' onClick={()=>handleHamburger()}>
       <GiHamburgerMenu className={`${classname}`}/>
       </button>
     </div>

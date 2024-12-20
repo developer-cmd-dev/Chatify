@@ -15,8 +15,7 @@ function App() {
   return (
     <div
       className="
-    overflow-hidden
-    "
+    overflow-hidden "
     >
    { shouldshowHeader &&  <Header
         logo={true}

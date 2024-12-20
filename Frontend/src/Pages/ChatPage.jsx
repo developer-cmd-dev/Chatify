@@ -17,11 +17,24 @@ function ChatPage() {
   const [data, setData] = useState([]);
   const [activeUsers, setActiveusers] = useState([]);
   const [yourData, setYourData] = useState({});
-  const {_id} = useSelector((state)=>state.UserData)
+  const userData = useSelector((state)=>state.UserData)
 
+useEffect(()=>{
   ;(async()=>{
- 
+      try {
+        let socket = await getSocket();
+        if(!socket){
+          socket = await connectSocket();
+          console.log("socket is connected");
+          socket.emit("user-joined",userData );
+        }
+       
+      } catch (error) {
+        console.log(error);
+      }
   })()
+
+},[])
 
 
   useEffect(()=>{
@@ -34,7 +47,7 @@ function ChatPage() {
           }
         }
   
-        const response = await apiRequest(`/api/v1${location.pathname}`,'patch',{_id});
+        const response = await apiRequest(`/api/v1${location.pathname}`,'patch',{_id:userData._id});
         setActiveusers(response.data.data)
   
   

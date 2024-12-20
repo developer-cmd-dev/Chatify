@@ -31,16 +31,16 @@ const connectSocket = async () => {
 
 const getSocket = async () => {
   if (!socket) {
-    throw new Error('Socket is not initialized. Call connectSocket first.');
+   return false
   }
   return socket;
 };
 
-const disconnectSocket = async(_id,path,method)=>{
+const disconnectSocket = async(path,method,_id)=>{
  
   try {
     if(!socket){
-      return 
+      return false
     }else{
       socket.on('disconnect',()=>console.log('Socket disconnected.'));
       socket.disconnect()
@@ -55,12 +55,7 @@ const disconnectSocket = async(_id,path,method)=>{
   
 } 
 
-const useDisconnectSocket = (id,path)=>{
-  console.log(id,path)
-}
 
 
 
-
-
-export { connectSocket, getSocket,disconnectSocket,useDisconnectSocket }
+export { connectSocket, getSocket,disconnectSocket }
