@@ -5,6 +5,13 @@ import { Outlet, useLoaderData, useLocation } from "react-router-dom";
 import { Header } from "./Components";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 function App() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const location = useLocation()
@@ -15,7 +22,7 @@ function App() {
   return (
     <div
       className="
-    overflow-hidden "
+    overflow-hidden h-screen  "
     >
    { shouldshowHeader &&  <Header
         logo={true}
@@ -24,8 +31,7 @@ function App() {
         classname={`${isDarkMode ? "bg-black" : "bg-white"}  h-[10vh] w-full `}
         hamburger={true}
       />}
-
-      <main className="h-[calc(100vh-10vh)] w-full">
+      <main className=" h-[100%]  w-full">
         <Outlet />
       </main>
     </div>

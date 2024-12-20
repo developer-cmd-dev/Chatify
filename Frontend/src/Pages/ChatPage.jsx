@@ -27,6 +27,9 @@ useEffect(()=>{
           socket = await connectSocket();
           console.log("socket is connected");
           socket.emit("user-joined",userData );
+          socket.on('new-user-joined',data=>{
+            console.log(data)
+          })
         }
        
       } catch (error) {
@@ -61,67 +64,9 @@ useEffect(()=>{
 
 
 
-// useEffect(()=>{
-// window.addEventListener('beforeunload',async()=>{
-//   dispatch(isAuthenticated({authenticate:false,email:""}))
-//   const socket = await getSocket()
-//   if(socket){
-//     socket.emit('logout',isAuthenticate.email)
-//   }
-// })
-// console.log(isAuthenticate.email)
-// },[])
 
 
-  // useEffect(() => {
-  //   const initializeSocket = async () => {
-  //     const socket = await getSocket();
-  //     if (socket) {
-  //       socket.on("joined-users", (usersArr) => {
-  //         setActiveusers(usersArr);
-  //         console.log(usersArr)
-  //       });
-
-  //       socket.on("new-user-joined", (userObj) => {
-  //         setData((prev) => [
-  //           ...prev,
-  //           {
-  //             type: "new-user-joined",
-  //             id: userObj.id,
-  //             username: userObj.username,
-  //             iconColor: userObj.iconColor,
-  //           },
-  //         ]);
-  //         setActiveusers((prev) => [...prev, userObj]);
-  //       });
-
-  //       socket.on("user-message", (msgObj) => {
-  //         setData((prev) => [...prev, msgObj]);
-  //       });
-
-  //       socket.on("your-data", (data) => {
-  //         setYourData(data);
-  //       });
-  //     }
-  //     return socket;
-  //   };
-  //   initializeSocket();
-  // }, []);
-
-  // const message = async (value) => {
-  //   const socket = await connectSocket();
-  //   const msgObj = {
-  //     type: "my-message",
-  //     id: yourData.id,
-  //     msg: value,
-  //     username: yourData.username,
-  //     iconColor : yourData.iconColor
-  //   };
-  //   if (socket) {
-  //     socket.emit("send-message", msgObj);
-  //   }
-  //   setData((prevMessage) => [...prevMessage, msgObj]);
-  // };
+  
 
   return (
     <div className="h-[calc(100vh-10vh)] flex   ">

@@ -86,7 +86,7 @@ function LoginForm({ handleLoginForm, loading }) {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="Email"
+                placeholder="Enter your email"
                 required
                 ref={emailRef}
               />
@@ -112,7 +112,7 @@ function LoginForm({ handleLoginForm, loading }) {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
-                  placeholder="Password"
+                  placeholder="Enter Your password"
                   minLength={8}
                   maxLength={8}
                   required

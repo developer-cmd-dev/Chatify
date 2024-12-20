@@ -16,7 +16,7 @@ function Header({
   classname = "",
   hamburger = "",
 }) {
-  const [hamBurger, setHamBurger] = useState();
+  const [hamBurger, setHamBurger] = useState(false);
   const [showHamburger, setShowHamburger] = useState(false);
   const userData = useSelector((state)=>state.UserData)
   const isHamburger = useSelector((state) => state.hamBurger.value);
@@ -53,12 +53,13 @@ function Header({
 
   const handleHamburger = ()=>{
     setHamBurger((prev)=>!prev)
+    console.log('clicked')
   }
 
   return (
     <>
       <div
-        className={`${classname}  flex items-center justify-center  `}
+        className={`${classname}  flex items-center justify-center `}
       >
         <div className="leftNav  logo w-[50%] flex items-center justify-start  pl-5  ">
           {logo && <Logo classname={`w-24 rounded-lg sm:w-32 lg:w-32`} />}
@@ -68,7 +69,7 @@ function Header({
        {  showHamburger && <Hamburger handleHamburger = {handleHamburger} classname="text-white mr-4 lg:hidden"/>}
         </div>
 
-        <div className={`rightNav  w-[90%] sm:w-[40%] md:w-[40%]  ${showHamburger ? 'absolute top-0 right-0 items-start justify-end lg:relative lg:w-[50%] bg-slate-900':' flex items-center justify-center'}  h-full ${hamBurger && 'hidden'}  lg:bg-transparent `}>
+        <div className={`rightNav  w-[60%] sm:w-[40%] md:w-[40%]  ${showHamburger ? 'absolute top-0 right-0 items-start justify-end lg:relative lg:w-[50%] bg-slate-900':' flex items-center justify-center'}  h-full ${!hamBurger && 'hidden'}  lg:bg-transparent `}>
           {!showHamburger ? (
             <DarkModeButton />
           ) : (
