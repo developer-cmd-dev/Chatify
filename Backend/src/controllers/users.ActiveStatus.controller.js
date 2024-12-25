@@ -5,7 +5,7 @@ import {User} from '../models/user.models.js'
 
 
 const setUserOnlineStatus = asyncHandler(async(req,res,next)=>{
-   
+        
        try {
         const {_id} = req.body;
         if(!_id || _id.trim()===""){

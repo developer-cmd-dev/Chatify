@@ -9,7 +9,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // get user details from frontend.
   const { username, email, fullname, password, gender, avatar } = req.body;
   // validate-empty field
-  if ([username, email, fullname, password, gender, avatar].some((fields) => fields?.trim() === "")
+  if ([username, email, fullname, password, gender].some((fields) => fields?.trim() === "")
   ) {
     throw new ApiError(400, "All fields are required.");
   }
@@ -26,8 +26,13 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // check for image- avatar
   let avatarLocalPath;
+  let iconColor=''
 
-  console.log(req.files)
+    if(!avatar){
+      iconColor= Math.floor(Math.random()*1000)
+    }  
+  
+
   if (req.files && Array.isArray(req.files.avatar) && req.files.avatar.length > 0) {
     avatarLocalPath = req.files.avatar[0].path
   }
@@ -35,12 +40,15 @@ const registerUser = asyncHandler(async (req, res) => {
   // upload them in cloudinary .
   const avatarUrl = await uploadOnCloudinary(avatarLocalPath);
 
+  
+
   const user = await User.create({
     fullname,
     email,
     password,
     username: username.toLowerCase(),
     avatar: avatarUrl?.url || "",
+    userIconColor:`#${iconColor}`
   });
 
 

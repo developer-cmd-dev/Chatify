@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "./index";
 import { FaPlus } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 
-function MessageInput({ classname, colorThemeCode,messageFunc }) {
+function MessageInput({ classname, colorThemeCode,messageData }) {
   const [message , setMessage]=useState('')
+
+
 
 
 
@@ -29,12 +31,13 @@ function MessageInput({ classname, colorThemeCode,messageFunc }) {
           onchange={handleMessage}
           required
         />
+
       </div>
       <button
         className=" w-10 h-10 rounded-full flex items-center justify-center "
         style={{ background: colorThemeCode }}
         onClick={()=>{
-          messageFunc(message)
+          messageData(message)
           setMessage('')
         }}
         

@@ -1,5 +1,9 @@
 export const chatHandler = (socket)=>{
     socket.on('chat:message',(data)=>{
-        socket.broadcast.emit('message',data)
+        const msgObj = {
+            ...data,
+            type:'user-message'
+        }
+        socket.broadcast.emit('message',msgObj)
     })
 }

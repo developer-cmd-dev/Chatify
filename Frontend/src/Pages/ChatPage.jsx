@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { MessageInput, UserJoined } from "../Components";
 import { useSelector,useDispatch } from "react-redux";
-import { connectSocket, getSocket } from "../utils/SocketConnection";
+import { connectSocket, disconnectSocket, getSocket } from "../utils/SocketConnection";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
 import {apiRequest} from '../utils/axiosHandler'
 import { setProgress } from "../Features/TopLoaderSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useResolvedPath } from "react-router-dom";
+import { FaWindowMinimize } from "react-icons/fa6";
 
 function ChatPage() {
   const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
@@ -13,24 +14,58 @@ function ChatPage() {
   const isAuthenticate = useSelector((state)=>state.Authenticate);
   const dispatch = useDispatch()
   const location = useLocation()
-
-  const [data, setData] = useState([]);
+  const [message, setMessage] = useState([]);
   const [activeUsers, setActiveusers] = useState([]);
   const [yourData, setYourData] = useState({});
   const userData = useSelector((state)=>state.UserData)
+  const [isLeaving,setIsLeaving]= useState(false)
+
+
+  
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault()
+      disconnectSocket('/home','patch',userData._id)
+      e.returnValue= 'Do you want to exit chat.'
+    };
+
+    // Attach the beforeunload event listener
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      // Cleanup the event listener on component unmount
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  const messageData= async(data)=>{
+      try {
+        const socket = await getSocket()
+        let msgObj = {msg:data,username:userData.username,type:'my-message'}
+        socket.emit('chat:message',msgObj)
+        setMessage((prev)=>[...prev,msgObj])
+      } catch (error) {
+        console.log(error.message)
+      }
+  }
+
+
 
 useEffect(()=>{
   ;(async()=>{
       try {
         let socket = await getSocket();
-        if(!socket){
-          socket = await connectSocket();
-          console.log("socket is connected");
-          socket.emit("user-joined",userData );
-          socket.on('new-user-joined',data=>{
-            console.log(data)
-          })
-        }
+    
+        socket.emit("user-joined",userData );
+        socket.on('new-user-joined',data=>{
+          console.log(data)
+        })
+
+        socket.on('message',data=>{
+          console.log(data)
+            setMessage((prev)=>[...prev,data])
+        })
        
       } catch (error) {
         console.log(error);
@@ -79,8 +114,8 @@ useEffect(()=>{
           } `}
         >
           <div className={`text-white  flex flex-col items-end `}>
-            {data.length > 0
-              ? data.map((dataValue, index) => {
+            {message.length > 0
+              ? message.map((dataValue, index) => {
                   if (
                     dataValue.type == "my-message" ||
                     dataValue.type == "user-message"
@@ -135,7 +170,7 @@ useEffect(()=>{
             isDarkMode ? "bg-black" : "bg-white"
           }`}
         >
-          <MessageInput colorThemeCode={colorTheme} messageFunc={''} />
+          <MessageInput colorThemeCode={colorTheme} messageData={messageData} />
         </div>
       </div>
     </div>
