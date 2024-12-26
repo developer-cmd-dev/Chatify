@@ -28,7 +28,7 @@ const registerUser = asyncHandler(async (req, res) => {
   let avatarLocalPath;
   let iconColor=''
 
-    if(!avatar){
+    if(!avatar || avatar === ''){
       iconColor= Math.floor(Math.random()*1000)
     }  
   
@@ -76,7 +76,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     if (!isPassWordValid) {
       throw new ApiError(400, "Password did not match.", ["Ensure your password is correct."])
     }
-    const userData = await User.findById(existedUser._id).select('-password -refreshToken -createdAt -updatedAt')
+    const userData = await User.findById(existedUser._id).select("-password -refreshToken -createdAt -updatedAt")
     if(!userData) throw new ApiError(404,"user data not found")
     res.status(200).json(new ApiResponse(200,userData, "Password Matched"))
     

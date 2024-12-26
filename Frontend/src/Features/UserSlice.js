@@ -9,6 +9,7 @@ export const UserSlice = createSlice({
         email:'',
         fullname:'',
         avatar:'',
+        userIconColor:''
     },
     reducers:{
         handleUserData:(state,action)=>{
@@ -17,6 +18,7 @@ export const UserSlice = createSlice({
             state.email = action.payload.email
             state.fullname = action.payload.fullname
             state.avatar = action.payload.avatar
+            state.userIconColor = action.payload.userIconColor
         }
     }
     

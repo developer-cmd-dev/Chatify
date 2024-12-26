@@ -18,7 +18,6 @@ function HomePage() {
   (async () => {
     try {
       const res = await disconnectSocket(location.pathname,'patch',userData._id);
-      console.log(res)
     } catch (error) {
       console.log(error);
     }

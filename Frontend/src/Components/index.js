@@ -17,6 +17,8 @@ import HeroSection from "./HeroSection";
 import GlobalChatRoom from "./GlobalChatRoom";
 import PrivateChatRoom from "./PrivateChatRoom";
 import ChatMode from "./ChatMode";
+import DialogBox from "./DialogBox";
+import ChatContainer from "./ChatContainer";
 export {
     Children,
     Input,
@@ -36,5 +38,8 @@ export {
     HeroSection,
     GlobalChatRoom,
     PrivateChatRoom,
-    ChatMode
+    ChatMode,
+    DialogBox,
+    ChatContainer
+    
 }

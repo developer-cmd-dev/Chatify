@@ -6,6 +6,7 @@ import AuthenticateReducer from '../Features/AuthenticateSlice'
 import TopLoaderReducer from '../Features/TopLoaderSlice'
 import ErrorReducer from '../Features/ErrorSlice'
 import UserReducer from '../Features/UserSlice'
+import DialogBoxReducer from '../Features/DialogBoxSlice'
 export const store = configureStore({
     reducer:{
         hamBurger:hamburgerReducer,
@@ -14,6 +15,7 @@ export const store = configureStore({
         Authenticate:AuthenticateReducer,
         TopLoader:TopLoaderReducer,
         ErrorState:ErrorReducer,
-        UserData:UserReducer
+        UserData:UserReducer,
+        DialogBox:DialogBoxReducer
     }
 })

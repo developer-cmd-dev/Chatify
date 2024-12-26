@@ -1,80 +1,60 @@
 import React, { useEffect, useId, useRef, useState } from "react";
-import { MessageInput, UserJoined } from "../Components";
+import { MessageInput, UserJoined,ChatContainer } from "../Components";
 import { useSelector,useDispatch } from "react-redux";
-import { connectSocket, disconnectSocket, getSocket } from "../utils/SocketConnection";
-import { isAuthenticated } from "../Features/AuthenticateSlice";
+import {  disconnectSocket, getSocket } from "../utils/SocketConnection";
 import {apiRequest} from '../utils/axiosHandler'
 import { setProgress } from "../Features/TopLoaderSlice";
 import { useLocation, useResolvedPath } from "react-router-dom";
-import { FaWindowMinimize } from "react-icons/fa6";
+
 
 function ChatPage() {
-  const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
-  const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const isAuthenticate = useSelector((state)=>state.Authenticate);
+
   const dispatch = useDispatch()
   const location = useLocation()
-  const [message, setMessage] = useState([]);
-  const [activeUsers, setActiveusers] = useState([]);
-  const [yourData, setYourData] = useState({});
   const userData = useSelector((state)=>state.UserData)
-  const [isLeaving,setIsLeaving]= useState(false)
+  const [activeUsers,setActiveusers]=useState([])
 
 
-  
-
+//  Close window page 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       e.preventDefault()
       disconnectSocket('/home','patch',userData._id)
-      e.returnValue= 'Do you want to exit chat.'
     };
-
-    // Attach the beforeunload event listener
+    
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      // Cleanup the event listener on component unmount
+
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
-  const messageData= async(data)=>{
-      try {
-        const socket = await getSocket()
-        let msgObj = {msg:data,username:userData.username,type:'my-message'}
-        socket.emit('chat:message',msgObj)
-        setMessage((prev)=>[...prev,msgObj])
-      } catch (error) {
-        console.log(error.message)
-      }
-  }
 
 
 
+
+// Get socket and handle socket events.
 useEffect(()=>{
   ;(async()=>{
-      try {
-        let socket = await getSocket();
-    
-        socket.emit("user-joined",userData );
-        socket.on('new-user-joined',data=>{
-          console.log(data)
-        })
+  try {
+      const socket = await getSocket();
+      socket.on('new-user-joined',data=>{
+        setActiveusers((prev)=>[...prev,data])
+      })
+  } catch (error) {
+    console.log(error)
+  }
 
-        socket.on('message',data=>{
-          console.log(data)
-            setMessage((prev)=>[...prev,data])
-        })
-       
-      } catch (error) {
-        console.log(error);
-      }
   })()
 
 },[])
 
 
+
+
+
+// Fetch active users from db.
   useEffect(()=>{
     ;(async()=>{
       try {
@@ -87,6 +67,7 @@ useEffect(()=>{
   
         const response = await apiRequest(`/api/v1${location.pathname}`,'patch',{_id:userData._id});
         setActiveusers(response.data.data)
+
   
   
       } catch (error) {
@@ -98,80 +79,12 @@ useEffect(()=>{
 
 
 
-
-
-
-  
-
   return (
     <div className="h-[calc(100vh-10vh)] flex   ">
       <UserJoined classname={" w-[12vw]"} activeUsers={activeUsers} />
 
       <div className="bg-gray-400 w-full  ">
-        <div
-          className={`chatContainer h-[calc(90vh-10vh)]  overflow-y-auto p-4 lg:pt-8  ${
-            isDarkMode ? "bg-black" : "bg-white"
-          } `}
-        >
-          <div className={`text-white  flex flex-col items-end `}>
-            {message.length > 0
-              ? message.map((dataValue, index) => {
-                  if (
-                    dataValue.type == "my-message" ||
-                    dataValue.type == "user-message"
-                  ) {
-                    return (
-                      <div
-                        key={index}
-                        className={`w-full flex item-center  ${
-                          dataValue.type == "my-message"
-                            ? "justify-end"
-                            : "justify-start"
-                        }`}
-                      >
-                        <div className="flex items-center justify-center">
-                          <span className={`h-10 w-10 rounded-full flex items-center justify-center `} style={{backgroundColor:dataValue.iconColor}} >
-                            {dataValue.username.slice(0,1)}
-                          </span>
-                          <div
-                            className={`min-w-[10%] max-w-fit p-2 mb-1   rounded-md`}
-                            style={{
-                              backgroundColor: dataValue.iconColor,
-                            }}
-                          >
-                            <p className="text-[0.8rem] italic">
-                              {dataValue.username}
-                            </p>
-                            <p className={`   `}>{dataValue.msg} </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-                  if (dataValue.type == "new-user-joined") {
-                    return (
-                      <div
-                        key={dataValue.id}
-                        className={
-                          "userJoinedMessage  text-black w-[50%] h-9 flex items-center mt-2 mb-2 text-sm p-1 rounded-md bg-green-200 "
-                        }
-                      
-                      >
-                        <p>{dataValue.username} has joined the chat.</p>
-                      </div>
-                    );
-                  }
-                })
-              : null}
-          </div>
-        </div>
-        <div
-          className={`messageInputContainer text-white h-[10vh]   ${
-            isDarkMode ? "bg-black" : "bg-white"
-          }`}
-        >
-          <MessageInput colorThemeCode={colorTheme} messageData={messageData} />
-        </div>
+          <ChatContainer/>
       </div>
     </div>
   );
