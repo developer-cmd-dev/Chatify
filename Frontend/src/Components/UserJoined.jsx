@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 
 function UserJoined({ classname, colortheme, activeUsers }) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  console.log(activeUsers)
 
   return (
     <div

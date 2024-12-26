@@ -65,6 +65,18 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 
+
+const generateAccessandRefreshTokens = async(userId)=>{
+const user = await User.findById(userId);
+const accessToken= user.generateAccessToken();
+const refreshToken = user.generateRefreshToken();
+user.refreshToken = refreshToken
+await user.save({validateBeforeSave:false})
+return {accessToken,refreshToken}
+
+
+}
+
 const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body
   if ([email, password].some((fields) => fields.trim() === "")) throw new ApiError(404, "All fields are required.");
@@ -76,15 +88,34 @@ const loginUser = asyncHandler(async (req, res, next) => {
     if (!isPassWordValid) {
       throw new ApiError(400, "Password did not match.", ["Ensure your password is correct."])
     }
-    const userData = await User.findById(existedUser._id).select("-password -refreshToken -createdAt -updatedAt")
-    if(!userData) throw new ApiError(404,"user data not found")
-    res.status(200).json(new ApiResponse(200,userData, "Password Matched"))
+    const loggedInUser = await User.findById(existedUser._id).select("-password -refreshToken -createdAt -updatedAt")
+    if(!loggedInUser) throw new ApiError(404,"user data not found")
+    const {refreshToken,accessToken} =await generateAccessandRefreshTokens();
+  const options = {
+    httpOnly:true,
+    secure:true
+  }
+
+  res
+  .status(200)
+  .cookie('accessToken',accessToken,options)
+  .cookie('refreshToken',refreshToken,options)
+  .json(new ApiResponse(200,{user:loggedInUser,accessToken,refreshToken},"User logged in Successfully"))
+    
+
+
+    
     
 
   } catch (error) {
     next(error)
   }
 
+})
+
+
+const logoutUser = asyncHandler(async(req,res,next)=>{
+  
 })
 
 const emailValidation = asyncHandler(async (req, res, next) => {
@@ -122,7 +153,7 @@ const updatepassword = asyncHandler(async (req, res, next) => {
     if (isOldPassword) throw new ApiError(409, "That's Your Old Password.")
 
     user.password = password
-    const response = await user.save()
+    const response = await user.save({validateBeforeSave:false})
     if (!response) {
       throw new ApiError(500, 'Password not reset.')
     }

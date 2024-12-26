@@ -17,15 +17,22 @@ function ChatPage() {
 
 //  Close window page 
   useEffect(() => {
-    const handleBeforeUnload = (e) => {
+    const handleBeforeUnload =async (e) => {
       e.preventDefault()
+      try {
+        const socket = await getSocket()
+        socket.emit('left-user',userData)
+    } catch (error) {
+      console.log(error);
+      
+    }
       disconnectSocket('/home','patch',userData._id)
+   
     };
     
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
@@ -41,6 +48,12 @@ useEffect(()=>{
       const socket = await getSocket();
       socket.on('new-user-joined',data=>{
         setActiveusers((prev)=>[...prev,data])
+      })
+
+      socket.on('offline',data=>{
+        const online = activeUsers
+        console.log(online)
+       setActiveusers(online)
       })
   } catch (error) {
     console.log(error)
