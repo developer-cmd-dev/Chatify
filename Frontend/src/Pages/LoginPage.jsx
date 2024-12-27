@@ -7,12 +7,34 @@ import { setProgress } from "../Features/TopLoaderSlice";
 import {setError} from '../Features/ErrorSlice'
 import { apiRequest } from "../utils/axiosHandler";
 import {handleUserData} from '../Features/UserSlice'
+import {useCookies} from 'react-cookie'
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+useEffect(() => {
+  ;(async()=>{
+    try {
+    const response = await apiRequest('/api/v1/auto-login','post')
+    dispatch(isAuthenticated({email:'',authenticate:true})) 
+    dispatch(handleUserData({...response.data.data}))
+    navigate('/home')
+    dispatch
+    } catch (error) {
+      console.log(error)
+      dispatch(setError({...error,isError:true}))
+    }
+  })()
+}, [])
+
+
+
+
+
+
 
   const handleLoginForm = async (data) => {
     dispatch(setError({isError:false}))
@@ -29,13 +51,16 @@ function LoginPage() {
       };
   
       const response = await apiRequest('/api/v1/','post',data,onProgress);
+      const {accessToken,refreshToken}=response.data.data;
+      
+      localStorage.setItem('accessToken',JSON.stringify(accessToken))
+      localStorage.setItem('refreshToken',JSON.stringify(refreshToken))
       dispatch(handleUserData({...response.data.data}))
       dispatch(isAuthenticated({email:'',authenticate:true}))
       navigate('/home')
       dispatch(setError({status:null,message:'',isError:false}))
-
-       
     } catch (error) {
+      console.log(error)
       dispatch(setError({...error,isError:true}))
     }
     setLoading(false)
