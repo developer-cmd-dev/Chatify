@@ -16,7 +16,7 @@ function App() {
       className="
     overflow-hidden h-screen  "
     >
-     <ToastContainer />
+     <ToastContainer autoClose={2000} />
    { shouldshowHeader &&  <Header
         logo={true}
         colorPallete={true}

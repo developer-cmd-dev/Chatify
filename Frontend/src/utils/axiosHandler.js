@@ -2,12 +2,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 
-export const  apiRequest = async(url,method,data,onProgress)=>{
-    const token = localStorage.getItem('accessToken')
+export const  apiRequest = async(url,method,data)=>{
+
     try {
-        const response = await axios({url,method,data,headers:{
-            Authorization:`Bearer ${token}`
-        },onUploadProgress:onProgress,onDownloadProgress:onProgress});
+        const response = await axios({url,method,data,withCredentials:true});
         return response
     } catch (error) {
         if(error.code === "ERR_NETWORK" || error.message === 'Network Error'){
@@ -15,7 +13,8 @@ export const  apiRequest = async(url,method,data,onProgress)=>{
         }else if(error.response){
             throw{
                 status:error.response.status,
-                message:error.response.data.message||'Something went wrong.'
+                message:error.response.data.message||'Something went wrong.',
+                success:false
             }
         }else{
             throw new Error('An expected error occurred.')

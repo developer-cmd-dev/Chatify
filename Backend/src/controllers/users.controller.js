@@ -4,6 +4,21 @@ import { User } from '../models/user.models.js'
 import { uploadOnCloudinary } from '../services/cloudinary.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 import  jwt  from 'jsonwebtoken'
+import { log } from 'console'
+
+
+const generateAccessandRefreshTokens = async(userId)=>{
+  const user = await User.findById(userId);
+  const accessToken= user.generateAccessToken();
+  const refreshToken = user.generateRefreshToken();
+  user.refreshToken = refreshToken
+  await user.save({validateBeforeSave:false})
+  return {accessToken,refreshToken}
+  
+  
+  }
+
+
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -66,54 +81,44 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 
-
-const generateAccessandRefreshTokens = async(userId)=>{
-const user = await User.findById(userId);
-const accessToken= user.generateAccessToken();
-const refreshToken = user.generateRefreshToken();
-user.refreshToken = refreshToken
-await user.save({validateBeforeSave:false})
-return {accessToken,refreshToken}
-
-
-}
-
-const loginUser = asyncHandler(async (req, res, next) => {
+const loginUser = asyncHandler(async (req, res,next) => {
   const { email, password } = req.body 
+
   
   if ([email, password].some((fields) => fields.trim() === "")) throw new ApiError(404, "All fields are required.");
   const existedUser = await User.findOne({ email })
 
   if (!existedUser) throw new ApiError(401, "Email not found!")
-  try {
-    const isPassWordValid = await existedUser.isPasswordCorrect(password)
-    if (!isPassWordValid) {
-      throw new ApiError(400, "Password did not match.", ["Ensure your password is correct."])
-    }
-    const loggedInUser = await User.findById(existedUser._id).select("-password -refreshToken")
-    if(!loggedInUser) throw new ApiError(404,"user data not found")
-    const {refreshToken,accessToken} = await generateAccessandRefreshTokens(loggedInUser._id);
-    const options = {
-    httpOnly:true,
-    secure:true
-  }
 
 
-  res
-  .status(200)
-  .cookie('accessToken',accessToken,options)
-  .cookie('refreshToken',refreshToken,options)
-  .json(new ApiResponse(200,{user:loggedInUser,accessToken,refreshToken},"User logged in Successfully"))
+try {
+        const isPassWordValid = await existedUser.isPasswordCorrect(password)
+        if (!isPassWordValid) {
+          throw new ApiError(400, "Password did not match.", ["Ensure your password is correct."])
+        }
+        const loggedInUser = await User.findById(existedUser._id).select("-password -refreshToken")
+        if(!loggedInUser) throw new ApiError(404,"user data not found")
+        const {refreshToken,accessToken} = await generateAccessandRefreshTokens(loggedInUser._id);
+        const options = {
+        httpOnly:true,
+        secure:true
+      }
     
-  } catch (error) {
-    // next(error)
-    throw new ApiError(404,'Error in web requrest.')
-  }
+    
+      res
+      .status(200)
+      .cookie('accessToken',accessToken,options)
+      .cookie('refreshToken',refreshToken,options)
+      .json(new ApiResponse(200,{user:loggedInUser,accessToken,refreshToken},"User logged in Successfully"))
+} catch (error) {
+  next(error)
+}
+
 
 })
 
 
-const logoutUser = asyncHandler(async(req,res,next)=>{
+const logoutUser = asyncHandler(async(req,res)=>{
   await User.findByIdAndUpdate(req.user,{
     $unset:{
       refreshToken:1
@@ -138,108 +143,93 @@ const logoutUser = asyncHandler(async(req,res,next)=>{
 
 })
 
-
 const autoLogin = asyncHandler(async(req,res,next)=>{
-  const {accessToken} = req.cookies;
-  if(!accessToken) throw new ApiError(401,'Unauthorized user')
-    try {
-      
-    const decodeUser = await jwt.verify(accessToken,process.env.ACCESS_TOKEN_SECRET);
-    if(!decodeUser) throw new ApiError(403, 'Forbidden: Invalid or expired token');
 
-    const user = await User.findById(decodeUser._id).select("-password -refreshToken")
-    if(!user) throw new ApiError(404,"User not found")
-    res.status(200).json(new ApiResponse(200,user,"User login successfully"))
-
-
-
-    } catch (error) {
-      next(error)
-    }
-
+  const {accessToken} = req?.cookies || req.body;
   
-})
-
-const refreshToken = asyncHandler(async(req,res,next)=>{
-  console.log(req.cookies);
   
+  if(!accessToken) throw new ApiError(401,"An authentication token was not received" );
+
+ try {
+   const decodedUser = jwt.verify(accessToken,process.env.ACCESS_TOKEN_SECRET);
+   
+   const user = await User.findById(decodedUser?._id).select("-password ")
+   if(!user) throw new ApiError(404,"Unauthorized user");
+   const options = {
+     httpOnly:true,
+     secure:true
+   }
+   res.status(200)
+   .cookie("accessToken",accessToken,options)
+   .cookie("refreshToken",user.refreshToken,options)
+   .json(new ApiResponse(200,{user,accessToken},"user login successfully"))
+ } catch (error) {
+  throw new ApiError(401,"Access Token Expired")
+ }
+})
+
+
+const refreshToken = asyncHandler(async (req,res,next)=>{
+const incomingRefreshToken = req?.cookies.refreshToken || req.body.refreshToken
+
+if(!incomingRefreshToken) throw new ApiError(401,"unauthorized request");
+try {
+  
+  const decodedUser = jwt.verify(incomingRefreshToken,process.env.REFRESH_TOKEN_SECRET)
+  const user = await User.findById(decodedUser._id).select("-password");
+
+  if(!user){
+    throw new ApiError(401,'Invalid refresh token')
+  }
+
+  if(incomingRefreshToken !== user.refreshToken) throw new ApiError(401,"Refresh token is expired or used")
+
+  const {accessToken,refreshToken} = await generateAccessandRefreshTokens(user._id);
+
+
+  const options = {
+    httpOnly:true,
+    secure:true
+  }
+  res
+  .status(200)
+  .cookie('accessToken',accessToken,options)
+  .cookie('refreshToken',refreshToken,options)
+  .json(new ApiResponse(200,user,"accessToken is refreshed"))
+
+} catch (error) {
+  next(error)
+}
+
 
 })
 
 
-const emailValidation = asyncHandler(async (req, res, next) => {
-  const { email } = req.body;
-
-  if (!email || email.trim() === "") {
-    throw new ApiError(404, "Email fields are required.")
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new ApiError(404, 'email not found!')
-    }
-    res.status(200).json(new ApiResponse(200, "email found"));
-  } catch (error) {
-    next(error)
-  }
-
-
-})
-
-const updatepassword = asyncHandler(async (req, res, next) => {
-  const { email, password } = req.body;
-  if ([email, password].some((fields) => fields.trim() === "")) {
-    throw new ApiError(404, "All fields are required.")
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new ApiError(404, "Email is not found")
-    }
-    const isOldPassword = await user.isPasswordCorrect(password);
-    if (isOldPassword) throw new ApiError(409, "That's Your Old Password.")
-
-    user.password = password
-    const response = await user.save({validateBeforeSave:false})
-    if (!response) {
-      throw new ApiError(500, 'Password not reset.')
-    }
-    res.status(200).json(new ApiResponse(200, "Password Updated successfully."));
-  } catch (error) {
-    next(error)
-  }
-
-
-
-})
-
-const userActiveStatus = asyncHandler(async(req,res,next)=>{
-  try {
-    const {_id} = req.body;
+// const userActiveStatus = asyncHandler(async(req,res)=>{
+//   try {
+//     const {_id} = req.body;
     
-    if(!_id || _id.trim()===''){
-      throw new ApiError(404,'Id is required');
-    }
+//     if(!_id || _id.trim()===''){
+//       throw new ApiError(404,'Id is required');
+//     }
 
-    const user = await User.findById(_id);
-    if(!user){
-      throw new ApiError(404,"User not found.")
-    }
-    if(!user.isOnline) { 
-      user.isOnline = true;
-      const res = await user.save();
-    }
+//     const user = await User.findById(_id);
+//     if(!user){
+//       throw new ApiError(404,"User not found.")
+//     }
+//     if(!user.isOnline) { 
+//       user.isOnline = true;
+//       const res = await user.save();
+//     }
 
-    const getOnlineUsers = await User.find({isOnline:true})
-    if(!getOnlineUsers){
-      throw new ApiError(404,'NO active users.')
-    }
-    res.status(200).json(new ApiResponse(200,getOnlineUsers,'All active users.'))
-  } catch (error) {
-    next(error)
-  }
-})
+//     const getOnlineUsers = await User.find({isOnline:true})
+//     if(!getOnlineUsers){
+//       throw new ApiError(404,'NO active users.')
+//     }
+//     res.status(200).json(new ApiResponse(200,getOnlineUsers,'All active users.'))
+//   } catch (error) {
+    
+//   }
+// })
 
-export { registerUser, loginUser,logoutUser, emailValidation, updatepassword,userActiveStatus,refreshToken,autoLogin }
+export { registerUser, loginUser,logoutUser,refreshToken,autoLogin }

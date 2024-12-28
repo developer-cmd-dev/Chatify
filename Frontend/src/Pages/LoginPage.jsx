@@ -8,6 +8,7 @@ import {setError} from '../Features/ErrorSlice'
 import { apiRequest } from "../utils/axiosHandler";
 import {handleUserData} from '../Features/UserSlice'
 import {useCookies} from 'react-cookie'
+import { handleError,handleSuccess } from "../utils/toastify";
 
 function LoginPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
@@ -15,23 +16,34 @@ function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-useEffect(() => {
-  ;(async()=>{
-    try {
-    const response = await apiRequest('/api/v1/auto-login','post')
-    dispatch(isAuthenticated({email:'',authenticate:true})) 
-    dispatch(handleUserData({...response.data.data}))
-    navigate('/home')
-    dispatch
-    } catch (error) {
-      console.log(error)
-      dispatch(setError({...error,isError:true}))
-    }
-  })()
-}, [])
+  useEffect(()=>{
+    ;(async()=>{
+      try {
+        const res =await apiRequest('/api/v1/auto-login','post',null);
+        const userData = res.data.data.user
+        dispatch(isAuthenticated({authenticate:true}))
+        dispatch(handleUserData({...userData}))
+        navigate('/home')
+        return handleSuccess(res.data.message)
+        
+      } catch (error) {
+        if(!error.success){
+          try {
+            const res = await apiRequest('/api/v1/refresh-token','post',null)
+            dispatch(handleUserData({...res.data.data}))
+            dispatch(isAuthenticated({authenticate:true}))
+            navigate('/home')
+            return handleSuccess(res.data.message)
+          } catch (error) {
+            return handleError(error.message)
+          }
+        }
+        // return handleError(error.message)
+        
+      }
 
-
-
+    })()
+  },[])
 
 
 
@@ -39,31 +51,15 @@ useEffect(() => {
   const handleLoginForm = async (data) => {
     dispatch(setError({isError:false}))
     try {
-      setLoading(true)
-      dispatch(setProgress(10)); 
-      const onProgress = (progressEvent) => {
-        const progress = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        if (progress >= 90) {
-          dispatch(setProgress(progress));
-        }
-      };
-  
-      const response = await apiRequest('/api/v1/','post',data,onProgress);
-      const {accessToken,refreshToken}=response.data.data;
-      
-      localStorage.setItem('accessToken',JSON.stringify(accessToken))
-      localStorage.setItem('refreshToken',JSON.stringify(refreshToken))
-      dispatch(handleUserData({...response.data.data}))
-      dispatch(isAuthenticated({email:'',authenticate:true}))
+      const response = await apiRequest('/api/v1/','post',data);
+      dispatch(isAuthenticated({authenticate:true}))
+      const userdata = response.data.data.user;
+      dispatch(handleUserData({...userdata}))
       navigate('/home')
-      dispatch(setError({status:null,message:'',isError:false}))
+      return handleSuccess(response.data.message);
     } catch (error) {
-      console.log(error)
-      dispatch(setError({...error,isError:true}))
+      return handleError(error.message)
     }
-    setLoading(false)
 
 
     
@@ -71,24 +67,10 @@ useEffect(() => {
 
   const handleRegisterForm = async (data) => {
     try {
-      dispatch(setProgress(10))
-      setLoading(true)
-      const onProgress = (progressEvent)=>{
-        const progress = Math.round((progressEvent.loaded * 100)/progressEvent.total);
-        if(progress > 90){
-          dispatch(setProgress(progress))
-        }
-      }
+    const response = await apiRequest('/api/v1/register','post',data,onProgress)
 
-      const response = await apiRequest('/api/v1/register','post',data,onProgress)
-      console.log(response.data)
-      dispatch(isAuthenticated({email:'',authenticated:true}))
-      navigate('/home');
-      dispatch(setError({status:null,message:'',isError:false}))
-
-      
     } catch (error) {
-      dispatch(setError({...error,isError:true}))
+
     }
 
   };

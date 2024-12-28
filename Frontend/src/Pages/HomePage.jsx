@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HeroSection } from "../Components/index";
 import { useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router-dom";
+import {handleSuccess,handleError} from '../utils/toastify'
 import {
   connectSocket,
   getSocket,
@@ -18,6 +19,7 @@ function HomePage() {
   (async () => {
     try {
       const res = await disconnectSocket(location.pathname,'patch',userData._id);
+      return handleError("Disconnected From Global Chat")
     } catch (error) {
       console.log(error);
     }
@@ -28,8 +30,9 @@ function HomePage() {
   const handleConnectSocket = async () => {
     try {
       const socket = await connectSocket();
-      console.log("socket is connected");
       socket.emit("user-joined", userData);
+      return handleSuccess(`${userData.username} is joined the Global chat`)
+
     } catch (error) {
       console.log(error.response);
     }
