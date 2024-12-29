@@ -19,6 +19,7 @@ import PrivateChatRoom from "./PrivateChatRoom";
 import ChatMode from "./ChatMode";
 import DialogBox from "./DialogBox";
 import ChatContainer from "./ChatContainer";
+import ProfileDropdown from "./ProfileDropdown";
 export {
     Children,
     Input,
@@ -40,6 +41,7 @@ export {
     PrivateChatRoom,
     ChatMode,
     DialogBox,
-    ChatContainer
+    ChatContainer,
+    ProfileDropdown
     
 }

@@ -16,14 +16,17 @@ function HomePage() {
   const userData = useSelector((state) => state.UserData);
   const location = useLocation();
 
-  (async () => {
-    try {
-      const res = await disconnectSocket(location.pathname,'patch',userData._id);
-      return handleError("Disconnected From Global Chat")
-    } catch (error) {
-      console.log(error);
-    }
-  })();
+  useEffect(()=>{
+
+    (async () => {
+      try {
+        const res = await disconnectSocket(location.pathname,'patch',userData._id);
+        // return handleError("Disconnected From Global Chat")
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  },[])
 
   
 

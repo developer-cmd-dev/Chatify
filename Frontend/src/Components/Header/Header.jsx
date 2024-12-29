@@ -9,6 +9,7 @@ import { CiLogout } from "react-icons/ci";
 import { isAuthenticated } from "../../Features/AuthenticateSlice";
 import { connectSocket, disconnectSocket, getSocket } from "../../utils/SocketConnection";
 import LoadingBar from "react-top-loading-bar";
+import {ProfileDropdown} from '../index'
 function Header({
   logo = true,
   colorPallete = true,
@@ -61,7 +62,7 @@ function Header({
       <div
         className={`${classname}  flex items-center justify-center `}
       >
-        <div className="leftNav  logo w-[50%] flex items-center justify-start  pl-5  ">
+        <div className="leftNav   logo w-[50%] flex items-center justify-start  pl-5  ">
           {logo && <Logo classname={`w-24 rounded-lg sm:w-32 lg:w-32`} />}
         </div>
 
@@ -69,9 +70,19 @@ function Header({
        {  showHamburger && <Hamburger handleHamburger = {handleHamburger} classname="text-white mr-4 lg:hidden"/>}
         </div>
 
-        <div className={`rightNav  w-[60%] sm:w-[40%] md:w-[40%]  ${showHamburger ? 'absolute top-0 right-0 items-start justify-end lg:relative lg:w-[50%] bg-slate-900':' flex items-center justify-center'}  h-full ${!hamBurger && 'hidden'}  lg:bg-transparent `}>
+        <div className={`rightNav   w-[60%] sm:w-[40%] md:w-[40%] lg:w-[80%]   ${showHamburger ? 'absolute top-0 right-0 items-start justify-end lg:relative lg:w-[50%] bg-slate-900':' flex items-center justify-end'}  h-full   lg:bg-transparent `}>
+          
           {!showHamburger ? (
-            <DarkModeButton />
+            <div className=" flex items-center justify-around h-full w-fit ">
+              <div className="profileDropdown flex item-center justify-center h-full w-fit ">
+              { location.pathname !== '/' && <ProfileDropdown/>}
+
+              </div>
+           <div className="darkmodebutton flex item-center justify-center h-full w-fit ">
+           <DarkModeButton/>
+
+           </div>
+            </div>
           ) : (
             showHamburger && (
               <div className=" w-full  h-[10vh]   flex items-center justify-around">
@@ -101,13 +112,13 @@ function Header({
         </div>
       </div>
 
-      <LoadingBar
+      {/* <LoadingBar
         color="linear-gradient(90deg, rgba(83,19,19,1) 0%, rgba(200,18,95,1) 29%, rgba(0,212,255,1) 94%)"
         progress={progress}
         className=""
         height={5}
         
-      />
+      /> */}
     </>
   );
 }
