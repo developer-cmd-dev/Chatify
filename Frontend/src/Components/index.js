@@ -1,6 +1,7 @@
 import Children from "./Children/Children";
 import Input from "./Input";
-import Hamburger from "./Hamburger";
+
+import HamburgerCom from './HamburgerCom'
 import UserJoined from "./UserJoined";
 import Logo from "./Logo";
 import DarkModeButton from './DarkModeButton';
@@ -23,7 +24,7 @@ import ProfileDropdown from "./ProfileDropdown";
 export {
     Children,
     Input,
-    Hamburger,
+    HamburgerCom,
     UserJoined,
     Logo,
     DarkModeButton,

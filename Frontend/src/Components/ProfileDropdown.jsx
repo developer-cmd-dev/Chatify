@@ -1,10 +1,8 @@
 import React from "react";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
-import { useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import {handleSuccess,handleError} from '../utils/toastify'
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User, useSelect} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User} from "@nextui-org/react";
 import { apiRequest } from "../utils/axiosHandler";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
@@ -24,7 +22,7 @@ function ProfileDropdown({color,variant}) {
   }
 
   return (
-    <Dropdown placement="bottom-start">
+    <Dropdown placement="bottom-start bg-black">
     <DropdownTrigger className="w-full  text-white ">
       <User
         as="button"

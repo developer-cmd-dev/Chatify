@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "@ably/chat": "^0.2.1",
     "@nextui-org/react": "^2.6.10",
-    "framer-motion": "^11.15.0"
+    "ably": "^2.6.0",
+    "framer-motion": "^11.15.0",
+    "hamburger-react": "^2.5.2",
+    "sonner": "^1.7.1"
   }
 }

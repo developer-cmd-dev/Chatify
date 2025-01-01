@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
@@ -9,13 +8,10 @@ import HomePage from "./Pages/HomePage.jsx";
 import Error from "./Pages/Error.jsx";
 import { Provider } from "react-redux";
 import { store } from "./App/store.js";
-import { useSelector } from "react-redux";
 import PrivateRoute from "./Pages/PrivateRoute.jsx";
-import { RegisterForm } from "./Components/index.js";
-import { ReducerType } from "@reduxjs/toolkit";
+
 import {
   ResetPassword,
-  GlobalChatRoom,
   PrivateChatRoom,
   ChatMode,
 } from "./Components/index.js";

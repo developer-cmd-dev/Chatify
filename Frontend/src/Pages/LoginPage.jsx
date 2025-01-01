@@ -35,8 +35,8 @@ function LoginPage() {
             navigate('/home')
             return handleSuccess(res.data.message)
           } catch (error) {
-            return handleError(error.message)
-          }
+            console.log(error.message)
+            }
         }
         // return handleError(error.message)
         

@@ -6,7 +6,6 @@ import {apiRequest} from '../utils/axiosHandler'
 import { setProgress } from "../Features/TopLoaderSlice";
 import { useLocation, useResolvedPath } from "react-router-dom";
 
-
 function ChatPage() {
 
   const dispatch = useDispatch()
@@ -16,26 +15,26 @@ function ChatPage() {
 
 
 //  Close window page 
-  useEffect(() => {
-    const handleBeforeUnload =async (e) => {
-      e.preventDefault()
-      try {
-        const socket = await getSocket()
-        socket.emit('left-user',userData)
-    } catch (error) {
-      console.log(error);
+  // useEffect(() => {
+  //   const handleBeforeUnload =async (e) => {
+  //     e.preventDefault()
+  //     try {
+  //       const socket = await getSocket()
+  //       socket.emit('left-user',userData)
+  //   } catch (error) {
+  //     console.log(error);
       
-    }
-      disconnectSocket('/home','patch',userData._id)
+  //   }
+  //     disconnectSocket('/home','patch',userData._id)
    
-    };
+  //   };
     
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, []);
 
 
 
@@ -52,7 +51,7 @@ useEffect(()=>{
 
       socket.on('offline',data=>{
         const online = activeUsers
-        console.log(online)
+        console.log(data)
        setActiveusers(online)
       })
   } catch (error) {
@@ -62,6 +61,9 @@ useEffect(()=>{
   })()
 
 },[])
+
+
+
 
 
 

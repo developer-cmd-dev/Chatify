@@ -2,8 +2,9 @@ import "./App.css";
 import { Outlet,  useLocation } from "react-router-dom";
 import { Header } from "./Components";
 import { useSelector } from "react-redux";
-import {ToastContainer} from 'react-toastify'
 import {NextUIProvider} from '@nextui-org/react'
+import {Toaster} from 'sonner'
+
 
 
 function App() {
@@ -12,13 +13,15 @@ function App() {
   const hideHeaderPath = []
   const shouldshowHeader = !hideHeaderPath.includes(location.pathname)
 
+  
+
   return (
     <NextUIProvider>
     <div
       className="
     overflow-hidden h-screen  "
     >
-     <ToastContainer autoClose={2000} />
+     <Toaster/>
    { shouldshowHeader &&  <Header
         logo={true}
         colorPallete={true}
