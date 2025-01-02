@@ -2,6 +2,7 @@ import {asyncHandler} from '../utils/AsyncHandler.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
 import {ApiError} from '../utils/ApiError.js'
 import {User} from '../models/user.models.js'
+import { error } from 'console'
 
 
 const setUserOnlineStatus = asyncHandler(async(req,res,next)=>{
@@ -11,14 +12,26 @@ const setUserOnlineStatus = asyncHandler(async(req,res,next)=>{
         if(!_id || _id.trim()===""){
             throw new ApiError(404,'Id is required.')
         }
-        const getUser = await User.findById(_id)
+        const getUser = await User.findByIdAndUpdate(_id,{isOnline:true})
         if(!getUser) throw new ApiError(404,'User not found.');
-        getUser.isOnline = false
-        getUser.save()
-        res.status(200).json(new ApiResponse(200,"User is offline."))
+        res.status(200).json(new ApiResponse(200,"User is online."))
        } catch (error) {
         next(error)
        }
 })
 
-export {setUserOnlineStatus}
+const getOnlineUsers = asyncHandler(async(req,res,next)=>{
+    try {
+        const activeUsers = await User.find({isOnline:true});
+        res.status(200).json(new ApiResponse(200,activeUsers))
+    } catch (error) {
+        throw new ApiError(500,'DB Error')
+    }
+ 
+
+  
+
+
+})
+
+export {setUserOnlineStatus,getOnlineUsers}

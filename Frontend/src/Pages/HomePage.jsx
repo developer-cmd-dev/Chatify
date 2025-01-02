@@ -17,7 +17,6 @@ function HomePage() {
   const location = useLocation();
 
   useEffect(()=>{
-
     (async () => {
       try {
         const res = await disconnectSocket(location.pathname,'patch',userData._id);
@@ -34,8 +33,8 @@ function HomePage() {
     try {
       const socket = await connectSocket();
       socket.emit("user-joined", userData);
+      const res = await apiRequest('api/v1/set-user-online','patch',{_id:userData._id});
       return handleSuccess(`${userData.username} is joined the Global chat`)
-
     } catch (error) {
       console.log(error.response);
     }
@@ -45,15 +44,19 @@ function HomePage() {
     <div
       className={`${
         isDarkMode ? "bg-black " : "bg-white"
-      } h-[calc(100vh-10vh)] flex items-center justify-around  text-black`}
+      }  h-[calc(100vh-10vh)] flex items-center justify-around  text-black`}
     >
-      <div className=" hidden lg:block">
+      <div className=" hidden lg:block  w-[50%]">
         <HeroSection />
       </div>
 
-      <span className="h-[50%] hidden lg:block bg-gray-300 w-1 rounded-full"></span>
-
-      <div className="w-[98%] sm:w-[50%] md:[30%] lg:[30%] h-full  flex flex-col items-center justify-center">
+      <span
+          className={` w-[90%]  h-0 border-2 hidden lg:block ${
+            isDarkMode ? "border-gray-800" : "border-gray-300"
+          } rounded-full
+                        md:w-0 md:h-[50%] `}
+        ></span>
+      <div className="w-[90%]  sm:w-[50%] md:[30%] lg:w-[40vw]   h-full  flex flex-col items-center justify-center">
         <Outlet context={{ makeSocketConnection: handleConnectSocket }} />
       </div>
     </div>

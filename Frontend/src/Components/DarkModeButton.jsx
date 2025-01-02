@@ -17,7 +17,7 @@ function DarkModeButton() {
   return (
     <button
       onClick={()=> setDarkMode((prev)=>!prev)}
-      className={`relative  transition-all  w-10 h-5 mr-5 ${isDarkMode?'bg-darkButton':'bg-lightButton'} bg-center bg-no-repeat bg-cover rounded-full flex items-center  z-20  sm:w-14 sm:h-6  lg:m-8 lg:h-6 lg:w-14  `}
+      className={`relative  transition-all   w-12 h-6 mr-5 ${isDarkMode?'bg-darkButton':'bg-lightButton'} bg-center bg-no-repeat bg-cover rounded-full flex items-center  z-20    `}
     >
       <span className={`absolute transition-all mr-1 ml-1 w-3 h-3 ${isDarkMode?'bg-white right-0':'bg-black left-0'}  rounded-full sm:w-4 sm:h-4 lg:h-4 lg:w-4 `  }></span>
     </button>

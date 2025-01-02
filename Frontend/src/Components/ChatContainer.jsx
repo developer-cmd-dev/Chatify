@@ -18,7 +18,6 @@ function ChatContainer() {
           setMessage((prev) => [...prev, data]);
         });
       } catch (error) {
-
       }
     })();
   },[]);

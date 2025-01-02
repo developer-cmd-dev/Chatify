@@ -205,31 +205,6 @@ try {
 })
 
 
-// const userActiveStatus = asyncHandler(async(req,res)=>{
-//   try {
-//     const {_id} = req.body;
-    
-//     if(!_id || _id.trim()===''){
-//       throw new ApiError(404,'Id is required');
-//     }
 
-//     const user = await User.findById(_id);
-//     if(!user){
-//       throw new ApiError(404,"User not found.")
-//     }
-//     if(!user.isOnline) { 
-//       user.isOnline = true;
-//       const res = await user.save();
-//     }
-
-//     const getOnlineUsers = await User.find({isOnline:true})
-//     if(!getOnlineUsers){
-//       throw new ApiError(404,'NO active users.')
-//     }
-//     res.status(200).json(new ApiResponse(200,getOnlineUsers,'All active users.'))
-//   } catch (error) {
-    
-//   }
-// })
 
 export { registerUser, loginUser,logoutUser,refreshToken,autoLogin }

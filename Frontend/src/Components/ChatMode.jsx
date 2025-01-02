@@ -1,13 +1,14 @@
 import React, { useEffect, useLayoutEffect } from "react";
+import { useSelector } from "react-redux";
 import { NavLink, useOutletContext } from "react-router-dom";
 
 function ChatMode() {
-  const {makeSocketConnection} = useOutletContext()
+  const {makeSocketConnection} = useOutletContext();
+  const isDarkMode = useSelector((state)=>state.DarkMode.isDarkMode)
 
   return (
     <div
-      className={`h-[40%] w-full lg:w-[50%]  border-4 text-xl font-semibold text-white font-montserrat border-gray-400 rounded-3xl rounded-bl-none flex flex-col
-       
+      className={`h-[40%] w-full lg:w-[60%]  border-4 text-xl font-semibold text-white font-montserrat ${isDarkMode?'border-gray-900':'border-gray-400'} rounded-3xl rounded-bl-none flex flex-col
             items-center justify-around`}
     >
       <NavLink

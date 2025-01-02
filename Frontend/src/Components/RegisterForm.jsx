@@ -84,7 +84,7 @@ function RegisterForm({ handleRegisterForm, loading }) {
             value={userObj.fullname}
             onChange={handleChange}
             className={`w-full h-10  ${
-              isDarkMode ? "bg-black border-gray-800 border-4" : "border-2"
+              isDarkMode ? "bg-black border-gray-800 border-2" : "border-2"
             } rounded-xl pl-3  border-gray-300 border-2 outline-none`}
             type="text"
             name="fullname"
@@ -100,7 +100,7 @@ function RegisterForm({ handleRegisterForm, loading }) {
             value={userObj.email}
             onChange={handleChange}
             className={`w-full  ${
-              isDarkMode ? "bg-black border-gray-800 border-4" : "border-2"
+              isDarkMode ? "bg-black border-gray-800 border-2" : "border-2"
             } h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
             type="email"
             name="email"
@@ -117,7 +117,7 @@ function RegisterForm({ handleRegisterForm, loading }) {
             value={userObj.username}
             onChange={handleChange}
             className={`w-full  ${
-              isDarkMode ? "bg-black border-gray-800 border-4" : "border-2"
+              isDarkMode ? "bg-black border-gray-800 border-2" : "border-2"
             } h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
             type="username"
             name="username"
@@ -136,7 +136,7 @@ function RegisterForm({ handleRegisterForm, loading }) {
               maxLength={8}
               onChange={handleChange}
               className={`w-full  ${
-                isDarkMode ? "bg-black border-gray-800 border-4" : "border-2"
+                isDarkMode ? "bg-black border-gray-800 border-2" : "border-2"
               } h-10 rounded-xl pl-3  border-gray-300 border-2 outline-none`}
               type={showPassword ? "text" : "password"}
               name="password"
@@ -166,7 +166,7 @@ function RegisterForm({ handleRegisterForm, loading }) {
                 minLength={8}
                 maxLength={8}
                 className={`w-full  ${
-                  isDarkMode ? "bg-black border-gray-800 border-4" : "border-2"
+                  isDarkMode ? "bg-black border-gray-800 border-2" : "border-2"
                 } h-10 rounded-xl pl-3  border-2 focus outline-none`}
                 type={!showConfirmPassword ? "password" : "text"}
                 name="confirmpassword"

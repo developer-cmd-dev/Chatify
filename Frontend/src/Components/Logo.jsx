@@ -5,7 +5,7 @@ function Logo({
 }) {
   return (
 
-      <img src="./Logo/logo.png" className={`${classname} `}  alt="" />
+    null
 
   )
 }

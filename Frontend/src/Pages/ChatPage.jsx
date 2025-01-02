@@ -50,22 +50,16 @@ useEffect(()=>{
       })
 
       socket.on('offline',data=>{
-        const online = activeUsers
+        const onlineUsers = activeUsers
         console.log(data)
-       setActiveusers(online)
+       setActiveusers(onlineUsers)
       })
   } catch (error) {
     console.log(error)
   }
-
   })()
 
 },[])
-
-
-
-
-
 
 
 
@@ -73,18 +67,9 @@ useEffect(()=>{
   useEffect(()=>{
     ;(async()=>{
       try {
-        const onProgress = (progressevent)=>{
-          const response = Math.round((progressevent.process * 100)/progressevent.total)
-          if(response >=90){
-            dispatch(setProgress(response))
-          }
-        }
-  
-        const response = await apiRequest(`/api/v1${location.pathname}`,'patch',{_id:userData._id});
+        const response = await apiRequest(`api/v1/active-users`,'post',null);
+        console.log(response)
         setActiveusers(response.data.data)
-
-  
-  
       } catch (error) {
         console.log(error)
       }
@@ -97,7 +82,6 @@ useEffect(()=>{
   return (
     <div className="h-[calc(100vh-10vh)] flex   ">
       <UserJoined classname={" w-[12vw]"} activeUsers={activeUsers} />
-
       <div className="bg-gray-400 w-full  ">
           <ChatContainer/>
       </div>

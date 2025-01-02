@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
 import { disconnectSocket } from "../../utils/SocketConnection";
 import { ProfileDropdown } from "../index";
-import { Spiral as Hamburger } from 'hamburger-react'
+import { Spiral as Hamburger } from "hamburger-react";
 
 function Header({ logo = true, classname = "" }) {
   const [hamBurger, setHamBurger] = useState(false);
@@ -15,70 +15,57 @@ function Header({ logo = true, classname = "" }) {
   const isHamburger = useSelector((state) => state.hamBurger.value);
   const location = useLocation();
   const navigate = useNavigate();
+  const paths = ['/','/register','/email-validation']
+  const isDisable= paths.includes(location.pathname)
 
   useEffect(() => {
     setHamBurger(isHamburger);
   }, [isHamburger]);
 
-  useEffect(() => {
-    location.pathname == "/global-chat-room"
-      ? setShowHamburger(true)
-      : setShowHamburger(false);
-  }, [location]);
-
-  const auth = async () => {
-    try {
-      const res = await disconnectSocket(
-        location.pathname,
-        "patch",
-        userData._id
-      );
-      console.log(res);
-      navigate("/home");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
- 
+  // const auth = async () => {
+  //   try {
+  //     const res = await disconnectSocket(
+  //       location.pathname,
+  //       "patch",
+  //       userData._id
+  //     );
+  //     console.log(res);
+  //     navigate("/home");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
-    <>
-      <div className={`${classname}  flex items-center justify-center `}>
-        <div className="leftNav   logo w-[50%] flex items-center justify-start  pl-5  ">
-          {logo && <Logo classname={`w-24 rounded-lg sm:w-32 lg:w-32`} />}
-        </div>
-
-        <div className="hamburgerButton w-full   flex items-center justify-end sm:hidden">
-          {showHamburger && (
-            <div className=" z-10">
-              <Hamburger toggled={hamBurger} color='white' size={20} toggle={setHamBurger} />
-            </div>
-          )}
-        </div>
-
-        <div
-          className={`rightNav ${hamBurger?'block':'hidden'}  w-full sm:w-[40%] md:w-[40%] lg:w-[80%]   ${
-            !showHamburger
-              ? "absolute top-0 right-0 items-start justify-end lg:relative lg:w-[50%] bg-transparent backdrop-blur-md	"
-              : " flex items-center justify-end"
-          }  h-full   lg:bg-transparent `}
-        >
-          {!showHamburger ? (
-            <div className=" flex items-center justify-around h-full w-fit ">
-              <div className="profileDropdown flex item-center justify-center h-full w-fit ">
-                {location.pathname !== "/" && <ProfileDropdown />}
-              </div>
-              <div className="darkmodebutton flex item-center justify-center h-full w-fit  ">
-                <DarkModeButton />
-              </div>
-            </div>
-          ) :null}
-        </div>
+    <div className={`${classname}  flex items-center justify-center `}>
+      {/* Left navbar */}
+      <div className={`leftNavItem w-48  flex items-center justify-start  pl-5  `}>
+      <img src="./Logo/logo.png" className={``}  alt="" />
       </div>
 
+      {/* Right navbar */}
+      <div className={`rightNavItem w-full  h-full flex items-center justify-end`}>
 
-    </>
+        {/* Profile Dropdown  */}
+      { !isDisable &&( <div className={`ProfileDropDown  w-fit mr-8 flex items-center justify-center h-full`}>
+           <ProfileDropdown/>
+        </div>)}
+
+        {/* Dark Mode Button */}
+        <div className={`darkModeButton w-fit h-fit`}>
+          <DarkModeButton/>
+        </div>  
+
+        {/* Hamburger Button */}
+     {  !isDisable&& (<div className={`HamburgerButton md:hidden `}>
+        <Hamburger toggled={hamBurger} toggle={setHamBurger} color="white" size={20} />
+        </div>)}
+
+        
+
+
+      </div>
+    </div>
   );
 }
 
