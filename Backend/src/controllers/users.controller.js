@@ -83,7 +83,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res,next) => {
   const { email, password } = req.body 
-
+  console.log(email)
   
   if ([email, password].some((fields) => fields.trim() === "")) throw new ApiError(404, "All fields are required.");
   const existedUser = await User.findOne({ email })
@@ -101,9 +101,9 @@ try {
         const {refreshToken,accessToken} = await generateAccessandRefreshTokens(loggedInUser._id);
         const options = {
         httpOnly:true,
-        secure:true
+        secure:true,
+        sameSite: 'Strict',
       }
-    
     
       res
       .status(200)

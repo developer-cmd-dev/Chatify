@@ -5,6 +5,7 @@ import http from 'http'
 import { initializeSocket } from './sockets/index.js';
 import { error } from 'console';
 const PORT = process.env.PORT
+const HOST =  '192.168.174.158'|| '0.0.0.0';
 const server = http.createServer(app)
 
 
@@ -17,7 +18,11 @@ connectDB()
             console.log(`Server is running on Port || ${PORT}`)
             initializeSocket(server)
         })
-        server.on('error',(error)=>console.log(error))
+        server.on('error',(error)=>console.log(error));
+        server.on('clientError', (err, socket) => {
+            console.error('Client Error:', err.message);
+            socket.destroy();
+          })
     
     
   

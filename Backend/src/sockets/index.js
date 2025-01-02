@@ -6,7 +6,8 @@ export const initializeSocket = (server)=>{
     const io = new Server(server,{
         cors:{
             origin:process.env.CORS_ORIGIN,
-            methods:['GET','POST']
+            methods:['GET','POST'],
+            credentials:true
         }
     })
     

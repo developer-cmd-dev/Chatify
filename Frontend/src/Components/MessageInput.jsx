@@ -6,13 +6,15 @@ import { IoIosSend } from "react-icons/io";
 function MessageInput({ classname, colorThemeCode,messageData }) {
   const [message , setMessage]=useState('')
 
-  const handleSumbit =(e)=>{
-    e.preventDefault()
+  const handleSumbit =()=>{
     messageData(message)
     setMessage('')
   }
   return (
-    <form onSubmit={handleSumbit} className="h-full w-full flex items-center justify-around ">
+    <form onSubmit={(e)=>{
+      e.preventDefault()
+      message.length > 0 && handleSumbit()
+      }} className="h-full w-full flex items-center justify-around ">
       <button
         className={` w-10 h-10 rounded-full  bg-slate-800 flex items-center justify-center`}
        
@@ -30,6 +32,7 @@ function MessageInput({ classname, colorThemeCode,messageData }) {
 
       </div>
       <button
+        disabled={message===''}
         className=" w-10 h-10 rounded-full flex items-center  bg-slate-800 justify-center "
         type="submit"
       >

@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
-import {avatar, Avatar} from "@nextui-org/react";
+import { Avatar} from "@nextui-org/react";
 import {Badge} from "@nextui-org/react";
 
 
-function UserJoined({ classname, colortheme, activeUsers }) {
+function UserJoined({ classname,  activeUsers }) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+  
 
   return (
     <div
@@ -20,8 +21,8 @@ function UserJoined({ classname, colortheme, activeUsers }) {
         <div className="flex flex-col items-center justify-around h-fit w-full ">
           {activeUsers.map((users) => {
            return(
-            <Badge color="success" content="" placement="bottom-right" shape="circle">
-            <Avatar size="lg" name={users.fullname} radius="full" src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
+            <Badge key={users._id} color="success" content="" placement="bottom-right" shape="circle">
+            <Avatar className={`bg-slate-800 text-white`} size="lg" name={users.fullname} radius="full" src={`${users.avatar.length <= 0 ?'':users.avatar}`} />
           </Badge>
            )
           })}

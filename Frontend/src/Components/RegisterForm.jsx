@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { ShowPassword, ErrorMsg } from "./index";
+import { ShowPassword, PictureUploader } from "./index";
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 import { setError } from "../Features/ErrorSlice";
+
 
 function RegisterForm({ handleRegisterForm, loading }) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
@@ -61,13 +62,11 @@ function RegisterForm({ handleRegisterForm, loading }) {
        >
         <h1>Create your Account</h1>
       </div>
-      {isError && (
-        <ErrorMsg
-          className={`error  rounded-lg w-full  flex items-center justify-start text-red-500 text-sm italic`}
-          message={message}
-          statusCode={status}
-        />
-      )}
+    
+{/* Set Profile Picture */}
+    <div className={`border w-full h-32`}>
+    <PictureUploader/>
+    </div>
 
       <form
         onSubmit={(e) => handleSubmit(e)}

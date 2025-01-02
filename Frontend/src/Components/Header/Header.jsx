@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Logo from "../Logo";
 import { useSelector } from "react-redux";
 import { DarkModeButton, HamburgerCom } from "../index";
 import { useLocation, useNavigate } from "react-router-dom";

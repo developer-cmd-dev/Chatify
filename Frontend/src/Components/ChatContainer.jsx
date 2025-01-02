@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { getSocket } from "../utils/SocketConnection";
 import { useSelector } from "react-redux";
-import {MessageInput} from './index'
+import { MessageInput } from "./index";
+import { Avatar } from "@nextui-org/react";
+import {  } from "@nextui-org/react";
 
 function ChatContainer() {
   const [message, setMessage] = useState([]);
   const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
-  const userData = useSelector((state)=>state.UserData)
+  const userData = useSelector((state) => state.UserData);
 
   useEffect(() => {
     (async () => {
       try {
         const socket = await getSocket();
-        socket.on("message", data => {
-        console.log(data)
+        socket.on("message", (data) => {
+          console.log(data);
           setMessage((prev) => [...prev, data]);
         });
       } catch (error) {
+        console.log(error);
       }
     })();
-  },[]);
+  }, []);
 
-
-  const messageData =async (data)=>{
-    const socket = await getSocket()
-    let msgObj = {msg:data,username:userData.username,type:'my-message',userIconColor:userData.userIconColor}
-    socket.emit('chat:message',msgObj);
-    setMessage((prev)=>[...prev,msgObj])
-  }
+  const messageData = async (data) => {
+    const socket = await getSocket();
+    let msgObj = {
+      msg: data,
+      username: userData.username,
+      type: "my-message",
+      userIconColor: userData.userIconColor,
+    };
+    socket.emit("chat:message", msgObj);
+    setMessage((prev) => [...prev, msgObj]);
+  };
 
   return (
     <>
@@ -53,18 +60,20 @@ function ChatContainer() {
                           : "justify-start"
                       }`}
                     >
-                      <div className="flex items-center justify-center">
-                        <span
-                          className={`h-10 w-10 rounded-full flex items-center justify-center bg-${dataValue.userIconColor} `}
-                          style={{ backgroundColor: dataValue.userIconColor }}
-                        >
-                          {dataValue.username.slice(0, 1)}
-                        </span>
+                      <div className="flex items-center justify-center ">
+                       
+                          <Avatar
+                            className={`bg-slate-800 m-2 text-white`}
+                            size="md"
+                            name={userData.fullname}
+                            radius="full"
+                            src={`${
+                              userData.avatar.length <= 0 ? "" : userData.avatar
+                            }`}
+                          />
+                 
                         <div
-                          className={`min-w-[10%] max-w-fit p-2 mb-1   rounded-md`}
-                          style={{
-                            backgroundColor: dataValue.userIconColor,
-                          }}
+                          className={`min-w-24 max-w-fit p-2 mb-1  bg-blue-900  rounded-md`}
                         >
                           <p className="text-[0.8rem] italic">
                             {dataValue.username}

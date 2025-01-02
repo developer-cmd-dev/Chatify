@@ -83,7 +83,7 @@ useEffect(()=>{
     <div className="h-[calc(100vh-10vh)] flex   ">
       <UserJoined classname={" w-[12vw]"} activeUsers={activeUsers} />
       <div className="bg-gray-400 w-full  ">
-          <ChatContainer/>
+      <ChatContainer/>
       </div>
     </div>
   );

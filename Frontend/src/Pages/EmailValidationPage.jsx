@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { apiRequest } from "../utils/axiosHandler";
 import { setError } from "../Features/ErrorSlice";
 import {Outlet, useLoaderData, useLocation, useNavigate} from 'react-router-dom'
-import { ErrorMsg } from "../Components";
 import { setProgress } from "../Features/TopLoaderSlice";
 function EamilValidationPage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
@@ -69,7 +68,6 @@ function EamilValidationPage() {
         </h1>
       </div>
       
-        { isError && <ErrorMsg className={`h-10 mb-4 rounded-md  w-[30%] flex items-center justify-start text-red-500 italic`} message={message} statusCode={status}/>}
    
       <div className={`update-container w-[70%] sm:w-[70%] md:w-[50%] lg:w-[30%] min-h-[25vh] p-4 border-4 ${isDarkMode?'border-gray-800':'border-gray-400'} rounded-2xl flex items-center justify-center`}>
         <form
