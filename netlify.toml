@@ -1,0 +1,3 @@
+[build]
+  publish = "frontend" # Path to your frontend files
+  functions = "Backend" # Path to your backend folder
