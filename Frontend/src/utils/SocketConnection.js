@@ -37,14 +37,13 @@ const getSocket = async () => {
 };
 
 const disconnectSocket = async(path,method,_id)=>{
- 
   try {
     if(!socket){
       return false
     }else{
       socket.on('disconnect',()=>console.log('Socket disconnected.'));
       socket.disconnect()
-      const res = await apiRequest(`/api/v1${path}`,method,{_id});
+      const res = await apiRequest(`api/v1${path}`,method,{_id});
       console.log(res)
       socket = null;
       return res

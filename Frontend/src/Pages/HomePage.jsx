@@ -5,7 +5,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import {handleSuccess,handleError} from '../utils/toastify'
 import {
   connectSocket,
-  getSocket,
   disconnectSocket,
   
 } from "../utils/SocketConnection";
@@ -14,15 +13,14 @@ import { apiRequest } from "../utils/axiosHandler";
 function HomePage() {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const userData = useSelector((state) => state.UserData);
-  const location = useLocation();
 
   useEffect(()=>{
     (async () => {
       try {
-        const res = await disconnectSocket(location.pathname,'patch',userData._id);
-        // return handleError("Disconnected From Global Chat")
+        const res = await disconnectSocket('/set-user-offline','patch',userData._id);
+        console.log(res)
       } catch (error) {
-        console.log(error);
+        return handleError(error.message);
       }
     })();
   },[])
