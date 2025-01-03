@@ -3,14 +3,7 @@ import { getSocket } from "../utils/SocketConnection";
 import { useSelector } from "react-redux";
 import { MessageInput } from "./index";
 import { Avatar } from "@nextui-org/react";
-import {
-  MinChatUiProvider,
-  MainContainer,
-  // MessageInput,
-  MessageContainer,
-  MessageList,
-  MessageHeader
-} from "@minchat/react-chat-ui";
+
 
 function ChatContainer() {
   const [message, setMessage] = useState([]);
