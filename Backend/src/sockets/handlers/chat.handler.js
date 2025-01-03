@@ -7,7 +7,7 @@ export const chatHandler = (socket)=>{
         socket.broadcast.emit('message',msgObj)
     })
 
-    socket.on('left-user',data=>{
-        socket.broadcast.emit('offline',data)
+    socket.on('left-user',data=>{        
+        socket.broadcast.emit('left-user',data)
     })
 }

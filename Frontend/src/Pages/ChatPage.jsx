@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { act, useEffect, useId, useRef, useState } from "react";
 import { MessageInput, UserJoined,ChatContainer } from "../Components";
 import { useSelector,useDispatch } from "react-redux";
 import {  disconnectSocket, getSocket } from "../utils/SocketConnection";
@@ -11,7 +11,7 @@ function ChatPage() {
   const dispatch = useDispatch()
   const location = useLocation()
   const userData = useSelector((state)=>state.UserData)
-  const [activeUsers,setActiveusers]=useState([])
+  const [activeUsers,setActiveUsers]=useState([])
 
 
 //  Close window page 
@@ -46,13 +46,7 @@ useEffect(()=>{
   try {
       const socket = await getSocket();
       socket.on('new-user-joined',data=>{
-        setActiveusers((prev)=>[...prev,data])
-      })
-
-      socket.on('offline',data=>{
-        const onlineUsers = activeUsers
-        console.log(data)
-       setActiveusers(onlineUsers)
+        setActiveUsers((prev)=>[...prev,data])
       })
   } catch (error) {
     console.log(error)
@@ -61,6 +55,30 @@ useEffect(()=>{
 
 },[])
 
+useEffect(()=>{
+;(async()=>{
+  try {
+    const socket = await getSocket();
+    socket.on('left-user',userData=>{
+      activeUsers.map((users,index)=>{        
+        if(userData._id === users._id){
+       activeUsers.splice(index,1)
+        }
+        setActiveUsers([...activeUsers])
+        
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})()
+
+
+},[activeUsers])
+
+
+
+
 
 
 // Fetch active users from db.
@@ -68,8 +86,7 @@ useEffect(()=>{
     ;(async()=>{
       try {
         const response = await apiRequest(`api/v1/active-users`,'post',null);
-        console.log(response)
-        setActiveusers(response.data.data)
+        setActiveUsers(response.data.data)
       } catch (error) {
         console.log(error)
       }

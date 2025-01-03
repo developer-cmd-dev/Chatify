@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@minchat/react-chat-ui": "^0.16.2",
     "@nextui-org/react": "^2.6.10",
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",

@@ -6,6 +6,7 @@ import {handleSuccess,handleError} from '../utils/toastify'
 import {
   connectSocket,
   disconnectSocket,
+  getSocket,
   
 } from "../utils/SocketConnection";
 import { apiRequest } from "../utils/axiosHandler";
@@ -17,10 +18,13 @@ function HomePage() {
   useEffect(()=>{
     (async () => {
       try {
+        const socket = await getSocket();
+        if(socket){
+          socket.emit('left-user',userData);
+        }
         const res = await disconnectSocket('/set-user-offline','patch',userData._id);
-        console.log(res)
       } catch (error) {
-        return handleError(error.message);
+        console.log(error);
       }
     })();
   },[])

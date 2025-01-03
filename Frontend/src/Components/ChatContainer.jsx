@@ -3,13 +3,21 @@ import { getSocket } from "../utils/SocketConnection";
 import { useSelector } from "react-redux";
 import { MessageInput } from "./index";
 import { Avatar } from "@nextui-org/react";
-import {  } from "@nextui-org/react";
+import {
+  MinChatUiProvider,
+  MainContainer,
+  // MessageInput,
+  MessageContainer,
+  MessageList,
+  MessageHeader
+} from "@minchat/react-chat-ui";
 
 function ChatContainer() {
   const [message, setMessage] = useState([]);
   const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const userData = useSelector((state) => state.UserData);
+
 
   useEffect(() => {
     (async () => {
@@ -19,6 +27,26 @@ function ChatContainer() {
           console.log(data);
           setMessage((prev) => [...prev, data]);
         });
+
+        socket.on("new-user-joined",userData=>{
+          let msgObj = {
+            username:userData.username,
+            msg:'has joined the chat.',
+            type:'new-user-joined',
+            userIconColor:userData.userIconColor
+          }
+          setMessage((prev)=>[...prev,msgObj])
+        })
+
+        socket.on("left-user",userData=>{
+          let msgObj = {
+            username:userData.username,
+            msg:'has left the chat.',
+            type:'left-user',
+            userIconColor:userData.userIconColor
+          }
+          setMessage((prev)=>[...prev,msgObj])
+        })
       } catch (error) {
         console.log(error);
       }
@@ -27,11 +55,12 @@ function ChatContainer() {
 
   const messageData = async (data) => {
     const socket = await getSocket();
-    let msgObj = {
+     let msgObj = {
       msg: data,
       username: userData.username,
       type: "my-message",
       userIconColor: userData.userIconColor,
+      fullname:userData.fullname
     };
     socket.emit("chat:message", msgObj);
     setMessage((prev) => [...prev, msgObj]);
@@ -40,11 +69,11 @@ function ChatContainer() {
   return (
     <>
       <div
-        className={`chatContainer h-[calc(90vh-10vh)]  overflow-y-auto p-4 lg:pt-8  ${
+        className={`chatContainer h-[calc(90vh-10vh)] border relative overflow-hidden lg:pt-8  ${
           isDarkMode ? "bg-black" : "bg-white"
         } `}
       >
-        <div className={`text-white  flex flex-col items-end `}>
+        <div className={`text-white absolute bottom-0 border w-full h-fit max-h-full   flex flex-col overflow-y-auto scroll-smooth items-end `}>
           {message.length > 0
             ? message.map((dataValue, index) => {
                 if (
@@ -65,7 +94,7 @@ function ChatContainer() {
                           <Avatar
                             className={`bg-slate-800 m-2 text-white`}
                             size="md"
-                            name={userData.fullname}
+                            name={dataValue.fullname}
                             radius="full"
                             src={`${
                               userData.avatar.length <= 0 ? "" : userData.avatar
@@ -84,16 +113,33 @@ function ChatContainer() {
                     </div>
                   );
                 }
-                if (dataValue.type == "new-user-joined") {
+                if (dataValue.type === "new-user-joined") {
                   return (
                     <div
-                      key={dataValue.id}
+                      key={index}
                       className={
-                        "userJoinedMessage  text-black w-[50%] h-9 flex items-center mt-2 mb-2 text-sm p-1 rounded-md bg-green-200 "
+                        "userJoinedMessage   w-full h-14 opacity-30 flex items-center mt-2 mb-2 text-sm p-1 bg-slate-900 text-white "
                       }
                     >
-                      <p>{dataValue.username} has joined the chat.</p>
+                      <p className={`ml-4 italic`}>{dataValue.username} {dataValue.msg}</p>
                     </div>
+
+                    
+                  );
+                }
+
+                if (dataValue.type === "left-user") {
+                  return (
+                    <div
+                      key={index}
+                      className={
+                        "userJoinedMessage   w-full h-14 opacity-30 flex items-center mt-2 mb-2 text-sm p-1 bg-slate-900 text-red-300 "
+                      }
+                    >
+                      <p className={`ml-4 italic`}>{dataValue.username} {dataValue.msg}</p>
+                    </div>
+
+                    
                   );
                 }
               })

@@ -3,8 +3,10 @@ import { Avatar} from "@nextui-org/react";
 import {Badge} from "@nextui-org/react";
 
 
+
 function UserJoined({ classname,  activeUsers }) {
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
+
   
 
   return (
@@ -19,10 +21,10 @@ function UserJoined({ classname,  activeUsers }) {
         } rounded-xl shadow-lg flex items-start justify-center`}
       >
         <div className="flex flex-col items-center justify-around h-fit w-full ">
-          {activeUsers.map((users) => {
+          {activeUsers.map((user) => {
            return(
-            <Badge key={users._id} color="success" content="" placement="bottom-right" shape="circle">
-            <Avatar className={`bg-slate-800 text-white`} size="lg" name={users.fullname} radius="full" src={`${users.avatar.length <= 0 ?'':users.avatar}`} />
+            <Badge key={user._id} color="success" content="" placement="bottom-right" shape="circle">
+            <Avatar className={`bg-slate-800 text-white`} size="lg" name={user.fullname} radius="full" src={`${user.avatar.length <= 0 ?'':user.avatar}`} />
           </Badge>
            )
           })}
