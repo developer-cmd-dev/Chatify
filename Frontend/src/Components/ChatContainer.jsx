@@ -52,14 +52,16 @@ function ChatContainer() {
     })();
   }, []);
 
-  const messageData = async (data) => {
+  const messageData = async (data,mediaData) => {
     const socket = await getSocket();
      let msgObj = {
+      id:userData._id,
       msg: data,
       username: userData.username,
       type: "my-message",
       userIconColor: userData.userIconColor,
-      fullname:userData.fullname
+      fullname:userData.fullname,
+      media:mediaData
     };
     socket.emit("chat:message", msgObj);
     setMessage((prev) => [...prev, msgObj]);
