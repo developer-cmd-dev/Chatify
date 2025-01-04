@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import  { useEffect, useState,useRef } from "react";
 import { getSocket } from "../utils/SocketConnection";
 import { useSelector } from "react-redux";
 import { MessageInput } from "./index";
@@ -10,6 +10,12 @@ function ChatContainer() {
   const colorTheme = useSelector((state) => state.colorThemeChange.colorCode);
   const isDarkMode = useSelector((state) => state.DarkMode.isDarkMode);
   const userData = useSelector((state) => state.UserData);
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }, [message]); 
 
 
   useEffect(() => {
@@ -62,11 +68,14 @@ function ChatContainer() {
   return (
     <>
       <div
-        className={`chatContainer h-[calc(90vh-10vh)] border relative overflow-hidden lg:pt-8  ${
+        className={`chatContainer h-[calc(90vh-10vh)]  relative overflow-hidden lg:pt-8  ${
           isDarkMode ? "bg-black" : "bg-white"
         } `}
       >
-        <div className={`text-white absolute bottom-0 border w-full h-fit max-h-full   flex flex-col overflow-y-auto scroll-smooth items-end `}>
+        <div ref={chatContainerRef} className={`text-white  bottom-0 p-2 w-full h-fit max-h-full  flex flex-col overflow-y-auto scroll-smooth  absolute  [&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:bg-gray-100
+  [&::-webkit-scrollbar-thumb]:bg-gray-300
+  ${isDarkMode &&'[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'} `}>
           {message.length > 0
             ? message.map((dataValue, index) => {
                 if (

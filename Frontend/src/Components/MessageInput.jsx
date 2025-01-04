@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "./index";
+import { Input, MediaPicker } from "./index";
 import { FaPlus } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 
 function MessageInput({ classname, colorThemeCode,messageData }) {
   const [message , setMessage]=useState('')
+  const [isMediaPicker,setIsMediaPicker] = useState(true);
 
   const handleSumbit =()=>{
     messageData(message)
@@ -14,10 +15,11 @@ function MessageInput({ classname, colorThemeCode,messageData }) {
     <form onSubmit={(e)=>{
       e.preventDefault()
       message.length > 0 && handleSumbit()
-      }} className="h-full w-full flex items-center justify-around ">
+      }} className="h-full w-full flex items-center justify-around relative ">
+      {  isMediaPicker && <MediaPicker/>}
       <button
+        onClick={()=>setIsMediaPicker((prev)=>!prev)}
         className={` w-10 h-10 rounded-full  bg-slate-800 flex items-center justify-center`}
-       
       >
         <FaPlus className="text-xl" />
       </button>

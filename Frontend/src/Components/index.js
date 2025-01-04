@@ -15,6 +15,7 @@ import ChatContainer from "./ChatContainer";
 import ProfileDropdown from "./ProfileDropdown";
 import PictureUploader from "./PictureUploader";
 import PrivateChatRoom from './PrivateChatRoom'
+import MediaPicker from "./MediaPicker";
 export {
     Children,
     Input,
@@ -32,6 +33,7 @@ export {
     ChatContainer,
     ProfileDropdown,
     PictureUploader,
-    PrivateChatRoom
+    PrivateChatRoom,
+    MediaPicker
     
 }
