@@ -18,11 +18,11 @@ function MessageInput({ classname, colorThemeCode, messageData }) {
   const handleSumbit = () => {
     messageData(message,mediaData);
     setMessage("");
+    setIsMediaPicker(false);
+    setMediaData([])
   };
 
   const handleMediaData = (data) => {
-    console.log(data);
-    
     setMediaData(data);
     setIsMediaPicker(false);
   };
@@ -43,6 +43,7 @@ function MessageInput({ classname, colorThemeCode, messageData }) {
       {isMediaPicker && <MediaPicker handleMediaData={handleMediaData} />}
       <button
         onClick={() => setIsMediaPicker((prev) => !prev)}
+        type="button"
         className={` w-10 h-10 rounded-full  bg-slate-800 flex items-center justify-center`}
       >
         <FaPlus className="text-xl" />
@@ -61,35 +62,27 @@ function MessageInput({ classname, colorThemeCode, messageData }) {
                   >
                     <ImCross className="text-sm" />
                   </span>
-                  {fileTypesForImage.includes(
-                    files.fileType.slice(0, files.fileType.indexOf("/"))
-                  ) && (
+                  {fileTypesForImage.includes(files.type) && (
                     <img
-                      src={files.filePath}
+                      src={files.url}
                       alt=""
                       className="w-24 h-20 rounded-xl "
                     />
                   )}
-                  {fileTypesForDocs.includes(
-                    files.fileType.slice(0, files.fileType.indexOf("/"))
-                  ) && (
+                  {fileTypesForDocs.includes(files.type) && (
                     <div className="w-14 h-20 flex items-center justify-center">
                       <IoIosDocument className=" text-5xl" />
                     </div>
                   )}
 
-                  {fileTypesForAudio.includes(
-                    files.fileType.slice(0, files.fileType.indexOf("/"))
-                  ) && (
+                  {fileTypesForAudio.includes(files.type) && (
                     <div className="w-14 h-20 flex items-center justify-center">
                       <BsFileEarmarkMusicFill className=" text-5xl" />
                     </div>
                   )}
 
-                  {fileTypesForVideo.includes(
-                    files.fileType.slice(0, files.fileType.indexOf("/"))
-                  ) && (
-                    <video className="w-24 h-20 rounded-xl "  src={files.filePath}></video>
+                  {fileTypesForVideo.includes(files.type) && (
+                    <video className="w-24 h-20 rounded-xl "  src={files.url}></video>
                   )}
                 </div>
               ))}

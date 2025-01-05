@@ -10,14 +10,17 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@cloudinary/url-gen": "^1.21.0",
     "@minchat/react-chat-ui": "^0.16.2",
     "@nextui-org/react": "^2.6.10",
     "@radix-ui/react-alert-dialog": "^1.1.4",
     "@radix-ui/react-slot": "^1.1.1",
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",
+    "browser-image-compression": "^2.0.2",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
+    "cloudinary": "^2.5.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.15.0",
     "lucide-react": "^0.469.0",

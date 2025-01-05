@@ -4,6 +4,8 @@ import { LuAudioLines } from "react-icons/lu";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosContact } from "react-icons/io";
 import { useEffect, useState } from "react";
+import { useCompressFiles } from "../Hooks/useCompressFiles";
+import { cloudinaryUpload } from "../service/cloudinary";
 
 
 
@@ -54,29 +56,10 @@ function MediaPicker({handleMediaData}) {
   const [filesData,setFilesData]=useState([])
 
   const handleMediaPicker=async (e)=>{
-        const file = e.target.files
-        console.log(file)
-        console.log(e.target.files[0].type)
-        if(file.length >0){
-            setFilesData([])
-
-            for (let i = 0; i < file.length; i++) {
-              const reader = new FileReader();
-              reader.onload= (event)=>{
-                let fileObj = {
-                  filePath:event.target.result,
-                  fileType:file[i].type,
-                  name:file[i].name
-                }
-                  console.log(fileObj)
-                   setFilesData((prev)=>[...prev,fileObj])
-              }
-              reader.readAsDataURL(file[i])  
-              console.log('loop runed')
-
-            }          
-        }
-
+        const files = e.target.files
+        const compressedFiles = await useCompressFiles(files);
+        const uploadedFiles = await cloudinaryUpload(compressedFiles);
+        setFilesData(uploadedFiles)
     }
 
     useEffect(() => {

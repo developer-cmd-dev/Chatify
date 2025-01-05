@@ -17,7 +17,7 @@ function ChatContainer() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }, [message]); 
 
-
+// Get Sockets Data
   useEffect(() => {
     (async () => {
       try {
@@ -87,15 +87,15 @@ function ChatContainer() {
                   return (
                     <div
                       key={index}
-                      className={`w-full flex item-center  ${
+                      className={`w-full flex item-center   ${
                         dataValue.type == "my-message"
                           ? "justify-end"
                           : "justify-start"
                       }`}
                     >
-                      <div className="flex items-center justify-center ">
-                       
-                          <Avatar
+                      <div className="flex flex-col items-start justify-center  ">
+                       <div className="flex items-start justify-center">
+                       <Avatar
                             className={`bg-slate-800 m-2 text-white`}
                             size="md"
                             name={dataValue.fullname}
@@ -112,6 +112,16 @@ function ChatContainer() {
                             {dataValue.username}
                           </p>
                           <p className={`   `}>{dataValue.msg} </p>
+                        </div>
+                       </div>
+                       
+
+                        <div className={`media w-fit h-fit `}>
+                            {
+                              dataValue.media.length >0 && dataValue.media.map((files,index)=>(
+                                <img key={index} src={files.filePath} alt="files not loaded" className="w-[50vw] md:w-[20vw] space-x-10 rounded-xl" />
+                              ))
+                            }
                         </div>
                       </div>
                     </div>
