@@ -4,7 +4,6 @@ export const chatHandler = (socket)=>{
             ...data,
             type:'user-message'
         }
-        console.log(data)
         socket.broadcast.emit('message',msgObj)
     })
 

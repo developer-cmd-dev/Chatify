@@ -119,7 +119,7 @@ function ChatContainer() {
                         <div className={`media w-fit h-fit `}>
                             {
                               dataValue.media.length >0 && dataValue.media.map((files,index)=>(
-                                <img key={index} src={files.filePath} alt="files not loaded" className="w-[50vw] md:w-[20vw] space-x-10 rounded-xl" />
+                                <img key={index} src={files.url} alt="files not loaded" className="w-[50vw] md:w-[20vw] space-x-10 rounded-xl" />
                               ))
                             }
                         </div>

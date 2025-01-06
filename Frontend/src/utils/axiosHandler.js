@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export const  apiRequest = async(url,method,data)=>{
 
     try {
-        const response = await axios({url,method,data,withCredentials:true});
+        const response = await axios({url,method,data,withCredentials:false});
         return response
     } catch (error) {
         if(error.code === "ERR_NETWORK" || error.message === 'Network Error'){
