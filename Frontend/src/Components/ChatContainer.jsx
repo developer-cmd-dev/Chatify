@@ -1,9 +1,17 @@
-import  { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getSocket } from "../utils/SocketConnection";
 import { useSelector } from "react-redux";
 import { MessageInput } from "./index";
 import { Avatar } from "@nextui-org/react";
 
+class MsgObj {
+  constructor(username, msg, type, userIconColor) {
+    this.username = username;
+    this.msg = msg;
+    this.type = type;
+    this.userIconColor = userIconColor;
+  }
+}
 
 function ChatContainer() {
   const [message, setMessage] = useState([]);
@@ -15,9 +23,9 @@ function ChatContainer() {
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
     chatContainer.scrollTop = chatContainer.scrollHeight;
-  }, [message]); 
+  }, [message]);
 
-// Get Sockets Data
+  // Get Sockets Data
   useEffect(() => {
     (async () => {
       try {
@@ -27,41 +35,43 @@ function ChatContainer() {
           setMessage((prev) => [...prev, data]);
         });
 
-        socket.on("new-user-joined",userData=>{
-          let msgObj = {
-            username:userData.username,
-            msg:'has joined the chat.',
-            type:'new-user-joined',
-            userIconColor:userData.userIconColor
-          }
-          setMessage((prev)=>[...prev,msgObj])
-        })
+        socket.on("new-user-joined", (userData) => {
+          const msgObjClass = new MsgObj(
+            userData.username,
+            "has joined the chat",
+            "new-user-joined",
+            userData.userIconColor
+          );
 
-        socket.on("left-user",userData=>{
-          let msgObj = {
-            username:userData.username,
-            msg:'has left the chat.',
-            type:'left-user',
-            userIconColor:userData.userIconColor
-          }
-          setMessage((prev)=>[...prev,msgObj])
-        })
+          setMessage((prev) => [...prev, msgObjClass]);
+        });
+
+        socket.on("left-user", (userData) => {
+          const msgObjClass = new MsgObj(
+            userData.username,
+            "has left the chat.",
+            "left-user",
+            userData.userIconColor
+          );
+
+          setMessage((prev) => [...prev, msgObjClass]);
+        });
       } catch (error) {
         console.log(error);
       }
     })();
   }, []);
 
-  const messageData = async (data,mediaData) => {
+  const messageData = async (data, mediaData) => {
     const socket = await getSocket();
-     let msgObj = {
-      id:userData._id,
+    let msgObj = {
+      id: userData._id,
       msg: data,
       username: userData.username,
       type: "my-message",
       userIconColor: userData.userIconColor,
-      fullname:userData.fullname,
-      media:mediaData
+      fullname: userData.fullname,
+      media: mediaData,
     };
     socket.emit("chat:message", msgObj);
     setMessage((prev) => [...prev, msgObj]);
@@ -74,10 +84,16 @@ function ChatContainer() {
           isDarkMode ? "bg-black" : "bg-white"
         } `}
       >
-        <div ref={chatContainerRef} className={`text-white  bottom-0 p-2 w-full h-fit max-h-full  flex flex-col overflow-y-auto scroll-smooth  absolute  [&::-webkit-scrollbar]:w-2
+        <div
+          ref={chatContainerRef}
+          className={`text-white  bottom-0 p-2 w-full h-fit max-h-full  flex flex-col overflow-y-auto scroll-smooth  absolute  [&::-webkit-scrollbar]:w-2
   [&::-webkit-scrollbar-track]:bg-gray-100
   [&::-webkit-scrollbar-thumb]:bg-gray-300
-  ${isDarkMode &&'[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500'} `}>
+  ${
+    isDarkMode &&
+    "[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500"
+  } `}
+        >
           {message.length > 0
             ? message.map((dataValue, index) => {
                 if (
@@ -94,8 +110,8 @@ function ChatContainer() {
                       }`}
                     >
                       <div className="flex flex-col items-start justify-center  ">
-                       <div className="flex items-start justify-center">
-                       <Avatar
+                        <div className="flex items-start justify-center">
+                          <Avatar
                             className={`bg-slate-800 m-2 text-white`}
                             size="md"
                             name={dataValue.fullname}
@@ -104,24 +120,27 @@ function ChatContainer() {
                               userData.avatar.length <= 0 ? "" : userData.avatar
                             }`}
                           />
-                 
-                        <div
-                          className={`min-w-24 max-w-fit p-2 mb-1  bg-blue-900  rounded-md`}
-                        >
-                          <p className="text-[0.8rem] italic">
-                            {dataValue.username}
-                          </p>
-                          <p className={`   `}>{dataValue.msg} </p>
+
+                          <div
+                            className={`min-w-24 max-w-fit p-2 mb-1  bg-blue-900  rounded-md`}
+                          >
+                            <p className="text-[0.8rem] italic">
+                              {dataValue.username}
+                            </p>
+                            <p className={`   `}>{dataValue.msg} </p>
+                          </div>
                         </div>
-                       </div>
-                       
 
                         <div className={`media w-fit h-fit `}>
-                            {
-                              dataValue.media.length >0 && dataValue.media.map((files,index)=>(
-                                <img key={index} src={files.url} alt="files not loaded" className="w-[50vw] md:w-[20vw] space-x-10 rounded-xl" />
-                              ))
-                            }
+                          {dataValue.media.length > 0 &&
+                            dataValue.media.map((files, index) => (
+                              <img
+                                key={index}
+                                src={files.url}
+                                alt="files not loaded"
+                                className="w-[50vw] md:w-[20vw] space-x-10 rounded-xl"
+                              />
+                            ))}
                         </div>
                       </div>
                     </div>
@@ -135,10 +154,10 @@ function ChatContainer() {
                         "userJoinedMessage   w-full h-14 opacity-30 flex items-center mt-2 mb-2 text-sm p-1 bg-slate-900 text-white "
                       }
                     >
-                      <p className={`ml-4 italic`}>{dataValue.username} {dataValue.msg}</p>
+                      <p className={`ml-4 italic`}>
+                        {dataValue.username} {dataValue.msg}
+                      </p>
                     </div>
-
-                    
                   );
                 }
 
@@ -150,10 +169,10 @@ function ChatContainer() {
                         "userJoinedMessage   w-full h-14 opacity-30 flex items-center mt-2 mb-2 text-sm p-1 bg-slate-900 text-red-300 "
                       }
                     >
-                      <p className={`ml-4 italic`}>{dataValue.username} {dataValue.msg}</p>
+                      <p className={`ml-4 italic`}>
+                        {dataValue.username} {dataValue.msg}
+                      </p>
                     </div>
-
-                    
                   );
                 }
               })
