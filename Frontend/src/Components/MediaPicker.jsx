@@ -58,9 +58,10 @@ function MediaPicker({ handleMediaData, handleFileCount }) {
   try {
       const files = e.target.files;
       handleFileCount(files.length)
-      const compressedFiles = await useCompressFiles(files);
-      // const uploadedFiles = await cloudinaryUpload(compressedFiles);
-      // handleMediaData(uploadedFiles); 
+      const filesArr = [...files];
+    
+      const uploadedFiles = await cloudinaryUpload(filesArr);
+      handleMediaData(uploadedFiles); 
   } catch (error) {
     console.log(error.response)
     return handleError('Something went wrong.');

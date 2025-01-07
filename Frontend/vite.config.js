@@ -17,9 +17,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  optimizeDeps:{
+  optimizeDeps: {
     include: ['@ffmpeg/ffmpeg'],
-  }
+  },
  
 
 })

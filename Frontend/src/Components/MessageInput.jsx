@@ -35,7 +35,6 @@ function MessageInput({ classname, colorThemeCode, messageData }) {
 
 
   const handleMediaData = (data) => {
-    console.log(data)
     // setIsMediaPicker(false);
     setMediaData(data);
   };
