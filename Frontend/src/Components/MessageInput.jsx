@@ -35,7 +35,6 @@ function MessageInput({ classname, colorThemeCode, messageData }) {
 
 
   const handleMediaData = (data) => {
-    // setIsMediaPicker(false);
     setMediaData(data);
   };
 
@@ -92,16 +91,16 @@ function MessageInput({ classname, colorThemeCode, messageData }) {
                   </span>
 
                   {/* File type for image */}
-                  {fileTypesForImage.includes(files.type) && (
+     
                     <img
-                      src={files.url}
+                      src={files}
                       alt=""
                       className="w-[30vw] rounded-xl "
                       sizes="200px"
                     />
-                  )}
+            
 
-                  {/* File type for docs */}
+                  {/* File type for docs
                   {fileTypesForDocs.includes(files.type) && (
                     <div className="w-14 h-20 flex items-center justify-center">
                       <IoIosDocument className=" text-5xl" />
@@ -109,19 +108,19 @@ function MessageInput({ classname, colorThemeCode, messageData }) {
                   )}
 
                   {/* File type for audio */}
-                  {fileTypesForAudio.includes(files.type) && (
+                  {/* {fileTypesForAudio.includes(files.type) && (
                     <div className="w-14 h-20 flex items-center justify-center">
                       <BsFileEarmarkMusicFill className=" text-5xl" />
                     </div>
-                  )}
+                  )} */}
 
                   {/* File type for video */}
-                  {fileTypesForVideo.includes(files.type) && (
+                  {/* {fileTypesForVideo.includes(files.type) && (
                     <video
                       className="w-24 h-20 rounded-xl "
                       src={files.url}
                     ></video>
-                  )}
+                  )} */}
                 </div>
               ))}
             </div>

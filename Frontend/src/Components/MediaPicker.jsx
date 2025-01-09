@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useCompressFiles } from "../Hooks/useCompressFiles";
 import { cloudinaryUpload } from "../service/cloudinary";
 import { handleError } from "../utils/toastify";
+import { useUrlCreator } from "../Hooks/useUrlCreator";
 
 function MediaPicker({ handleMediaData, handleFileCount }) {
   const inputArr = [
@@ -52,23 +53,24 @@ function MediaPicker({ handleMediaData, handleFileCount }) {
       type: "file",
     },
   ];
-
+  const [filesData,setFilesData]= useState([])
 
   const handleMediaPicker = async (e) => {
-  try {
+    try {
       const files = e.target.files;
-      handleFileCount(files.length)
-      const filesArr = [...files];
-    
-      const uploadedFiles = await cloudinaryUpload(filesArr);
-      handleMediaData(uploadedFiles); 
-  } catch (error) {
-    console.log(error.response)
-    return handleError('Something went wrong.');
-  }
-   };
+      const url = useUrlCreator(files)
 
+    } catch (error) {
+      console.log(error);
+      return handleError("Something went wrong.");
+    }
+  };
 
+  useEffect(()=>{
+if(filesData.length >0){
+  handleMediaData(filesData)
+}
+  },[filesData])
 
   return (
     <div className=" z-10 absolute bg-slate-900 h-56 w-64 rounded-3xl rounded-bl-none left-10 bottom-20  md:left-20 md:w-72 lg:left-10 flex flex-col items-center justify-center">

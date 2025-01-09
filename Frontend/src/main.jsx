@@ -9,6 +9,8 @@ import Error from "./Pages/Error.jsx";
 import { Provider } from "react-redux";
 import { store } from "./App/store.js";
 import PrivateRoute from "./Pages/PrivateRoute.jsx";
+import Home from "./Pages/Home";
+
 
 import {
   ResetPassword,
@@ -21,7 +23,7 @@ import { NextUIProvider } from "@nextui-org/react";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Home />,
     children: [
       {
         path: "/",
