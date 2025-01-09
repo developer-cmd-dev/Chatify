@@ -83,7 +83,7 @@ export default {
    	}
    },
   darkMode: ["class", "class"],
-  plugins: [nextui(), require("tailwindcss-animate")],
+  plugins: [nextui(), require("tailwindcss-animate"),require('tailwind-scrollbar')],
 
 }
 
