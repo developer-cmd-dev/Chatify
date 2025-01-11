@@ -16,6 +16,8 @@ import ProfileDropdown from "./ProfileDropdown";
 import PictureUploader from "./PictureUploader";
 import PrivateChatRoom from './PrivateChatRoom'
 import MediaPicker from "./MediaPicker";
+import MenuContainer from "./MenuContainer";
+import MessageCategory from "./MessageCategory";
 export {
     Children,
     Input,
@@ -34,6 +36,8 @@ export {
     ProfileDropdown,
     PictureUploader,
     PrivateChatRoom,
-    MediaPicker
+    MediaPicker,
+    MenuContainer,
+    MessageCategory
     
 }

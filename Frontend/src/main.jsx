@@ -23,7 +23,7 @@ import { NextUIProvider } from "@nextui-org/react";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <App />,
     children: [
       {
         path: "/",
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         path: "/home",
         element: (
           <PrivateRoute>
-            <HomePage />
+            <Home />
           </PrivateRoute>
         ),
         children: [

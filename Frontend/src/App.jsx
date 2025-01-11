@@ -22,13 +22,6 @@ function App() {
     overflow-hidden h-screen  "
     >
      <Toaster/>
-   { shouldshowHeader &&  <Header
-        logo={true}
-        colorPallete={true}
-        darkModeButton={true}
-        classname={`${isDarkMode ? "bg-black" : "bg-white"}  h-[10vh] w-full `}
-        hamburger={true}
-      />}
       <main className=" h-[100%]  w-full">
         <Outlet />
       </main>
