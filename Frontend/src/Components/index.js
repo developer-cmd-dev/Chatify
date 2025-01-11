@@ -18,6 +18,8 @@ import PrivateChatRoom from './PrivateChatRoom'
 import MediaPicker from "./MediaPicker";
 import MenuContainer from "./MenuContainer";
 import MessageCategory from "./MessageCategory";
+import ChatMainContainer from "./ChatMainContainer";
+import ProfileContainer from "./ProfileContainer";
 export {
     Children,
     Input,
@@ -38,6 +40,8 @@ export {
     PrivateChatRoom,
     MediaPicker,
     MenuContainer,
-    MessageCategory
+    MessageCategory,
+    ChatMainContainer,
+    ProfileContainer
     
 }
