@@ -1,4 +1,5 @@
 import { MenuContainer,MessageCategory,ChatMainContainer,ProfileContainer } from "../Components";
+import { Outlet } from "react-router-dom";
 
 function Home() {
   return (
@@ -10,15 +11,8 @@ function Home() {
       >
         {/* Menu Container */}
         <MenuContainer/>
+          <Outlet/>          
 
-        {/* Message category Container */}
-        <MessageCategory/>
-
-        {/* Chat Container */}
-       <ChatMainContainer/>
-
-        {/* Profile container */}
-      <ProfileContainer/>
       </div>
     </div>
   );

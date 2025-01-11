@@ -1,4 +1,4 @@
-import { LoginForm, RegisterForm ,HeroSection} from "../Components/index";
+import { LoginForm, RegisterForm } from "../Components/index";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Features/AuthenticateSlice";
@@ -67,7 +67,7 @@ function LoginPage() {
 
   const handleRegisterForm = async (data) => {
     try {
-    const response = await apiRequest('/api/v1/register','post',data,onProgress)
+    const response = await apiRequest('/api/v1/register','post',data)
 
     } catch (error) {
 
@@ -77,7 +77,7 @@ function LoginPage() {
 
   return (
     <div
-      className={`h-[calc(100vh-10vh)]   flex flex-col-reverse  items-center justify-around px-5 ${
+      className={`h-screen   flex flex-col-reverse  items-center justify-around px-5 ${
         isDarkMode ? "bg-black" : "bg-white"
       }
                     sm:flex sm:flex-col sm:items-center sm:justify-start
@@ -89,7 +89,6 @@ function LoginPage() {
                         sm:flex-col
                         md:w-full md:flex md:flex-row md:justify-around"
       >
-        <HeroSection/>
        
         <span
           className={` w-[90%] h-0 border-2 hidden lg:block ${

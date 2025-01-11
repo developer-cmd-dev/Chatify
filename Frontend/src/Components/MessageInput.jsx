@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Input, MediaPicker } from "./index";
+import { Input} from "./index";
 import { FaPlus } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 import { ImCross } from "react-icons/im";

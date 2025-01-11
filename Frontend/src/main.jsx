@@ -3,8 +3,6 @@ import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage.jsx";
-import ChatPage from "./Pages/ChatPage.jsx";
-import HomePage from "./Pages/HomePage.jsx";
 import Error from "./Pages/Error.jsx";
 import { Provider } from "react-redux";
 import { store } from "./App/store.js";
@@ -14,8 +12,9 @@ import Home from "./Pages/Home";
 
 import {
   ResetPassword,
-  PrivateChatRoom,
-  ChatMode,
+  MainContainer,
+  NotificationContainer,
+  MessageCategory
 } from "./Components/index.js";
 import EamilValidationPage from "./Pages/EmailValidationPage.jsx";
 import { NextUIProvider } from "@nextui-org/react";
@@ -42,24 +41,29 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "",
-            element: <ChatMode />,
+            path: "/home/",
+            element: <MainContainer />,
+            children:[
+              {
+                path:'/home/',
+                element:<MessageCategory/>,
+                children:[
+                  {
+                    
+                      path:'/home/notification',
+                      element:<NotificationContainer/>
+                    
+                  }
+                ]
+              },
+         
+            ]
           },
 
-          {
-            path: "private-chat-room",
-            element: <PrivateChatRoom />,
-          },
+       
         ],
       },
-      {
-        path: "global-chat-room",
-        element: (
-          <PrivateRoute>
-            <ChatPage />
-          </PrivateRoute>
-        ),
-      },
+    
       {
         path: "/email-validation",
         element: <EamilValidationPage />,

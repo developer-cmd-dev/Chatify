@@ -6,6 +6,7 @@ import { MdOutlineChatBubble } from "react-icons/md";
 import { MdGroups2 } from "react-icons/md";
 import { MdWifiCalling } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
+import { Outlet } from 'react-router-dom';
 
 
 function MessageCategory() {
@@ -34,7 +35,8 @@ function MessageCategory() {
       ];
     
   return (
-    <div className="messageCategory text-white bg-[#110D24]   rounded-[30px] h-full w-72 p-4">
+    <>
+        <div className="messageCategory text-white bg-[#110D24]   rounded-[30px] h-full w-72 p-4">
           <div className=" h-[18%] flex flex-col items-center justify-around">
             {/* Heading */}
             <div className="heading w-full  ">
@@ -86,44 +88,8 @@ function MessageCategory() {
             </div>
 
             <div className=" h-[90%] overflow-y-auto scrollbar-none scroll-smooth ">
-              <div className=" w-full h-fit flex items-center justify-around my-4">
-                <Badge
-                  color="success"
-                  content=""
-                  placement="bottom-right"
-                  shape="circle"
-                  size="sm"
-                >
-                  <Avatar
-                    size="md"
-                    radius="full"
-                    src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-                  />
-                </Badge>
-                <div className=" w-[75%]">
-                  <h1 className="opacity-20">@devkmanadal</h1>
-                  <p className="text-sm">hey dev whats going on.</p>
-                </div>
-              </div>
-              <div className=" w-full h-fit flex items-center justify-around my-4">
-                <Badge
-                  color="success"
-                  content=""
-                  placement="bottom-right"
-                  shape="circle"
-                  size="sm"
-                >
-                  <Avatar
-                    size="md"
-                    radius="full"
-                    src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-                  />
-                </Badge>
-                <div className=" w-[75%]">
-                  <h1 className="opacity-20">@devkmanadal</h1>
-                  <p className="text-sm">hey dev whats going on.</p>
-                </div>
-              </div>{" "}
+            
+          
               <div className=" w-full h-fit flex items-center justify-around my-4">
                 <Badge
                   color="success"
@@ -143,85 +109,14 @@ function MessageCategory() {
                   <p className="text-sm">hey dev whats going on.</p>
                 </div>
               </div>{" "}
-              <div className=" w-full h-fit flex items-center justify-around my-4">
-                <Badge
-                  color="success"
-                  content=""
-                  placement="bottom-right"
-                  shape="circle"
-                  size="sm"
-                >
-                  <Avatar
-                    size="md"
-                    radius="full"
-                    src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-                  />
-                </Badge>
-                <div className=" w-[75%]">
-                  <h1 className="opacity-20">@devkmanadal</h1>
-                  <p className="text-sm">hey dev whats going on.</p>
-                </div>
-              </div>{" "}
-              <div className=" w-full h-fit flex items-center justify-around my-4">
-                <Badge
-                  color="success"
-                  content=""
-                  placement="bottom-right"
-                  shape="circle"
-                  size="sm"
-                >
-                  <Avatar
-                    size="md"
-                    radius="full"
-                    src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-                  />
-                </Badge>
-                <div className=" w-[75%]">
-                  <h1 className="opacity-20">@devkmanadal</h1>
-                  <p className="text-sm">hey dev whats going on.</p>
-                </div>
-              </div>{" "}
-              <div className=" w-full h-fit flex items-center justify-around my-4">
-                <Badge
-                  color="success"
-                  content=""
-                  placement="bottom-right"
-                  shape="circle"
-                  size="sm"
-                >
-                  <Avatar
-                    size="md"
-                    radius="full"
-                    src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-                  />
-                </Badge>
-                <div className=" w-[75%]">
-                  <h1 className="opacity-20">@devkmanadal</h1>
-                  <p className="text-sm">hey dev whats going on.</p>
-                </div>
-              </div>{" "}
-              <div className=" w-full h-fit flex items-center justify-around my-4">
-                <Badge
-                  color="success"
-                  content=""
-                  placement="bottom-right"
-                  shape="circle"
-                  size="sm"
-                >
-                  <Avatar
-                    size="md"
-                    radius="full"
-                    src="https://i.pravatar.cc/150?u=a04258a2462d826712d"
-                  />
-                </Badge>
-                <div className=" w-[75%]">
-                  <h1 className="opacity-20">@devkmanadal</h1>
-                  <p className="text-sm">hey dev whats going on.</p>
-                </div>
-              </div>
+            
             </div>
           </div>
         </div>
+        <Outlet/>
+    </>
+
+
   )
 }
 

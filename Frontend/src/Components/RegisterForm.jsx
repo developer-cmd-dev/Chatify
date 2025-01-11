@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { ShowPassword, PictureUploader } from "./index";
+import { ShowPassword } from "./index";
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
