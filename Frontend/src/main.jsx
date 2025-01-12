@@ -8,16 +8,20 @@ import { Provider } from "react-redux";
 import { store } from "./App/store.js";
 import PrivateRoute from "./Pages/PrivateRoute.jsx";
 import Home from "./Pages/Home";
-
-
 import {
-  ResetPassword,
-  MainContainer,
+  ChatMainContainer,
+  MessageCategory,
+  MenuContainer,
+  ProfileContainer,
   NotificationContainer,
-  MessageCategory
+  ResetPassword,
+  SavedFile,
+  MainContainer,
 } from "./Components/index.js";
 import EamilValidationPage from "./Pages/EmailValidationPage.jsx";
 import { NextUIProvider } from "@nextui-org/react";
+import LeftDashBoard from "./Components/LeftDashBoard.jsx";
+import MiddleDashBoard from "./Components/MiddleDashBoard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -39,42 +43,43 @@ const router = createBrowserRouter([
             <Home />
           </PrivateRoute>
         ),
-        children: [
-          {
-            path: "/home/",
-            element: <MainContainer />,
-            children:[
-              {
-                path:'/home/',
-                element:<MessageCategory/>,
-                children:[
-                  {
-                    
-                      path:'/home/notification',
-                      element:<NotificationContainer/>
-                    
-                  }
-                ]
-              },
-         
-            ]
-          },
+      children:[
+        {
+          path:'',
+          element:<MainContainer/>,
+          children:[
+            {
+              path:'',
+              element:<ChatMainContainer/>
+            },
+            {
+              path:'notification',
+              element:<NotificationContainer/>
+            },
+            {
+              path:'saved-files',
+              element:<SavedFile/>
+            },
+          ]
+        },
 
+      
+      ]
        
-        ],
       },
-    
-      {
-        path: "/email-validation",
-        element: <EamilValidationPage />,
-        children: [{ path: "reset-password", element: <ResetPassword /> }],
-      },
-
-      {
-        path: "error",
-        element: <Error />,
-      },
+      
     ],
+  },
+
+  {
+    path: "/email-validation",
+    element: <EamilValidationPage />,
+    children: [{ path: "reset-password", element: <ResetPassword /> }],
+  },
+
+  {
+    path: "error",
+    element: <Error />,
   },
 ]);
 

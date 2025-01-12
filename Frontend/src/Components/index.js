@@ -5,13 +5,14 @@ import MessageInput from "./MessageInput";
 import RegisterForm from "./RegisterForm";
 import ShowPassword from "./ShowPassword";
 import ResetPassword from "./ResetPassword";
-
 import MenuContainer from "./MenuContainer";
 import MessageCategory from "./MessageCategory";
 import ChatMainContainer from "./ChatMainContainer";
 import ProfileContainer from "./ProfileContainer";
 import NotificationContainer from "./NotificationContainer";
 import MainContainer from "./MainContainer";
+import SavedFile from './SavedFile'
+
 export {
     Children,
     Input,
@@ -25,6 +26,8 @@ export {
     ChatMainContainer,
     ProfileContainer,
     NotificationContainer,
-    MainContainer
+    MainContainer,
+    SavedFile
+
     
 }

@@ -13,17 +13,17 @@ function MenuContainer() {
     {
       optionName: "Home",
       icon: <GoHome />,
-      to: "/home",
+      to: "",
     },
     {
       optionName: "Notification",
       icon: <IoMdNotificationsOutline />,
-      to: "/home/notification",
+      to: "notification",
     },
     {
       optionName: "File",
       icon: <IoMdFolderOpen />,
-      to: "/file",
+      to: "saved-files",
     },
   ];
 

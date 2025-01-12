@@ -1,5 +1,7 @@
-import { MenuContainer,MessageCategory,ChatMainContainer,ProfileContainer } from "../Components";
-import { Outlet } from "react-router-dom";
+import { MenuContainer,MessageCategory,ChatMainContainer,ProfileContainer, } from "../Components";
+import { Outlet,Routes,Route } from "react-router-dom";
+import LeftDashBoard from "../Components/LeftDashBoard";
+import MiddleDashBoard from "../Components/MiddleDashBoard";
 
 function Home() {
   return (
@@ -9,10 +11,8 @@ function Home() {
       <div
         className={`main_container  lg:w-[1530px]  h-full flex justify-around items-center`}
       >
-        {/* Menu Container */}
         <MenuContainer/>
-          <Outlet/>          
-
+        <Outlet/>
       </div>
     </div>
   );
