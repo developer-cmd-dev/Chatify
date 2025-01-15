@@ -18,7 +18,6 @@ function RandomPosts() {
   const fetchImages = async () => {
     try {
       setLoading(true);
-      console.log("function calling");
       const postArr = await axios.get(
         `https://api.unsplash.com/search/photos?page=${pages}&query=${
           !search ? "motivational quotes" : search

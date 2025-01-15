@@ -4,7 +4,7 @@ import {app} from './app.js'
 import http from 'http'
 import { initializeSocket } from './sockets/index.js';
 import { error } from 'console';
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3002
 const HOST =  '192.168.174.158'|| '0.0.0.0';
 const server = http.createServer(app)
 

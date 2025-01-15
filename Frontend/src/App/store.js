@@ -7,6 +7,7 @@ import TopLoaderReducer from '../Features/TopLoaderSlice'
 import ErrorReducer from '../Features/ErrorSlice'
 import UserReducer from '../Features/UserSlice'
 import DialogBoxReducer from '../Features/DialogBoxSlice'
+import ChatModeChangeReducer from '../Features/ChatModeChangeSlice'
 export const store = configureStore({
     reducer:{
         hamBurger:hamburgerReducer,
@@ -16,6 +17,7 @@ export const store = configureStore({
         TopLoader:TopLoaderReducer,
         ErrorState:ErrorReducer,
         UserData:UserReducer,
-        DialogBox:DialogBoxReducer
+        DialogBox:DialogBoxReducer,
+        ChatMode:ChatModeChangeReducer
     }
 })

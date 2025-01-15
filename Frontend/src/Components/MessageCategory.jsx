@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CiSearch } from "react-icons/ci";
 import { Badge, Avatar } from "@nextui-org/react";
 import { IoMdChatbubbles } from "react-icons/io";
@@ -7,7 +7,8 @@ import { MdGroups2 } from "react-icons/md";
 import { MdWifiCalling } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { Outlet } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {handleChatMode} from '../Features/ChatModeChangeSlice'
 
 
 function MessageCategory() {
@@ -16,27 +17,34 @@ function MessageCategory() {
           mode: "Global chat",
           icons: <IoMdChatbubbles />,
           isActive: false,
-          path:'/home'
+          value:'global-chat'
         },
         {
           mode: "Private chat",
           icons: <MdOutlineChatBubble />,
-          isActive: true,
-          path:'/private-chat'
+          isActive: false,
+          value:'private-chat'
         },
         {
           mode: "Groups",
           icons: <MdGroups2 />,
           isActive: false,
-          path:'/groups'
+          value:'groups'
         },
         {
           mode: "Call",
           icons: <MdWifiCalling />,
           isActive: false,
-          path:'/call'
+          value:'groups'
         },
       ];
+      const dispatch = useDispatch();
+      const [isActiveIndex,setIsActiveIndex]=useState(null)
+      const handleChatModeButton= (value,index)=>{
+        dispatch(handleChatMode(value));
+        setIsActiveIndex(index)
+      }
+
     
   return (
     <>
@@ -67,13 +75,11 @@ function MessageCategory() {
           </div>
 
           <div className="h-[40%] flex flex-col items-center justify-around ">
-            {chatMode.map((item) => (
-              <NavLink
-              to={item.path}
+            {chatMode.map((item,index) => (
+              <button
                 key={item.mode}
-                className={({isActive})=>`w-full h-12 rounded-xl flex items-center justify-start  ${
-                  isActive ? "bg-[#1B1338]" :"bg-transparent"
-                }`}
+                className={`w-full ${isActiveIndex === index ? 'bg-[#251B4C]':'bg-transparent'} hover:bg-[#251B4C] h-12 rounded-xl flex items-center justify-start `}
+                onClick={()=>handleChatModeButton(item.value,index)}
               >
                 <div className="logo flex items-center justify-center text-xl  w-[20%]">
                   {item.icons}
@@ -81,7 +87,7 @@ function MessageCategory() {
                 <div className="w-[55%] overflow-hidden   h-full flex flex-col items-start justify-center">
                   <h1 className=" text-md">{item.mode}</h1>
                 </div>
-              </NavLink>
+              </button>
             ))}
           </div>
 

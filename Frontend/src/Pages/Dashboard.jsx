@@ -1,12 +1,19 @@
-import React from "react";
-import { ChatMainContainer, ProfileContainer,RandomPosts } from "../Components/index";
-import LeftDashBoard from "../Components/LeftDashBoard";
+import React,{useEffect} from "react";
+import { ChatMainContainer, ProfileContainer,RandomPosts,MiddleDashBoard,LeftDashBoard } from "../Components/index";
+import { useSelector } from "react-redux";
 
 function Dashboard() {
+  const chatMode = useSelector((state)=>state.ChatMode.mode);
+  
+  
+
   return (
     <>
       <LeftDashBoard />
-      <RandomPosts/>
+      <MiddleDashBoard>
+        {!chatMode && <RandomPosts/> }
+        {chatMode == 'global-chat' && <ChatMainContainer/>}
+      </MiddleDashBoard>
       <ProfileContainer />
     </>
   );

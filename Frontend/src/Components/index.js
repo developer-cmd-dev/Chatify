@@ -13,7 +13,8 @@ import NotificationContainer from "./NotificationContainer";
 import MainContainer from "./MainContainer";
 import SavedFile from './SavedFile';
 import RandomPosts from "./RandomPosts";
-import SearchInput from "./SearchInput";
+import MiddleDashBoard from "./MiddleDashBoard";
+import LeftDashBoard from "./LeftDashBoard";
 
 export {
     Children,
@@ -31,7 +32,6 @@ export {
     MainContainer,
     SavedFile,
     RandomPosts,
-    SearchInput
-
-    
+    MiddleDashBoard,
+    LeftDashBoard
 }
