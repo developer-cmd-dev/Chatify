@@ -4,7 +4,8 @@ import { GoComment } from "react-icons/go";
 import { CiBookmark } from "react-icons/ci";
 import axios from "axios";
 import { CiSearch } from "react-icons/ci";
-import SearchInput from "./SearchInput";
+import { Blurhash } from "react-blurhash";
+import { Separator } from "@/components/ui/separator";
 
 function RandomPosts() {
   const [posts, setPosts] = useState([]);
@@ -12,15 +13,16 @@ function RandomPosts() {
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState([]);
 
-  const fetchImages = async (searchValue) => {
+  const fetchImages = async () => {
     try {
       setLoading(true);
-      console.log('function calling')
+      console.log("function calling");
       const postArr = await axios.get(
-        `https://api.unsplash.com/search/photos?page=${pages}&query=${search} &client_id=${
-          import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-        }
+        `https://api.unsplash.com/search/photos?page=${pages}&query=${
+          !search ? "motivational quotes" : search
+        } &client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
         `
       );
       setLoading(false);
@@ -32,6 +34,24 @@ function RandomPosts() {
       setLoading(false);
     }
   };
+  
+  useEffect(() => {
+    setImageLoaded(Array(posts.length).fill(false));
+}, [posts])
+  
+
+  useEffect(() => {
+    const loadImage = (index) => {
+      const img = new Image();
+      img.src = posts[index].urls.regular;
+      img.onload = () => {
+        setImageLoaded((prevImg) =>
+          prevImg.map((loaded, i) => (i === index ? true : loaded))
+        );
+      };
+    };
+    posts.forEach((_, index) => loadImage(index));
+  }, [posts]);
 
   useEffect(() => {
     if (!search) {
@@ -43,7 +63,7 @@ function RandomPosts() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !loading) {
-          entries.forEach((entry) => {
+          entries.forEach(() => {
             fetchImages();
           });
         }
@@ -63,8 +83,8 @@ function RandomPosts() {
   }, [loading]);
 
   const handleSearch = () => {
-    setPosts([])
-    fetchImages(search)
+    setPosts([]);
+    fetchImages();
   };
 
   return (
@@ -85,12 +105,12 @@ function RandomPosts() {
         </div>
 
         <div className="w-fit  h-full  flex items-center justify-center">
-          <div className="bg-[#241A4B] w-36 mx-3 h-[50%] rounded-xl text-white flex items-center justify-around text-2xl">
+          <div className="bg-[#241A4B]  w-36 mx-3 h-[50%] rounded-xl text-white flex items-center justify-around text-2xl">
             <button onClick={handleSearch}>
               <CiSearch />
             </button>
             <input
-              type="text"   
+              type="text"
               placeholder="@search "
               className=" bg-transparent w-[70%] text-sm h-full outline-none"
               onChange={(e) => setSearch(e.target.value)}
@@ -105,11 +125,22 @@ function RandomPosts() {
           className="posts flex flex-col items-center  justify-start "
         >
           {posts.map((post, index) => (
-            <div key={index} className=" m-4 w-fit">
+            <div
+              key={index}
+              className=" bg-[#1B1338]  rounded-xl m-4 w-fit flex flex-col items-center justify-center"
+            >
               <div className="postImage h-fit   flex items-center justify-center">
-                <img className="w-[35vw]" src={post.urls.regular} alt="" />
+                {imageLoaded[index] ? (
+                  <img className="w-[35vw]" src={post.urls.regular} alt="" />
+                ) : (
+                  <Blurhash hash={post.blur_hash} width={600} height={400} />
+                )}
               </div>
-              <div className=" h-12 text-white flex items-center justify-around text-2xl">
+              <div className=" h-10 text-white flex items-center w-[90%] ">
+                <p className="text-sm opacity-30">@{post.user.username}</p>
+              </div>
+              <Separator className=" bg-slate-800" />
+              <div className=" h-12 w-full text-white flex items-center justify-around text-2xl">
                 <CiHeart />
                 <GoComment />
                 <CiBookmark />
