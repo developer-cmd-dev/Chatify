@@ -12,6 +12,7 @@ import ProfileContainer from "./ProfileContainer";
 import NotificationContainer from "./NotificationContainer";
 import MainContainer from "./MainContainer";
 import SavedFile from './SavedFile'
+import RandomPosts from "./RandomPosts";
 
 export {
     Children,
@@ -27,7 +28,8 @@ export {
     ProfileContainer,
     NotificationContainer,
     MainContainer,
-    SavedFile
+    SavedFile,
+    RandomPosts
 
     
 }

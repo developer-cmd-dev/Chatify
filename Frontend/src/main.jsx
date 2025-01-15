@@ -13,6 +13,7 @@ import {
   NotificationContainer,
   ResetPassword,
   SavedFile,
+  RandomPosts
 } from "./Components/index.js";
 import EamilValidationPage from "./Pages/EmailValidationPage.jsx";
 import { NextUIProvider } from "@nextui-org/react";
