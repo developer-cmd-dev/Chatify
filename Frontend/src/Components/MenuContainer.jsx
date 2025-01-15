@@ -1,10 +1,11 @@
 import React from "react";
 import { GoHome } from "react-icons/go";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { IoMdFolderOpen } from "react-icons/io";
 import { IoCodeOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { CiBookmark } from "react-icons/ci";
+
 import { RxExit } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
 
@@ -21,8 +22,8 @@ function MenuContainer() {
       to: "notification",
     },
     {
-      optionName: "File",
-      icon: <IoMdFolderOpen />,
+      optionName: "Savedfile",
+      icon: <CiBookmark  />,
       to: "saved-files",
     },
   ];
@@ -57,7 +58,10 @@ function MenuContainer() {
       {/* Menu - 2 */}
       <div className=" text-white h-[30%] w-full flex flex-col items-center">
         <div className="flex flex-col justify-around items-center h-[80%] text-[1.6em]">
+          <NavLink to='setting' className={({isActive})=>`${isActive?'bg-[#DBFB7F] text-black':'bg-transparent'} *:
+           hover:bg-[#DBFB7F] hover:text-black transition-all  w-10 h-8 flex items-center justify-center rounded-md`}>
           <IoSettingsOutline />
+          </NavLink>
           <AiOutlineExclamationCircle />
         </div>
         <div className="m-4 flex items-center justify-center w-full">

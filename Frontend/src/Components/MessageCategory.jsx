@@ -7,6 +7,7 @@ import { MdGroups2 } from "react-icons/md";
 import { MdWifiCalling } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { Outlet } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 function MessageCategory() {
@@ -15,22 +16,25 @@ function MessageCategory() {
           mode: "Global chat",
           icons: <IoMdChatbubbles />,
           isActive: false,
+          path:'/home'
         },
         {
           mode: "Private chat",
           icons: <MdOutlineChatBubble />,
-    
           isActive: true,
+          path:'/private-chat'
         },
         {
           mode: "Groups",
           icons: <MdGroups2 />,
           isActive: false,
+          path:'/groups'
         },
         {
           mode: "Call",
           icons: <MdWifiCalling />,
           isActive: false,
+          path:'/call'
         },
       ];
     
@@ -64,10 +68,11 @@ function MessageCategory() {
 
           <div className="h-[40%] flex flex-col items-center justify-around ">
             {chatMode.map((item) => (
-              <div
+              <NavLink
+              to={item.path}
                 key={item.mode}
-                className={`w-full h-12 rounded-xl flex items-center justify-start  ${
-                  item.isActive && "bg-[#1B1338]"
+                className={({isActive})=>`w-full h-12 rounded-xl flex items-center justify-start  ${
+                  isActive ? "bg-[#1B1338]" :"bg-transparent"
                 }`}
               >
                 <div className="logo flex items-center justify-center text-xl  w-[20%]">
@@ -76,7 +81,7 @@ function MessageCategory() {
                 <div className="w-[55%] overflow-hidden   h-full flex flex-col items-start justify-center">
                   <h1 className=" text-md">{item.mode}</h1>
                 </div>
-              </div>
+              </NavLink>
             ))}
           </div>
 

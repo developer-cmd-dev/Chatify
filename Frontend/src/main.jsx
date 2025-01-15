@@ -9,19 +9,16 @@ import { store } from "./App/store.js";
 import PrivateRoute from "./Pages/PrivateRoute.jsx";
 import Home from "./Pages/Home";
 import {
-  ChatMainContainer,
   MessageCategory,
-  MenuContainer,
-  ProfileContainer,
   NotificationContainer,
   ResetPassword,
   SavedFile,
-  MainContainer,
 } from "./Components/index.js";
 import EamilValidationPage from "./Pages/EmailValidationPage.jsx";
 import { NextUIProvider } from "@nextui-org/react";
 import LeftDashBoard from "./Components/LeftDashBoard.jsx";
-import MiddleDashBoard from "./Components/MiddleDashBoard.jsx";
+import Dashboard from "./Pages/Dashboard.jsx";
+import Setting from "./Pages/Setting.jsx";
 
 const router = createBrowserRouter([
   {
@@ -46,22 +43,33 @@ const router = createBrowserRouter([
       children:[
         {
           path:'',
-          element:<MainContainer/>,
+          element:<Dashboard/>,
           children:[
-            {
-              path:'',
-              element:<ChatMainContainer/>
-            },
-            {
-              path:'notification',
-              element:<NotificationContainer/>
-            },
-            {
-              path:'saved-files',
-              element:<SavedFile/>
-            },
+              {
+                path:'',
+                element:<LeftDashBoard/>,
+                children:[
+                  {
+                    path:'',
+                    element:<MessageCategory/>
+                  },
+                  {
+                    path:'notification',
+                    element:<NotificationContainer/>
+                  },
+                  {
+                    path:'saved-files',
+                    element:<SavedFile/>
+                  },
+                 
+                ]
+              }
           ]
         },
+       {
+        path:'setting',
+        element:<Setting/>,
+       }
 
       
       ]

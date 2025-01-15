@@ -2,19 +2,20 @@ import { MenuContainer,MessageCategory,ChatMainContainer,ProfileContainer, } fro
 import { Outlet,Routes,Route } from "react-router-dom";
 import LeftDashBoard from "../Components/LeftDashBoard";
 import MiddleDashBoard from "../Components/MiddleDashBoard";
+import Dashboard from "./Dashboard";
 
 function Home() {
   return (
     <div
-      className={`body bg-[#040019] h-screen w-full  p-4 flex items-center justify-center `}
+    className={`body bg-[#040019] h-screen w-full  p-4 flex items-center justify-center `}
+  >
+    <div
+      className={`main_container  lg:w-[1530px]  h-full flex justify-around items-center`}
     >
-      <div
-        className={`main_container  lg:w-[1530px]  h-full flex justify-around items-center`}
-      >
-        <MenuContainer/>
-        <Outlet/>
-      </div>
+      <MenuContainer/>
+      <Outlet/>
     </div>
+  </div>
   );
 }
 
