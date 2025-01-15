@@ -11,8 +11,9 @@ import ChatMainContainer from "./ChatMainContainer";
 import ProfileContainer from "./ProfileContainer";
 import NotificationContainer from "./NotificationContainer";
 import MainContainer from "./MainContainer";
-import SavedFile from './SavedFile'
+import SavedFile from './SavedFile';
 import RandomPosts from "./RandomPosts";
+import SearchInput from "./SearchInput";
 
 export {
     Children,
@@ -29,7 +30,8 @@ export {
     NotificationContainer,
     MainContainer,
     SavedFile,
-    RandomPosts
+    RandomPosts,
+    SearchInput
 
     
 }

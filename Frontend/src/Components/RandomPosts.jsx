@@ -4,19 +4,21 @@ import { GoComment } from "react-icons/go";
 import { CiBookmark } from "react-icons/ci";
 import axios from "axios";
 import { CiSearch } from "react-icons/ci";
-import { motion } from "motion/react";
+import SearchInput from "./SearchInput";
 
 function RandomPosts() {
   const [posts, setPosts] = useState([]);
   const target = useRef(null);
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState(null);
 
-  const fetchImages = async () => {
+  const fetchImages = async (searchValue) => {
     try {
       setLoading(true);
+      console.log('function calling')
       const postArr = await axios.get(
-        `https://api.unsplash.com/search/photos?page=${pages}&query=motivational quotues&client_id=${
+        `https://api.unsplash.com/search/photos?page=${pages}&query=${search} &client_id=${
           import.meta.env.VITE_UNSPLASH_ACCESS_KEY
         }
         `
@@ -32,7 +34,9 @@ function RandomPosts() {
   };
 
   useEffect(() => {
-    fetchImages();
+    if (!search) {
+      fetchImages();
+    }
   }, []);
 
   useEffect(() => {
@@ -59,7 +63,8 @@ function RandomPosts() {
   }, [loading]);
 
   const handleSearch = () => {
-    // setSearchButtonWidth((prev)=>prev == 50?)
+    setPosts([])
+    fetchImages(search)
   };
 
   return (
@@ -80,17 +85,17 @@ function RandomPosts() {
         </div>
 
         <div className="w-fit  h-full  flex items-center justify-center">
-          <motion.button
-            onClick={handleSearch}
-            className="bg-[#241A4B] w-36 mx-3 h-[50%] rounded-xl text-white flex items-center justify-around text-2xl"
-          >
-            <CiSearch />
+          <div className="bg-[#241A4B] w-36 mx-3 h-[50%] rounded-xl text-white flex items-center justify-around text-2xl">
+            <button onClick={handleSearch}>
+              <CiSearch />
+            </button>
             <input
-              type="text"
+              type="text"   
               placeholder="@search "
               className=" bg-transparent w-[70%] text-sm h-full outline-none"
+              onChange={(e) => setSearch(e.target.value)}
             />
-          </motion.button>
+          </div>
         </div>
       </div>
 
