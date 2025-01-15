@@ -1,13 +1,21 @@
-import { Socket ,io} from "socket.io-client";
+import { io } from "socket.io-client";
 const URL = import.meta.env.VITE_SOCKET_URL
-export const  getSocket =async ()=>{
-    try {
-        const socket  = await io(URL,{
-            autoConnect:false
-        })
-        return socket
-    } catch (error) {
-        console.log(error.message)
-    }
+const socket = io(URL, {
+    autoConnect: false, // Avoid connecting automaticall
+  });
+export const connectSocket = async () => {
+    if (!socket.connected) {
+        socket.connect();
+      }
+      return socket;
 }
+
+export const disconnectSocket = () => {
+    if (socket.connected) {
+      socket.disconnect();
+    }
+  };
+
+  export const getSocket = () => socket;
+
 

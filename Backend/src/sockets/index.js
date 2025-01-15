@@ -12,6 +12,7 @@ export const initializeSocket = (server)=>{
     
 
     io.on('connection',(socket)=>{
+        console.log('socket is connected')
         socket.on('user-joined',userData=>{
             console.log(`${userData.username} is joined`)
             socket.broadcast.emit('new-user-joined',userData)

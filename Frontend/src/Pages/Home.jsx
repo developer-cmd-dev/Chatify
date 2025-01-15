@@ -1,18 +1,7 @@
-import { useEffect } from "react";
 import { MenuContainer, } from "../Components";
 import { Outlet } from "react-router-dom";
-import {useSocket} from '../Hooks/useSocket'
 
 function Home() {
-const {socket,isConnected} = useSocket()
-
-
-useEffect(()=>{
-;(async()=>{
-console.log(await isConnected)
-})()
-},[])
-
 
 
   return (
