@@ -11,8 +11,9 @@ function Dashboard() {
     <>
       <LeftDashBoard />
       <MiddleDashBoard>
-        {!chatMode && <RandomPosts/> }
-        {chatMode == 'global-chat' && <ChatMainContainer/>}
+        {/* {!chatMode && <RandomPosts/> } */}
+        {/* {chatMode == 'global-chat' && <ChatMainContainer/>} */}
+        <ChatMainContainer/>
       </MiddleDashBoard>
       <ProfileContainer />
     </>

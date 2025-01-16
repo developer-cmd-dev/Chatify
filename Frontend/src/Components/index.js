@@ -15,6 +15,7 @@ import SavedFile from './SavedFile';
 import RandomPosts from "./RandomPosts";
 import MiddleDashBoard from "./MiddleDashBoard";
 import LeftDashBoard from "./LeftDashBoard";
+import ChatArea from "./ChatArea";
 
 export {
     Children,
@@ -33,5 +34,7 @@ export {
     SavedFile,
     RandomPosts,
     MiddleDashBoard,
-    LeftDashBoard
+    LeftDashBoard,
+    ChatArea
+    
 }
