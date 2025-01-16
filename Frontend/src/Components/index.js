@@ -16,6 +16,8 @@ import RandomPosts from "./RandomPosts";
 import MiddleDashBoard from "./MiddleDashBoard";
 import LeftDashBoard from "./LeftDashBoard";
 import ChatArea from "./ChatArea";
+import MessageOptions from "./MessageOptions";
+import ListBoxWrapper from "./ListBoxWrapper";
 
 export {
     Children,
@@ -35,6 +37,8 @@ export {
     RandomPosts,
     MiddleDashBoard,
     LeftDashBoard,
-    ChatArea
+    ChatArea,
+    MessageOptions,
+    ListBoxWrapper
     
 }

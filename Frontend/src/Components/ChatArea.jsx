@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Badge, Avatar } from "@nextui-org/react";
+import { MessageOptions } from ".";
+import { BsThreeDots } from "react-icons/bs";
 
 function ChatArea({ messageData }) {
   const divRef = useRef(null);
+  const [showOptionButton, setShowOptionButton] = useState(false);
+  const [showOption, setShowOption] = useState(false);
   const [msgData, setMsgData] = useState([]);
   useEffect(() => {
     if (divRef.current) {
@@ -22,16 +26,25 @@ function ChatArea({ messageData }) {
       {msgData.map((item, index) => (
         <div
           key={index}
-          className={` w-full  h-fit flex   ${
+          onMouseEnter={() => setShowOptionButton(true)}
+          onMouseLeave={() => setShowOptionButton(false)}
+          className={` w-full   h-fit flex relative   ${
             item.type === "your-message"
               ? "justify-end  "
               : "justify-end flex-row-reverse"
           } `}
         >
-          <div className=" py-3 ">
-          <Avatar size="md" radius="full" src={""} isBordered={false} />
+          {showOptionButton && (
+            <button
+              onClick={()=>setShowOption((prev) => !prev)}
+              className=" flex items-center justify-center w-12 transition-all "
+            >
+              <BsThreeDots className="text-md text-white" />
+            </button>
+          )}
+          <div className=" py-5 ">
+            <Avatar size="md" radius="full" src={""} isBordered={false} />
           </div>
-          
 
           <div
             className={`min-w-[15%]  m-2 h-fit break-words whitespace-normal  p-3 max-w-[45%] bg-[#211845] rounded-xl text-white ${
@@ -40,8 +53,11 @@ function ChatArea({ messageData }) {
                 : "rounded-bl-none"
             } `}
           >
-            <div className="opacity-35  font-thin text-xs flex items-center justify-between w-full"><p>{item.user}</p><p>{item.time.replace(/:(\d{2})\s/, " ")}</p></div>
-            <p className="" >{item.message}</p>
+            <div className="opacity-35  font-thin text-xs flex items-center  w-full">
+              <p className="mr-3">{item.user}</p>
+              <p>{item.time.replace(/:(\d{2})\s/, " ")}</p>
+            </div>
+            <p className="">{item.message}</p>
           </div>
         </div>
       ))}
