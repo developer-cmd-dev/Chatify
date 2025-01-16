@@ -3,6 +3,7 @@ class Message {
         this.message = message
         this.user = user
         this.timestamp = timestamp
+        this.time = timestamp.toLocaleTimeString();
         this.type = type
     }
     formatForDisplay() {

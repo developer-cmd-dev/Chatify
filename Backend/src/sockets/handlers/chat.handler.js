@@ -1,6 +1,5 @@
 export const chatHandler = (socket)=>{
     socket.on('chat:message',(data)=>{
-        console.log(data)
         const msgObj = {
             ...data,
             type:'user-message'

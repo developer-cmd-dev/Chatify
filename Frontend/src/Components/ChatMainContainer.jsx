@@ -1,53 +1,44 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Badge, Avatar, useSelect } from "@nextui-org/react";
-import { BsJustify, BsThreeDotsVertical } from "react-icons/bs";
-import { IoAdd } from "react-icons/io5";
-import { BiSolidSend } from "react-icons/bi";
+import React, { useEffect, useState } from 'react'
+import { Badge, Avatar } from "@nextui-org/react";
+import {  BsThreeDotsVertical } from "react-icons/bs";
+
 import { Separator } from "@/components/ui/separator";
-import { connectSocket,getSocket } from "../Socket/socket";
 import { useSelector } from 'react-redux';
 import Message from '../models/Message'
 import MessageInput from './MessageInput';
 import ChatArea from './ChatArea';
+import { connectSocket,getSocket } from '../Socket/socket'
 
 function ChatMainContainer() {
 const userData = useSelector((state)=>state.UserData);
-const [message,setMessage]=useState('');
 const [messageData,setMessageData] = useState([]);
-const [socket,setSocket] = useState(null)
+
 
 useEffect(()=>{
   ;(async()=>{
     connectSocket();
-    const socketData = await getSocket();
-    socketData.on('connect',()=>{
+    const socket  = await getSocket();
+    socket.on('connect',()=>{
       console.log('Socket is connected');
-      
     });
-    socketData.emit('userData',userData);
-    socketData.on('users-message',data=>{
+    socket.emit('user-joined',userData)
+    socket.on('users-message',data=>{
       setMessageData((prev)=>[...prev,data])
     })
   })()
 },[])
 
 
-useEffect(() => {
-
-}, [socket])
 
 
-const getMessage = (data)=>{
+const getMessage =async (data)=>{
     const msgObj = new Message(userData.username,data,'your-message');
-    console.log(msgObj)
-    const socket = getSocket();
+    const socket =await getSocket();
     socket.emit('chat:message',msgObj);
     setMessageData((prev)=>[...prev,msgObj]);
 }
 
-useEffect(()=>{
-  console.log(messageData)
-},[messageData])
+
 
   return (
     <div className="ChatContainer bg-[#110D24] rounded-[30px] h-full w-[750px] flex flex-col items-center justify-center p-4 ">
@@ -84,8 +75,8 @@ useEffect(()=>{
     </div>
 
     <Separator className="my-4 bg-slate-800 w-[80%]" />
-    <div className=' h-[75%] relative border w-full   '>
-    <ChatArea/>
+    <div className=' h-[75%] relative  w-full   '>
+    <ChatArea messageData={messageData}/>
     </div>
     <MessageInput getMessage={getMessage}/>
    
