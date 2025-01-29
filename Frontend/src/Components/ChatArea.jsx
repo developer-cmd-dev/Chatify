@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Badge, Avatar } from "@nextui-org/react";
 import { MessageOptions } from ".";
-import { BsThreeDots } from "react-icons/bs";
 
 function ChatArea({ messageData }) {
   const divRef = useRef(null);
-  const [showOptionButton, setShowOptionButton] = useState(false);
-  const [showOption, setShowOption] = useState(false);
+  const [optionIndex,setOptionIndex] = useState(null);
   const [msgData, setMsgData] = useState([]);
   useEffect(() => {
     if (divRef.current) {
@@ -17,37 +15,47 @@ function ChatArea({ messageData }) {
   useEffect(() => {
     setMsgData(messageData);
   }, [messageData]);
+  
+
 
   return (
     <div
       ref={divRef}
-      className={` chat  max-h-full bottom-0 w-full overflow-y-auto flex flex-col items-start  absolute`}
+      className={` chat  max-h-full    bottom-0 w-full overflow-y-auto flex flex-col items-start   absolute`}
     >
       {msgData.map((item, index) => (
         <div
           key={index}
-          onMouseEnter={() => setShowOptionButton(true)}
-          onMouseLeave={() => setShowOptionButton(false)}
-          className={` w-full   h-fit flex relative   ${
+          onMouseEnter={() => {
+            setOptionIndex(index)
+            }}
+          onMouseLeave={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+              console.log(e.relatedTarget)
+              setOptionIndex(null);
+            }
+          }}
+          className={` w-full   h-fit flex items-center relative   ${
             item.type === "your-message"
               ? "justify-end  "
               : "justify-end flex-row-reverse"
           } `}
         >
-          {showOptionButton && (
-            <button
-              onClick={()=>setShowOption((prev) => !prev)}
-              className=" flex items-center justify-center w-12 transition-all "
-            >
-              <BsThreeDots className="text-md text-white" />
-            </button>
+            
+         
+          {optionIndex == index && (
+            <div className=" flex items-center justify-center m-4">
+            <MessageOptions />
+
+            </div>
           )}
+
           <div className=" py-5 ">
             <Avatar size="md" radius="full" src={""} isBordered={false} />
           </div>
 
           <div
-            className={`min-w-[15%]  m-2 h-fit break-words whitespace-normal  p-3 max-w-[45%] bg-[#211845] rounded-xl text-white ${
+            className={` min-w-[15%]  m-2 h-fit break-words whitespace-normal  p-3 max-w-[45%] bg-[#211845] rounded-xl text-white ${
               item.type === "your-message"
                 ? "rounded-br-none"
                 : "rounded-bl-none"

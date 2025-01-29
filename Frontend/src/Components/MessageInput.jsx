@@ -1,9 +1,10 @@
-import { IoAdd } from "react-icons/io5";
 import { BiSolidSend } from "react-icons/bi";
 import { useState } from "react";
+import SendMediaOption from "./SendMediaOption";
 
 function MessageInput({ classname, colorThemeCode, getMessage }) {
   const [message, setMessage] = useState("");
+  const [showMediaOption, setShowMediaOption] = useState(false);
 
 
   const handleSumbit = (e) => {
@@ -13,10 +14,13 @@ function MessageInput({ classname, colorThemeCode, getMessage }) {
   };
 
   return (
-    <form onSubmit={handleSumbit} className="messageInput w-full h-[8%]  bg-[#171031] rounded-2xl flex items-center justify-around ">
-      <div className="w-[6%] bg-[#251B4C] h-[70%] rounded-xl flex items-center justify-center">
+    <form onSubmit={handleSumbit} className=" messageInput w-full h-[8%]  bg-[#171031] rounded-2xl flex items-center justify-around ">
+    
+      {/* <button onClick={()=>setShowMediaOption((prev)=>!prev)} className="w-[6%]  bg-[#251B4C] h-[70%] rounded-xl flex items-center justify-center">
         <IoAdd className="text-white text-xl" />
-      </div>
+        
+      </button> */}
+      <SendMediaOption/>
       <div className=" w-[75%] h-full">
         <input
         onChange={(e)=>setMessage(e.target.value)}

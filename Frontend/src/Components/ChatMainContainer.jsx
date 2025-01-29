@@ -41,7 +41,7 @@ const getMessage =async (data)=>{
 
 
   return (
-    <div className="ChatContainer bg-[#110D24] rounded-[30px] h-full w-[750px] flex flex-col items-center justify-center p-4 ">
+    <div className="ChatContainer  bg-[#110D24] rounded-[30px] h-full w-[750px] flex flex-col items-center justify-center p-4 ">
     <div className="user rounded-2xl flex items-center justify-between w-full h-20 bg-[#1B1338] ">
       <div className="h-full w-[70%]  flex items-center text-white ">
         <div className=" w-[17%] flex items-center justify-center h-full">
